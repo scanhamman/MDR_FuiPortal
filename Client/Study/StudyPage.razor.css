@@ -1,0 +1,15 @@
+﻿#body-outer {
+    position: absolute;
+    top: 8.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: hidden;
+
+}
+
+#body-main {
+    background-color: var(--bg-colour);
+    overflow-y: scroll;
+    max-height: 100%;
+}

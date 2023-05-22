@@ -1,0 +1,78 @@
+﻿
+<div class="treeitem" hidden=@(!IsVisible) id=@Id IsSelected=@IsSelected
+                      OnItemClicked=@OnTreeItemClick 
+                      onIconClicked=@OnIconClick>
+   
+    @for (int i = 0; i < @Level; i++)
+    {
+        <div class="spacer">
+            &nbsp;
+        </div>
+    }
+    <div class="icon" @onclick=@(e => ProcessIconClick(e))>
+        @if (Id == "0")
+        {
+            <img height="12" width="12" src="/icons/square-icon.svg" alt="leaf icon" />
+        }
+        else
+        {
+            @if (@Icon == "L")
+            {
+                <img height="8" width="8" src="/icons/square-icon.svg" alt="leaf icon" />
+            }
+            @if (@Icon == "C")
+            {
+                <img height="12" width="12" src="/icons/caret-right-icon.svg" alt="closed icon" />
+            }
+            @if (@Icon == "P")
+            {
+                <img height="12" width="12" src="/icons/caret-down-icon.svg" alt="open icon" />
+            }
+        }
+    </div>
+    <div class="text @(@IsSelected == true ? "selected" : "") " @onclick=@(e => ProcessClick(e))>
+        @Text
+    </div>
+
+</div>
+
+
+@code {
+    [Parameter]
+    public string? Id { get; set; } = null!;
+    [Parameter]
+    public string? Text { get; set; }
+    [Parameter]
+    public int? Level { get; set; }
+    [Parameter]
+    public bool IsParent { get; set; }
+    [Parameter]
+    public bool? IsClosed { get; set; }
+    [Parameter]
+    public bool IsVisible{ get; set; }
+    [Parameter]
+    public bool? IsSelected { get; set; }
+    [Parameter]
+    public string? Icon { get; set; }   // for now
+    [Parameter]
+    public EventCallback<string> OnTreeItemClick { get; set; }
+    [Parameter]
+    public EventCallback<string> OnIconClick { get; set; }
+
+    private async Task ProcessClick(MouseEventArgs e)
+    {
+        await OnTreeItemClick.InvokeAsync(Id);
+    }
+
+    private async Task ProcessIconClick(MouseEventArgs e)
+    {
+        // if an open or closed icon type only
+        // and exclude the top of the tree from open / close.
+
+        await OnTreeItemClick.InvokeAsync(Id);
+        if (Icon != "L" && Id != "0")
+        {
+            await OnIconClick.InvokeAsync(Id);
+        }
+    }
+}

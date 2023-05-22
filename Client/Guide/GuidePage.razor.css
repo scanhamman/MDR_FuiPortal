@@ -1,0 +1,37 @@
+﻿#body-outer {
+    position: absolute;
+    top: 8.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: hidden;
+
+}
+
+#body-main {
+    background-color: var(--bg-colour);
+    max-height: 100%;
+    overflow-y: hidden;
+    display: flex;
+}
+
+
+#tree-panel {
+    background-color: var(--bg-colour);
+    overflow-y: auto;
+    height: calc(100vh - 10.5rem);
+    flex: 0 0 25rem;
+    padding-left: 0;
+}
+
+.tree-container {
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+
+#info-panel {
+    background-color: var(--bg-colour);
+    overflow-y: auto;
+    height: calc(100vh - 10.5rem);
+    flex: 1 1;
+}

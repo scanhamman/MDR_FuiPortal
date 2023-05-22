@@ -1,0 +1,53 @@
+﻿<div class="top-bar">
+    <div class="tb-title">
+        <div class="tb-title-text">
+            @BarTitle
+        </div>
+    </div>
+    <div class="tb-spacer">&nbsp;</div>
+    @if (ShowSearchLink == true)
+    {
+        <div class="tb-button">
+            <div class="tb-link-icon">
+                <a href="/Search" target="_blank">
+                    <img height="18" width="18"
+                     src="/icons/search-icon.svg"
+                        alt="search icon"/>
+                </a>
+            </div>
+            <div class="tb-link-text">
+                <a href="/Search" target="_blank">Search</a>
+            </div>
+        </div>
+    }
+    @if (ShowStudyLink == true)
+    {
+        <div class="tb-button">
+            <div class="tb-link-icon">
+                <a href="/Study" target="_blank">
+                    <img height="18" width="18"
+                    src="/icons/search-icon.svg"
+                    alt="search icon"/>
+                </a>
+            </div>
+            <div class="tb-link-text">
+                <a href="/Study" target="_blank">Study</a>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+@code {
+
+[Parameter]
+public string? BarTitle { get; set; }
+
+[Parameter]
+public bool? ShowSearchLink { get; set; }
+
+[Parameter]
+public bool? ShowStudyLink { get; set; }
+}

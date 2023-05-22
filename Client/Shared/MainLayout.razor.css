@@ -1,0 +1,299 @@
+/* Fixed footer code added from
+https://stackoverflow.com/questions/65654999/how-to-add-a-footer-in-default-mainlayout-razor   */
+
+
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+    max-height: 100vh;  /* these 2 lines part of enabling fixed footer */
+    overflow-y: auto;
+}
+
+main {
+    flex: 1;
+    overflow-y: auto;  /* enables fixed footer */
+}
+
+
+.top-row {
+    justify-content: flex-end;
+    height: 6rem;
+    max-height: 6rem; /* this line part of enabling fixed footer */
+    display: flex;
+    margin-bottom: 0;
+    background-color: var(--top-bar-bg-colour);
+}
+
+.top-left {
+    height: 6em;
+    max-height: 6em;
+    flex: 3 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+.top-right {
+    flex: 1 1;    
+    height: 6em;
+    max-height: 6em;
+    
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+
+.title-bar {
+    max-height: 5em;
+    display: flex;
+    flex-direction: row;
+    width:100%
+}
+
+#logo {
+    height: 5em;
+    min-width: 5em;;
+    margin-left: 3em;
+    margin-right: 2em;
+    flex: 0 1;
+}
+
+#title-text {
+    flex: 1 1;
+}
+
+#ecrin-name {
+    color: var(--top-bar-pri-colour);
+    font: var(--top-bar);
+    padding-right: 0;
+}
+
+#mdr-name {
+    color: var(--top-bar-sec-colour);
+    font: var(--top-bar);
+    padding-left: 0;
+}
+
+#mdr-abbrev {
+    color: var(--top-bar-sec-colour);
+    font: var(--top-bar);
+    padding-left: 0;
+    display: none;
+}
+
+
+.top-right-bar {
+    flex: 0 0;
+    background-color: var(--link-bg-colour);
+    color: var(--link-colour);
+    min-height: 2.5rem;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+    .top-right-bar a {
+        color: var(--link-colour);
+        padding-left: 2px;
+        margin-left: 2px;
+        text-decoration: none;
+    }
+
+    .top-right-bar a:hover {
+         text-decoration: none;
+    }
+
+.trb-inner {
+    flex: 1 1 90%;
+    margin-left: 1.5rem;
+    min-height: 2.5rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.trb-end-spacer {
+    flex: 1 1 10%;
+}
+
+.trb-button {
+    flex: 0 1 30%;
+    align-self: center;
+    height: 2rem; /* fits within parent bar */
+    max-height: 2rem;
+    min-width: 0; /* allows the link to shrink to less than its content width */
+    max-width: 90em;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+}
+
+    .trb-button:hover {
+        background-color: var(--link-hover-colour);
+    }
+
+.trb-link-icon {
+    flex: 0 0;
+    align-self: center;
+}
+
+.trb-link-text {
+    font: var(--link-text);
+    flex: 0 0;
+    align-self: center;
+    padding-left: 0.2em;
+}
+
+/* Next 3 selectors relate to bottom-row and are part of enabling fixed footer */
+
+.bottom-row {
+    background-color: var(--link-bg-colour);
+    color: var(--link-colour);
+    /*border-top: 1px solid var(--btm-bar-border-colour); ??? */
+    height: 2rem;
+    max-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+}
+
+/*Select all a elements where parent is a .bottom-row*/
+
+    .bottom-row > a {
+        display: flex;
+        /*color: var(--btm-bar-link-colour);*/
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+/*Optionally this selector will also work: main article.content*/
+main > .content {
+    height: calc(100vh - 8rem);
+    max-height: calc(100vh - 8rem);
+    overflow-y: hidden;
+    background-color: var(--bg-colour);
+}
+
+.bottom-centre {
+    flex: 1 1;
+    text-align: center;
+    max-height: 2rem;
+}
+
+.bottom-left {
+    flex: 0 1 7em;
+    text-align: right;
+    height: 2em;
+    max-height: 2em;
+}
+
+.bottom-right {
+    flex: 0 1 7em;
+    text-align: right;
+    padding-right:0.5rem;
+}
+
+
+/* name pivot at 1150px */
+
+@media (max-width: 1100px) {
+
+    #mdr-name {
+        display: none;
+    }
+    #mdr-abbrev {
+        display: inline;
+    }
+}
+
+
+/* arbitrary big PHONE size screen */
+
+@media (max-width: 750px) {
+
+    .bottom-left {
+        display: none;
+    }
+}
+
+
+
+/* PHONE size screens */
+
+@media (max-width: 666px) {
+    
+    .top-row:not(.auth) {
+        /* display: none; */
+    }
+
+    .bottom-centre {
+        display: none;
+    }
+
+    .bottom-right {
+        text-align: center;
+        flex-grow:1;
+    }
+
+    #ecrin-name {
+        display: none;
+    }
+    #mdr-abbrev {
+        display: inline;
+    }
+    
+    .top-row.auth {
+        justify-content: space-between;
+    }
+
+    .top-row ::deep a, .top-row ::deep .btn-link {
+        margin-left: 0;
+    }
+
+    .page main {              /* this selector part of enabling fixed footer */
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 2rem;
+    }
+
+    .page main .top-row {     /* this selector part of enabling fixed footer */
+        flex: 0 0 6rem;
+    }
+}
+
+/* NORMAL size screens */
+
+@media (min-width: 641px) {
+    .page {
+        flex-direction: row;
+    }
+    
+    .bottom-row {              /* this selector part of enabling fixed footer */
+        left: 0;
+        width: 100vw;
+        justify-content: flex-end;
+    }
+
+    .top-row {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row.auth ::deep a:first-child {
+        flex: 1;
+        text-align: right;
+        width: 0;
+    }
+
+}

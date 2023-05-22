@@ -1,0 +1,28 @@
+﻿<h3>GuideInfoPanel</h3>
+
+<h4>Selected id is @ItemIdToDisplay</h4>
+
+<button @onclick='() => SetSelectedId("0")'>id 0</button>
+
+<button @onclick='() => SetSelectedId("2")'>id 2</button>
+
+<button @onclick='() => SetSelectedId("2.1")'>id 2.1</button>
+
+<button @onclick='() => SetSelectedId("1.3.1")'>id 1.3.1</button>
+@code {
+
+    [Parameter]
+    public string? ItemIdToDisplay { get; set; }
+
+    [Parameter]
+    public string? RequestedId { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ItemRequested { get; set; }
+
+    public void SetSelectedId(string reqId)
+    {
+        RequestedId = reqId;
+        ItemRequested.InvokeAsync(reqId);
+    }
+}

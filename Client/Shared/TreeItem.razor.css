@@ -1,0 +1,33 @@
+﻿
+
+.treeitem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.spacer {
+    flex: 0 0;
+    min-width: 1.5rem;
+    cursor: default;
+}
+
+.icon {
+    flex: 0 0;
+    cursor: pointer;
+    padding-left: 0.3rem;
+}
+
+.text {
+    flex: 1 1;
+    font: var(--tree-text);
+    color: var(--txt-colour);
+    line-height: 1.5rem;
+    padding-left: 0.7rem;
+    cursor: default;
+}
+
+.selected {
+    font-weight: 700;
+    color: var(--txt-emph-colour);
+}

@@ -1,0 +1,59 @@
+﻿@page "/About"
+
+<PageTitle>About the MDR</PageTitle>
+ 
+<TopBar BarTitle="" ShowSearchLink=true />
+
+<div id="body-outer">
+    <div id="body-main">
+        <div id="tree-panel" >
+            <div class="tree-container">
+                <Treeview OnTreeClick="ProcessItemClick"  TreeType="about" @ref="AboutTree" />
+            </div>
+        </div>
+        <div id="info-panel">
+            <AboutInfoPanel ItemRequested=@SetRequestedId ItemIdToDisplay=@clickedId />
+        </div>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public string? clickedId { get; set; }
+    [Parameter]
+    public string? requestedId { get; set; }
+    
+    Treeview? AboutTree;
+    private Action<string>? callRequestId;
+        
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            callRequestId = CallRequestId;
+            CallRequestId("0");
+        }
+    }
+
+    private async void CallRequestId(string requestedId)
+    {
+        if (AboutTree is not null)
+        {
+            await AboutTree.RequestId(requestedId);
+        }
+    }
+
+    public void SetRequestedId(string reqId)
+    {
+        requestedId = reqId;
+        CallRequestId(requestedId);
+    }
+
+    public void ProcessItemClick(string Id)
+    {
+        // for now just set prarameters in text. Normally would use
+        // the id to issue a call for the information.
+
+        clickedId = Id;
+    }
+}

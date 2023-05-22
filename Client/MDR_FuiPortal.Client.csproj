@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\icons\arrow-right-icon.svg" />
+    <None Include="wwwroot\icons\homepage-icon.svg" />
+    <None Include="wwwroot\icons\information-mark-sign-icon.svg" />
+    <None Include="wwwroot\icons\question-mark-sign-icon.svg" />
+    <None Include="wwwroot\icons\search-icon.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Fast.Components.FluentUI" Version="2.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\MDR_FuiPortal.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

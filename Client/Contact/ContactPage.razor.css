@@ -1,0 +1,89 @@
+﻿#body-outer {
+    position: absolute;
+    top: 8.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: hidden;
+
+}
+
+#body-main {
+    background-color: var(--bg-colour);
+    overflow-y: auto;
+    max-height: 100%;
+    padding-left: 2.5rem;
+}
+
+
+#contact-div {
+    display: flex;
+}
+
+#contact-text {
+    flex: 3 3 65%;
+    margin-right: 1rem;
+    max-width: 55rem;
+}
+
+#contact-button-area {
+    flex: 1 1 35%;
+    min-width: 30rem;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.link-as-button {
+    flex: 0 0;
+    margin-left: 3rem;
+    display: block;
+    width: 14rem;
+    height: 2rem;
+    line-height: 2rem;
+    background-color: var(--link-bg-colour);
+    color: var(--link-colour);
+    outline: 3px solid var(--graphic-emph-colour);
+    text-align: center;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+}
+
+    .link-as-button:hover {
+        background-color: var(--link-hover-colour);
+        outline: 3px solid var(--graphic-emph-colour);
+    }
+
+table {
+    width: 100%;
+}
+
+td {
+    padding: 0 20px 30px 40px;
+    vertical-align: top;
+}
+
+h1 {
+    font: var(--mdr-h1);
+    color: var(--h1-colour);
+    padding-top: 2rem;
+}
+
+h3 {
+    font: var(--mdr-h3);
+    color: var(--h3-colour);
+    padding-top: 1rem;
+}
+
+p {
+    font: var(--normal-text);
+    color: var(--txt-colour);
+}
+
+li {
+    font: var(--normal-text);
+    color: var(--h3-colour);
+}
+

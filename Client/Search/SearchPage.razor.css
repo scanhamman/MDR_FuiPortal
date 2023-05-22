@@ -1,0 +1,260 @@
+﻿#body-outer {
+    position: absolute;
+    top: 8.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: hidden;
+
+}
+
+#body-main {
+    background-color: var(--bg-colour);
+    overflow-y: hidden;
+    max-height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Three vertical divisions within the page */
+
+#left-bar {
+    flex: 1 1 17%;
+    text-align: center;
+    overflow-y: auto;
+}
+
+#middle-bar {
+    flex: 4 4 66%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    overflow-y: auto;
+}
+
+
+#right-bar {
+    flex: 1 1 17%;
+    overflow-y: auto;
+}
+
+
+/* Search bar */
+
+#search-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+.search-label-container {
+    padding-left: 0.5rem;
+    flex: 0 0;
+}
+
+.search-label {
+    font: var(--normal-text);
+    color: var(--txt-emph-colour);
+    white-space: nowrap;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+}
+
+/* Search bar - Search Type */
+
+#search-type {
+    flex: 0 0;
+    min-width: 23rem;
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: row
+}
+
+#search-type-combo {
+    flex: 0 0;
+}
+
+/* Search bar - Id Type */
+
+#search-subtype {
+    flex: 0 0;
+    min-width: 21rem;
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: row
+}
+
+#id-type-combo {
+    flex: 0 0;
+}
+
+
+/* Search bar - Search Parameters*/
+
+#search-params {
+    flex: 1 1;
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: row
+}
+
+#params-text {
+    flex: 1 1;
+    padding-right: 1.5rem;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 6px 12px 4px 12px;
+    margin: 0;
+    display: inline-block;
+    border: 0;
+    border-bottom: 1px solid #aaa;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+    input[type=text]:focus {
+        outline: none;
+        border-bottom: 2px solid royalblue;
+    }
+
+
+/* SQL area */
+
+#sql-area {
+    margin-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1.5rem;
+}
+
+#sql-container {
+    border-top: 3px solid var(--hbar-colour);
+    border-bottom: 3px solid var(--hbar-colour);
+    padding: 3px;
+    text-align: left;
+    font: var(--small-text);
+    font-style: italic;
+}
+    
+/* Results area */
+
+#result-area {
+    padding-left: 1rem;
+    padding-right: 1.5rem
+}
+
+/* Right hand column area */
+
+#SearchButton {
+    padding-top: 1rem;
+    padding-bottom: 6rem;
+}
+
+#ShowWhere {
+    padding-top: 0;
+    padding-bottom: 3rem;
+}
+
+#SearchIn {
+    padding: 0;
+    font-weight: bold;
+}
+
+#AggregateSearches {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+
+.RHSCheck {
+    display: flex;
+    padding-bottom: 0;
+}
+
+.RHSCheckTextSection {
+    flex: 0 0 70%;
+    padding-left: 2.5rem;
+}
+
+.RHSCheckTextOnly {
+    padding-left: 2.5rem;
+}
+
+.RHSCheckText {
+    text-align: left;
+    font: var(--normal-text);
+    color: var(--txt-emph-colour);
+}
+
+.RHSCheckBoxSection {
+    flex: 0 0 30%;
+}
+
+.RHSbutton {
+    width: 12rem;
+    height: 2rem;
+    font: var(--normal-text);
+    font-weight: bold;
+    text-align: center;
+    background-color: var(--link-bg-colour);
+    color: var(--link-colour);
+    outline: 0.2rem solid var(--txt-emph-colour);
+    border-radius: 8px;
+}
+
+.button-row {
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#Search {
+    background-color: var(--link-bg-colour);
+    outline: 3px solid var(--graphic-emph-colour);
+}
+
+    #Search:hover {
+        background-color: var(--link-hover-colour);
+        outline: 3px solid var(--graphic-emph-colour);
+    }
+
+#ClearFilters {
+    background-color: darkorchid;
+    outline: 3px solid plum;
+}
+
+    #ClearFilters:hover {
+        background-color: var(--link-hover-colour);
+        outline: 3px solid var(--graphic-emph-colour);
+    }
+
+#ClearSearch {
+    background-color: maroon;
+    outline: 3px solid chocolate;
+}
+
+    #ClearSearch:hover {
+        background-color: var(--link-hover-colour);
+        outline: 3px solid var(--graphic-emph-colour);
+    }
+
+#RemoveUnchecked {
+    background-color: darkslategrey;
+    outline: 3px solid silver;
+}
+
+    #RemoveUnchecked:hover {
+        background-color: var(--link-hover-colour);
+        outline: 3px solid var(--graphic-emph-colour);
+    }
+
+
+

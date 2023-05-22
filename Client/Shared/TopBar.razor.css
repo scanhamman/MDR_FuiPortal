@@ -1,0 +1,70 @@
+﻿
+.top-bar {
+    background-color: var(--link-bg-colour);
+    color: var(--link-colour);
+    left: 0;
+    height: 2.5rem;
+    max-height: 2.5rem;
+    width: 100vw;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+}
+
+    .top-bar a {
+        color: var(--link-colour);
+        text-decoration: none;
+    }
+
+.tb-title {
+    flex: 0 0 10%;
+    align-self: center;
+    margin-left: 1.5rem;
+    width: 15rem;
+    height: 2rem; /* fits with parent links-bar */
+    max-height: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tb-title-text {
+    font: var(--link-text);
+    width: 15rem;
+    white-space: nowrap;
+}
+
+.tb-spacer {
+    flex: 1 1;
+}
+
+.tb-button {
+    flex: 0 0;
+    align-self: center;
+    margin-right: 1rem;
+    width: 14rem;
+    height: 2rem; /* fits with parent links-bar */
+    max-height: 2rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+    .tb-button:hover {
+        background-color: var(--link-hover-colour);
+    }
+
+.tb-link-icon {
+    flex: 0 0;
+    align-self: center;
+}
+
+.tb-link-text {
+    flex: 0 0;
+    font: var(--link-text);
+    color: var(--link-colour);
+    padding-left: 0.4rem;
+    align-self: center;
+    padding-right: 1rem;
+}

@@ -1,0 +1,209 @@
+﻿#body-outer {
+    position: absolute;
+    top: 8.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: hidden;
+    
+}
+
+#body-main {
+    background-color: var(--bg-colour);
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.top-bar {
+    background-color: var(--link-bg-colour);
+    color: var(--link-colour);
+    left: 0;
+    height: 2.5rem;
+    max-height: 2.5rem;
+    width: 100vw;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+/* Applied to equally spaced buttons in the top bar */
+
+.tb-button {
+    flex: 0 1 12%;
+    align-self: center;
+    height: 2rem; /* fits within parent bar */
+    max-height: 2rem;
+    min-width: 0; /* allows the link to shrink to less than its content width */
+    max-width: 90em;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centres the internal <a> link button vertically */
+}
+
+    .tb-button:hover {
+        background-color: var(--link-hover-colour);
+    }
+
+/* Applied to the <a> links within the buttons */
+
+.tb-link {
+    flex: 0 0;
+    color: var(--link-colour);
+    height: 2rem;
+    max-height: 2rem;
+    border-radius: 5px;
+    min-width: 0; /* allows the link to shrink to less than its content width */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* Applied to the text within each link */
+
+.link-text {
+    font: var(--link-text);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Sets a fixed width to text, allows ellipses to appear */
+
+#link-ecrin, #link-about { width: 120px;}
+#link-disclaimer {width: 130px;}
+#link-guide, #link-contact {width: 90px;}
+
+
+/* Jumbotron characteristics */
+
+.jumbo-flex {
+    color: var(--jt-colour);
+    background-color: var(--jt-bg-colour);
+    width: 100%;
+    height: 240px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+#jumbo-pic {
+    flex: 0 0 576px;
+}
+
+#jt-text {
+    flex: 1 1;
+    padding-left: 3rem;
+    padding-top: 1.2rem;
+}
+
+.jt-main {
+    font: var(--jt-big);
+    color: var(--jt-colour);
+    margin-block-start: 0.5rem;
+    margin-block-end: 0.5rem;
+}
+
+.jt-sub {
+    font: var(--jt-sub);
+    color: var(--lt-jt-colour);
+    padding-top: 1rem;
+}
+
+/* Bottom panel classes, for text and buttons */
+
+.text-flex {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+#text-content {
+    flex: 1 1 ;
+    padding-left: 3em;
+    padding-top: 2em;
+    max-width: 80em;
+}
+
+.expl-text {
+    font: var(--normal-text);
+    color: var(--txt-colour);
+}
+
+.expl-div {
+    border-bottom: 3px solid var(--hbar-colour);
+    margin-bottom: 1.5rem;
+}
+
+
+.red-text {
+    color: var(--txt-emph-colour);
+    font-weight: bold;
+}
+
+
+.black-bg-text {
+    padding-left: 0.2em;
+    padding-right: 0.5em;
+    display: inline-block;
+    background-color: var(--link-bg-colour);
+    color: var(--link-colour);
+    font: var(--link-text);
+    outline: 2px solid var(--link-bg-colour);
+}
+
+
+#arrow-area {
+    flex: 1 1 ;
+    min-width: 15em;
+    max-width: 40em;
+}
+
+.rt-arrow-button {
+    background-color: var(--jt-bg-colour);
+    position: relative;
+    top: 4rem;
+    left: 8rem;
+    width: 16rem;
+    min-width: 16rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.link-as-large-button {
+    display: block;
+    width: 12rem;
+    height: 3rem;
+    line-height: 1rem;
+    font-size: 1rem;
+    background-color: var(--link-bg-colour);
+    color: var(--link-colour);
+    padding: 1rem;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: -3px;
+    outline: 3px solid var(--graphic-emph-colour);
+    text-decoration: none;
+}
+
+    .link-as-large-button:hover {
+        background-color: var(--link-hover-colour);
+    }
+
+.hr-line {
+    border-top: 3px solid var(--hbar-colour);
+    color: var(--hbar-colour);
+    background-color: var(--hbar-colour);
+    padding: 0;
+    height: 3px;
+}
+
+
+

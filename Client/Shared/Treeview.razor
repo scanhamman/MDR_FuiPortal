@@ -1,0 +1,275 @@
+﻿@inject HttpClient Http
+
+@foreach (treeItem @t in @treeItems)
+{
+    <TreeItem Id=@t.Id Level=@t.Level Text=@t.Title Icon=@t.Icon
+         IsClosed=@t.IsClosed IsParent=@t.IsParent IsVisible=@t.IsVisible
+         IsSelected=@t.IsSelected OnTreeItemClick="ShowClick" OnIconClick="IconClick" />
+}
+
+
+@code {
+
+    [Parameter]
+    public string? RequestedId { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnTreeClick { get; set; }
+
+    [Parameter]
+    public string? TreeType { get; set; }
+
+    private async Task ShowClick(string ClickedId)
+    {
+        await OnTreeClick.InvokeAsync(ClickedId);
+        for (int i = 0; i < treeItems.Count; i++)
+        {
+            if (treeItems[i].IsSelected 
+                    && treeItems[i].Id != ClickedId)
+            {
+                treeItems[i].IsSelected = false;
+                break;
+            }
+        }
+        for (int i = 0; i < treeItems.Count; i++)
+        {
+            if (treeItems[i].Id == ClickedId)
+            {
+                treeItems[i].IsSelected = true;
+                break;
+            }
+        }
+    }
+
+    private void IconClick(string IconChangedId)
+    {
+        // remove the selection of the current selection
+        // should check for a change first
+
+        for (int i = 0; i < treeItems.Count; i++)
+        {
+            if (treeItems[i].IsSelected)
+            {
+                treeItems[i].IsSelected = false;
+                break;
+            }
+        }
+
+        for(int i = 0; i < treeItems.Count; i++) 
+        {
+            // find the changed item - change its icon
+
+            if (treeItems[i].Id == IconChangedId)
+            {
+                treeItems[i].IsClosed = !treeItems[i].IsClosed;
+                treeItems[i].Icon = treeItems[i].Icon == "C" ? "P" : "C";
+                treeItems[i].IsSelected = true;
+                int ParentLevel = treeItems[i].Level;
+                bool ParentClosed = treeItems[i].IsClosed;
+                i++;
+
+                // for lower icons - if the parent is closed - make all
+                // descendents invisible, whatever their current visibility.
+                // if the parent id open make the immediate descendents
+                // visible but not further down the tree.
+
+                while (i < treeItems.Count && treeItems[i].Level > ParentLevel)
+                {
+                    if (ParentClosed)
+                    {
+                        treeItems[i].IsVisible = false;
+                        if (treeItems[i].Icon == "P")
+                        {
+                            treeItems[i].IsClosed = true;
+                            treeItems[i].Icon = "C";
+                        }
+                    }
+                    else
+                    {
+                        if (treeItems[i].Level == ParentLevel + 1)
+                        {
+                            treeItems[i].IsVisible = true;
+                            if (treeItems[i].Icon == "P")
+                            {
+                                treeItems[i].IsClosed = true;
+                                treeItems[i].Icon = "C";
+                            }
+                        }
+                    }
+                    i++;
+                }
+            }
+        }
+    }
+
+    public async Task RequestId(string RequestedId)
+    {
+        // Tree must expand to show parents and 
+        // then set selected id as selected.
+
+        for (int i = 0; i < treeItems.Count; i++)
+        {
+            if (treeItems[i].IsSelected)
+            {
+                treeItems[i].IsSelected = false;
+                break;
+            }
+        }
+
+        for (int i = 0; i < treeItems.Count; i++)
+        {
+            if (treeItems[i].Id == RequestedId)
+            {
+                treeItems[i].IsSelected = true;
+                break;
+            }
+        }
+
+        if (RequestedId != "0")
+        {
+            // if id / level greater than 0 
+            // what id its level? 
+
+            int numberOfDots = RequestedId.Count(c => (c == '.'));
+
+            if (numberOfDots > 0)
+            {
+                // Level 1 nodes will always be visible
+                // so dealing with nodes at levels 2,3, 4
+                // Ensure that the level 1 node is open
+
+                // get a List<string> of the parent chain
+
+                List<string> parentIds = new();
+                int start_pos = 0;
+                for (int n = 0; n < numberOfDots; n++)
+                {
+                    int period_pos = RequestedId.IndexOf('.', start_pos);
+                    parentIds.Add(RequestedId[..period_pos]);
+                    start_pos = period_pos + 1;
+                }
+
+                // then work through the chain, opening them if not already open
+
+                foreach (string parent_id in parentIds)
+                {
+                    int last_start_pos = 0;
+                    for (int i = last_start_pos; i < treeItems.Count; i++)
+                    {
+                        if (treeItems[i].Id == parent_id)
+                        {
+                            treeItems[i].IsClosed = false;
+                            treeItems[i].Icon = "P";
+                            int parentlevel = treeItems[i].Level;
+                            int j = i+ 1;
+                            while (j < treeItems.Count && treeItems[j].Level > parentlevel)
+                            {
+                                if (treeItems[j].Level == parentlevel + 1)
+                                {
+                                    treeItems[j].IsVisible = true;    
+                                    if (treeItems[j].Icon == "P")
+                                    {
+                                        treeItems[j].IsClosed = true;
+                                        treeItems[j].Icon = "C";
+                                    }
+                                }
+                                j++;
+                            }
+                            last_start_pos = i + 1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        await OnTreeClick.InvokeAsync(RequestedId);
+    } 
+
+    protected class treeItem
+    {
+        public string? Id { get; set; }
+        public string? Title { get; set; }
+        public int Level { get; set; }
+        public bool IsParent { get; set; }
+        public bool IsClosed { get; set; }
+        public bool IsVisible { get; set; }
+        public bool IsSelected { get; set; }
+        public string? Icon { get; set; }
+        public string? ParentId { get; set; }
+
+        public treeItem(string? _Id, string? _Title, int _Level,
+                           bool _IsParent, bool _IsClosed, bool _IsVisible,
+                           string? _Icon, string? _ParentId)
+        {
+            Id = _Id;
+            Title = _Title;
+            Level = _Level;
+            IsParent = _IsParent;
+            IsClosed = _IsClosed;
+            IsVisible = _IsVisible;
+            Icon = _Icon;
+            ParentId = _ParentId;
+        }
+    }
+
+    List<treeItem> treeItems = new List<treeItem>();
+
+    protected class LevelDets
+    {
+        public int Level { get; set; }
+        public string? LastParentId { get; set; }
+        public bool? IsClosed { get; set; }
+
+        public LevelDets (int _Level)
+        {
+            Level = _Level;
+        }
+        public LevelDets(int _Level, string? _LastParentId, bool? _IsClosed)
+        {
+            Level = _Level;
+            LastParentId = _LastParentId;
+            IsClosed = _IsClosed;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        string items_url = "api/tree/items/" + TreeType;
+        var SourceItems = await Http.GetFromJsonAsync<List<SourceItem>?>(items_url);
+        if (SourceItems != null)
+        {
+            List<LevelDets> LastLevels = new();
+            LastLevels.Add(new LevelDets(0, "none", true));
+            LastLevels.Add(new LevelDets(1));
+            LastLevels.Add(new LevelDets(2));
+            LastLevels.Add(new LevelDets(3));
+            LastLevels.Add(new LevelDets(4));
+            int n = 0;
+            foreach (SourceItem si in SourceItems)
+            {
+                n++;
+                string icon = "L";      // default, use for leaf nodes
+                bool isClosed = true;   // default, use for leaf nodes
+                bool isVisible = true;  // starting point, for top node
+                string? parentId = "";  // starting point, for top node
+
+                if (si.IsParent == true)   // parent nodes MUST have IsParent defined
+                {
+                    isClosed = si.IsClosed ?? false;
+                    icon = isClosed ? "C" : "P";
+                }
+
+                LastLevels[si.Level].LastParentId = si.Id;
+                LastLevels[si.Level].IsClosed = si.IsClosed;
+                if (si.Level > 0)
+                {
+                    parentId = LastLevels[si.Level - 1].LastParentId;
+                    isVisible = LastLevels[si.Level - 1].IsClosed == true ? false : true;
+                }
+
+                treeItems.Add(new treeItem(si.Id, si.Title, si.Level, si.IsParent, isClosed, isVisible, icon, parentId));
+            }
+        }
+    }
+}

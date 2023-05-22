@@ -1,0 +1,80 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager _navManager
+
+<div class="page">
+    <main>
+        <div class="top-row">
+            <div class="top-left"> 
+                <div class="title-bar">
+                    <div id="logo">
+                        <img src="/images/ecrin_small_lightblue.png" alt="ecrin logo"/>
+                    </div> 
+                    <div id="title-text">
+                        <span id="ecrin-name">ecrin&nbsp;</span>
+                        @if (_navManager.Uri != _navManager.BaseUri)
+                        {
+                            <span id="mdr-name">metadata repository</span>
+                            <span id="mdr-abbrev">MDR</span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="top-right">
+                @if (_navManager.Uri != _navManager.BaseUri)
+                {
+                    <div class="top-right-bar">
+                        <div class="trb-inner">
+                        <div class="trb-button">
+                            <div class="trb-link-icon">
+                                <a href="/" target="_blank">
+                                    <img height="18" width="18"
+                                         src="/icons/homepage-icon.svg"
+                                         alt="home icon"/>
+                                </a>
+                            </div>
+                            <div class="trb-link-text">
+                                <a href="/" target="_blank">Home</a>
+                            </div>
+                        </div>
+                        <div class="trb-button">
+                            <div class="trb-link-icon">
+                                <a href="/Guide" target="guide">
+                                    <img height="14" width="18"
+                                         src="/icons/question-mark-sign-icon.svg"
+                                         alt="question mark icon"/>
+                                </a>
+                            </div>
+                            <div class="trb-link-text">
+                                <a href="/Guide" target="guide">Guide</a>
+                            </div>
+                        </div>
+                        <div class="trb-button">
+                            <div class="trb-link-icon">
+                                <a href="/About" target="about">
+                                    <img height="14" width="18"
+                                     src="/icons/information-mark-sign-icon.svg"
+                                     alt="about or information icon" />
+                                </a>
+                            </div>
+                            <div class="trb-link-text">
+                                <a href="/About" target="about">About</a>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="trb-end-spacer">&nbsp;</div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <article class="content">
+            @Body
+        </article>
+        
+        <div class="bottom-row px-2">
+            <div class="bottom-left"></div>
+            <div class="bottom-centre">Provided by the European Clinical Research Infrastructure Network</div>
+            <div class="bottom-right">© ECRIN 2023</div>
+        </div>
+    </main>
+</div>

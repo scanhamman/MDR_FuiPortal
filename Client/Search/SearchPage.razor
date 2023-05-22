@@ -1,0 +1,201 @@
+﻿@page "/Search"
+
+<PageTitle>MDR Search</PageTitle>
+
+<TopBarSearch />
+
+
+<div id="body-outer">
+    <div id="body-main">
+
+        <div id="left-bar">
+            
+
+
+
+        </div>
+        <div id="middle-bar">
+
+            <div id="search-bar">
+                <div id="search-type">
+                    <div class="search-label-container">
+                        <p class="search-label">Search Type</p>
+                    </div>
+                    <div id="search-type-combo">
+                    <FluentCombobox Items=@searchOptions
+                                    OptionText="@(i => i.Text)"
+                                    OptionValue="@(i => i.Value)"
+                                    OptionSelected="@(i => i.Selected)"
+                                    @bind-SelectedOption="@selectedSearchOption"
+                                    @bind-Value="@searchTypeValue" />
+                    </div>
+                </div>
+
+
+                <div id="search-subtype">
+                    <div class="search-label-container">
+                        <p class="search-label">ID Type</p>
+                    </div>
+                    <div id="id-type-combo">
+
+                        <FluentCombobox Items=@idOptions
+                                        OptionText="@(i => i.Text)"
+                                        OptionValue="@(i => i.Value)"
+                                        OptionSelected="@(i => i.Selected)"
+                                        @bind-SelectedOption="@selectedIdOption"
+                                        @bind-Value="@idTypeValue" />
+                    </div>
+                </div>
+
+                <div id="search-params">
+                     <div class="search-label-container">
+                        <p class="search-label">Parameters</p>
+                    </div>
+                    <div id="params-text">
+                        <input type="text" @bind="@searchParamsValue" @bind:event="oninput" style="width: 100%;" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="sql-area">
+                <div id="sql-container">
+                    <p>Selected Search Value: @selectedSearchOption?.Value : @searchTypeValue,  
+                        Selected id type: @selectedIdOption?.Value : @idTypeValue <br/>
+                        Search Parameters: @searchParamsValue
+                    </p>
+                </div>
+            </div>
+
+            <div id="result-area">
+                <p>Results to go here</p>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+                <h3>SearchPage</h3>
+            </div>
+
+
+        </div>
+
+        <div id="right-bar">
+
+           <div class="button-row" id="SearchButton" >
+                <button class="RHSbutton" id="Search">Search</button>
+           </div>
+
+            <div class="RHSCheck" id="ShowWhere">
+               <div class="RHSCheckTextSection">
+                    <p class="RHSCheckText">Show where clause</p>
+               </div>
+               <div class="RHSCheckBoxSection">
+                    <FluentCheckbox @bind-Value=showWhereClause></FluentCheckbox>
+               </div>
+           </div>
+
+            <div class="RHSCheck" id="SearchIn">
+                <div class="RHSCheckTextOnly">
+                    <p class="RHSCheckText">Search for key words in...</p>
+               </div>
+           </div>
+
+            <div class="RHSCheck">
+                <div class="RHSCheckTextSection">
+                    <p class="RHSCheckText">Study Titles</p>
+               </div>
+               <div class="RHSCheckBoxSection">
+                    <FluentCheckbox @bind-Value=searchInTitles></FluentCheckbox>
+               </div>
+           </div>
+
+            <div class="RHSCheck">
+                <div class="RHSCheckTextSection">
+                    <p class="RHSCheckText">Study Topics</p>
+                </div>
+                <div class="RHSCheckBoxSection">
+                    <FluentCheckbox @bind-Value=searchInTopics></FluentCheckbox>
+               </div>
+            </div>
+
+            <div class="RHSCheck">
+                <div class="RHSCheckTextSection">
+                    <p class="RHSCheckText">Study Conditions</p>
+                </div>
+                <div class="RHSCheckBoxSection">
+                    <FluentCheckbox @bind-Value=searchInConditions></FluentCheckbox>
+                </div>
+           </div>
+
+            <div class="RHSCheck" id="AggregateSearches">
+                <div class="RHSCheckTextSection">
+                    <p class="RHSCheckText">Aggregate Searches</p>
+                </div>
+                <div class="RHSCheckBoxSection">
+                    <FluentCheckbox @bind-Value=aggregateSearches></FluentCheckbox>
+                </div>
+           </div>
+
+           <div class="button-row">
+                <button class="RHSbutton" id="ClearFilters">Clear Filters</button>
+           </div>
+
+            <div class="button-row">
+                <button class="RHSbutton" id="ClearSearch">Clear Search</button>
+           </div>
+
+            <div class="button-row">
+                <button class="RHSbutton" id="RemoveUnchecked">Remove Unchecked</button>
+           </div>
+            
+
+        </div>
+     </div>
+</div>
+
+@code {
+    Option<string>? selectedSearchOption;
+    string? searchTypeValue;
+    Option<string>? selectedIdOption;
+    int idTypeId;
+    string? idTypeValue;
+
+    string? searchParamsValue;
+
+    List<Option<string>> searchOptions = new()
+    {
+        { new Option<string> { Value = "1", Text = "Key word(s)", Selected = true } },
+        { new Option<string> { Value = "2", Text = "Study identifier"} },
+        { new Option<string> { Value = "3", Text = "Paper identifier (PMID)" } }
+    };
+
+    List<Option<string>> idOptions = new()
+    {
+        { new Option<string> { Value = "1", Text = "Trial registry ID", Selected = true } },
+        { new Option<string> { Value = "2", Text = "Funder’s ID"} },
+        { new Option<string> { Value = "3", Text = "Sponsor’s ID" } },
+        { new Option<string> { Value = "4", Text = "NIH CTRP ID"} },
+        { new Option<string> { Value = "5", Text = "NHBL ID" } }
+    };
+
+    bool showWhereClause;
+    bool searchInTitles;
+    bool searchInTopics;
+    bool searchInConditions;
+    bool aggregateSearches;
+}

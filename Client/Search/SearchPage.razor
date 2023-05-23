@@ -22,34 +22,27 @@
                         <p class="search-label">Search Type</p>
                     </div>
                     <div id="search-type-combo">
-                    <FluentCombobox Items=@searchOptions
-                                    OptionText="@(i => i.Text)"
-                                    OptionValue="@(i => i.Value)"
-                                    OptionSelected="@(i => i.Selected)"
-                                    @bind-SelectedOption="@selectedSearchOption"
-                                    @bind-Value="@searchTypeValue" />
+                        <ComboBox idOptions="searchOptions" 
+                         HandleSelectedOptionChanged="SearchOptionChanged"></ComboBox>
                     </div>
                 </div>
 
-
-                <div id="search-subtype">
-                    <div class="search-label-container">
-                        <p class="search-label">ID Type</p>
+                @if (searchType == 2)
+                {
+                    <div id="search-subtype">
+                        <div class="search-label-container">
+                            <p class="search-label">ID Type</p>
+                        </div>
+                        <div id="id-type-combo">
+                            <ComboBox idOptions="idOptions"
+                              HandleSelectedOptionChanged="idOptionChanged"></ComboBox>
+                        </div>
                     </div>
-                    <div id="id-type-combo">
-
-                        <FluentCombobox Items=@idOptions
-                                        OptionText="@(i => i.Text)"
-                                        OptionValue="@(i => i.Value)"
-                                        OptionSelected="@(i => i.Selected)"
-                                        @bind-SelectedOption="@selectedIdOption"
-                                        @bind-Value="@idTypeValue" />
-                    </div>
-                </div>
+                }
 
                 <div id="search-params">
                      <div class="search-label-container">
-                        <p class="search-label">Parameters</p>
+                        <p class="search-label">@paramsLabelText</p>
                     </div>
                     <div id="params-text">
                         <input type="text" @bind="@searchParamsValue" @bind:event="oninput" style="width: 100%;" />
@@ -60,8 +53,8 @@
 
             <div id="sql-area">
                 <div id="sql-container">
-                    <p>Selected Search Value: @selectedSearchOption?.Value : @searchTypeValue,  
-                        Selected id type: @selectedIdOption?.Value : @idTypeValue <br/>
+                    <p>Selected Search Value: @searchType: @searchText,  
+                        Selected id type: @idType : @idText <br/>
                         Search Parameters: @searchParamsValue
                     </p>
                 </div>
@@ -169,33 +162,58 @@
 </div>
 
 @code {
-    Option<string>? selectedSearchOption;
-    string? searchTypeValue;
-    Option<string>? selectedIdOption;
-    int idTypeId;
-    string? idTypeValue;
-
+    string? searchText;
+    int? searchType;
+    string? idText;
+    int? idType;
     string? searchParamsValue;
+    string paramsLabelText = "Parameters";
 
-    List<Option<string>> searchOptions = new()
+    private void SearchOptionChanged(Option<string> s)
     {
-        { new Option<string> { Value = "1", Text = "Key word(s)", Selected = true } },
-        { new Option<string> { Value = "2", Text = "Study identifier"} },
-        { new Option<string> { Value = "3", Text = "Paper identifier (PMID)" } }
-    };
+        searchText = s?.Text ?? "None";
+        searchType = Int32.Parse(s?.Value ?? "0");
+        paramsLabelText = searchType switch
+        {
+            1 => "Words",
+            2 => "Identifier",
+            3 => "PubMed ID",
+            _ => "Parameters"
+        };
+    }
+    private void idOptionChanged(Option<string> s)
+    {
+        idText = s?.Text ?? "None";
+        idType = Int32.Parse(s?.Value ?? "0");
+    }
 
-    List<Option<string>> idOptions = new()
-    {
-        { new Option<string> { Value = "1", Text = "Trial registry ID", Selected = true } },
-        { new Option<string> { Value = "2", Text = "Funder’s ID"} },
-        { new Option<string> { Value = "3", Text = "Sponsor’s ID" } },
-        { new Option<string> { Value = "4", Text = "NIH CTRP ID"} },
-        { new Option<string> { Value = "5", Text = "NHBL ID" } }
-    };
+    List<Option<string>> searchOptions = default!;
+    List<Option<string>> idOptions = default!;
 
     bool showWhereClause;
     bool searchInTitles;
     bool searchInTopics;
     bool searchInConditions;
     bool aggregateSearches;
+
+
+    protected override void OnInitialized()
+    {
+        searchOptions = new()
+        {
+            { new Option<string> { Value = "1", Text = "Key word(s)", Selected = true } },
+            { new Option<string> { Value = "2", Text = "Study identifier"} },
+            { new Option<string> { Value = "3", Text = "Paper identifier (PMID)" } }
+        };
+
+        idOptions = new()
+        {
+            { new Option<string> { Value = "1", Text = "Trial registry ID", Selected = true } },
+            { new Option<string> { Value = "2", Text = "Funder’s ID"} },
+            { new Option<string> { Value = "3", Text = "Sponsor’s ID" } },
+            { new Option<string> { Value = "4", Text = "NIH CTRP ID"} },
+            { new Option<string> { Value = "5", Text = "NHBL ID" } }
+        };
+    }
+
 }

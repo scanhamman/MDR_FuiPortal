@@ -1,0 +1,15 @@
+﻿
+ <FluentCombobox Items=@idOptions onclick="HandleSelectedOptionChanged"
+                                    OptionText="@(i => i?.Text)"
+                                    OptionValue="@(i => i?.Value)"
+                                    OptionSelected="@(i => i == null ? false : i.Selected)"
+                                    SelectedOptionChanged="HandleSelectedOptionChanged"
+                                    />
+
+@code {
+    [Parameter]
+    public IEnumerable<Option<string>>? idOptions { get; set; }
+
+    [Parameter]
+    public EventCallback<Option<string>> HandleSelectedOptionChanged { get; set; }
+}

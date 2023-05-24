@@ -1,0 +1,17 @@
+﻿<FluentRadioGroup Name="compOptions" Orientation="Orientation.Vertical" @bind-Value=compOption>
+                                            <FluentRadio Value="@("none")">none</FluentRadio>
+                                            <FluentRadio Value="@("eq")">=</FluentRadio>
+                                            <FluentRadio Value="@("gt")">></FluentRadio>
+                                            <FluentRadio Value="@("lt")">&lt;</FluentRadio>
+                                            <FluentRadio Value="@("bw")">between</FluentRadio>
+                                        </FluentRadioGroup>
+@code {
+    [Parameter]
+    public IEnumerable<Option<string>>? idOptions { get; set; }
+
+    [Parameter]
+    public string? compOption { get; set; }
+
+    [Parameter]
+    public EventCallback<Option<string>> HandleSelectedOptionChanged { get; set; }
+}

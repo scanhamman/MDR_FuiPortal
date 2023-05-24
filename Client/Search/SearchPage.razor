@@ -19,14 +19,14 @@
                             <FluentAccordionItem Heading="By Type" Style="font-size: 1rem; color: var(--txt-emph-colour)">
                                 <div class="filter-line-rev">
                                     <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllTypes(false)">
                                             <img height="14" width="14"
                                              src="/icons/delete-all-icon.svg"
                                              alt="clear all icon" />
                                         </button>
                                     </Tooltip>
                                     <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllTypes(true)">
                                             <img height="14" width="14"
                                              src="/icons/double-tick-icon.svg"
                                              alt="select all icon" />
@@ -44,20 +44,20 @@
                             <FluentAccordionItem Heading="By Status" Style="font-size: 1rem; color: var(--txt-emph-colour)">
                                 <div class="filter-line-rev">
                                     <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllStatuses(false)">
                                         <img height="14" width="14"
                                          src="/icons/delete-all-icon.svg"
                                              alt="clear all icon" />
                                         </button>
                                     </Tooltip>
                                     <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllStatuses(true)">
                                         <img height="14" width="14"
                                          src="/icons/double-tick-icon.svg"
                                          alt="select all icon" />
                                         </button>
                                     </Tooltip>
-                                </div>
+                                </div>  
                                 <div class="filter-line"><FluentCheckbox @bind-Value="s16">Not&nbsp;yet&nbsp;recruiting</FluentCheckbox></div>
                                 <div class="filter-line"><FluentCheckbox @bind-Value="s14">Recruiting</FluentCheckbox></div>
                                 <div class="filter-line"><FluentCheckbox @bind-Value="s15">Active,&nbsp;not&nbsp;recruiting</FluentCheckbox></div>
@@ -67,43 +67,147 @@
                                 <div class="filter-line"><FluentCheckbox @bind-Value="s18">Suspended</FluentCheckbox></div>
                                 <div class="filter-line"><FluentCheckbox @bind-Value="s22">Terminated</FluentCheckbox></div>
                                 <div class="filter-line"><FluentCheckbox @bind-Value="s30">Other</FluentCheckbox></div>
-                                <div class="filter-line"><i>* rec.&nbsp;status&nbsp;not&nbsp;clear</i></div>
+                                <div class="filter-line filter-small-text-left"><i>*Includes 2 previous categories, plus when recruitment status not clear</i></div>
                             </FluentAccordionItem>
 
                             <FluentAccordionItem Heading="By Start Year" Style="font-size: 1rem; color: var(--txt-emph-colour)">
-                                
-                                Panel five content
+                                <div class="vert-splitter">
+                                    <div id="yearLHS">
+                                        <label id="compLabel" class="filter-small-text-left">Comparator</label>
+                                        <FluentRadioGroup aria-labelledby="compLabel" @bind-Value=compOption
+                                            Name="compOptions" Orientation="Orientation.Vertical">
+                                            <FluentRadio Value="@("none")">none</FluentRadio>
+                                            <FluentRadio Value="@("eq")">=</FluentRadio>
+                                            <FluentRadio Value="@("gt")">></FluentRadio>
+                                            <FluentRadio Value="@("lt")">&lt;</FluentRadio>
+                                            <FluentRadio Value="@("bw")">between</FluentRadio>
+                                        </FluentRadioGroup>
+                                    </div>
+                                    <div id="yearRHS" >
+
+                                        @if (@compOption != "none")
+                                        {
+                                            <div id="yearlabel" class="filter-small-text-left">
+                                                Year
+                                            </div>
+
+                                            <div id="year1-input">
+                                                <input type="text" @bind="@year1value" @bind:event="oninput" style="width: 80px;" />
+                                            </div>
+
+
+                                            @if (@compOption == "bw")
+                                            {
+                                                <div id="andlabel" class="filter-small-text-left">
+                                                    and
+                                                </div>
+                                                <div id="year2-input">
+                                                    <input type="text" @bind="@year2value" @bind:event="oninput" style="width: 80px;" />
+                                                </div>
+                                            }
+
+                                            <div id="reqlabel" class="filter-small-text-left">
+                                                <i>Please enter year(s) as 4 digits</i>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+
                             </FluentAccordionItem>
 
                             <FluentAccordionItem Heading="By Location" Style="font-size: 1rem; color: var(--txt-emph-colour)">
-                                Panel six content
+                                <div id="countries">
+                                    <div id="countries-top">
+                                         <button id="select-countries" class="filter-btn" @onclick="() => SetCountrySelectorVisibility(true)">
+                                                Select Country(ies)...
+                                         </button>
+                                    </div>
+                                    @if (@CountrySelectorVisible)
+                                    {
+
+                                        <div id="new-country-cb" class="country-cb">
+                                            <SCComboBox idOptions="countryOptions"
+                                                HandleSelectedOptionChanged="currentCountryChanged"></SCComboBox>
+                                        </div>
+                                        <div id="country-buttons">
+                                            <button class="filter-btn" id="add-selected" @onclick="() => AddCurrentCountry()">
+                                                Add Selected
+                                            </button>
+                                            <button class="filter-btn" id="cancel-add" @onclick="() => SetCountrySelectorVisibility(false)">
+                                                Cancel
+                                            </button>
+                                        </div>
+
+                                    }
+
+                                    <div id="location-header">
+                                        <div id="loc-header-text">
+                                            <p class="filter-expln-text">Selected so far:</p>
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    @if (Countries?.Any() == true)
+                                    {
+                                        @foreach (Country c in Countries)
+                                        {
+                                           <div id="loc-header-text">
+                                                <p class="filter-expln-text">c.Text</p>
+                                           </div>
+                                        }
+                                    }
+                                </div>
                             </FluentAccordionItem>
 
                             <FluentAccordionItem Heading="By Linked Object(s)" Style="font-size: 1rem; color: var(--txt-emph-colour)">
                                 <div class="filter-line-rev">
                                     <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllObjectTypes(false)">
                                             <img height="14" width="14"
                                              src="/icons/delete-all-icon.svg"
                                              alt="clear all icon" />
                                         </button>
                                     </Tooltip>
                                     <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllObjectTypes(true)">
                                             <img height="14" width="14"
                                              src="/icons/double-tick-icon.svg"
                                              alt="select all icon" />
                                         </button>
                                     </Tooltip>
                                 </div>
-                                Panel seven content
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b11">Trial&nbsp;registry&nbsp;entry</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b12">Registry&nbsp;results&nbsp;summary</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b21">Journal&nbsp;article</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b22">Study&nbsp;protocol</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b34">IPD*</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b23">Study&nbsp;overview</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b24">Patient&nbsp;C/IS**</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b25">Data&nbsp;collection&nbsp;forms</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b26">Manual&nbsp;of&nbsp;procedures</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b31">SAP***</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b32">Clinical&nbsp;study&nbsp;report</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b33">Data&nbsp;Summary</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b36">Other&nbsp;study&nbsp;resource</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b44">Other&nbsp;info.&nbsp;resources</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b51">Website</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b52">Software</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="b99">Other</FluentCheckbox></div>
+                                <div class="filter-line filter-small-text-left">
+                                    <i>
+                                        *Individual Participant Data;
+                                    **Patient consent / information sheets; 
+                                    ***Statistical Analysis Plan</i></div>
                             </FluentAccordionItem>
                         </FluentAccordion>
                     </FluentDesignSystemProvider>
 
 
                     <div class="filter-expln">
-                        <p class="filter-expln-text">The two filters below only apply to interventional studies (= clinical trials).
+                        <p class="filter-expln-text">
+                            <b>N.B.</b>The two filters below only apply to interventional studies (= clinical trials).
                             <br />
                             If included in a query the results will be drawn <i>only</i> from interventional studies.
                         </p>
@@ -114,14 +218,14 @@
                             <FluentAccordionItem Heading="By Phase" Style="font-size: 1rem; color: var(--txt-emph-colour)">
                                 <div class="filter-line-rev">
                                     <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllPhases(false)">
                                         <img height="14" width="14"
                                          src="/icons/delete-all-icon.svg"
                                              alt="clear all icon" />
                                         </button>
                                     </Tooltip>
                                     <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllPhases(true)">
                                         <img height="14" width="14"
                                          src="/icons/double-tick-icon.svg"
                                          alt="select all icon" />
@@ -142,14 +246,14 @@
                             <FluentAccordionItem Heading="By Allocation" Style="font-size: 1rem; color: var(--txt-emph-colour)">
                                 <div class="filter-line-rev">
                                     <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllAllocations(false)">
                                             <img height="14" width="14"
                                              src="/icons/delete-all-icon.svg"
                                              alt="clear all icon" />
                                         </button>
                                     </Tooltip>
                                     <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn">
+                                        <button class="filter-btn" @onclick="() => SetAllAllocations(true)">
                                             <img height="14" width="14"
                                              src="/icons/double-tick-icon.svg"
                                              alt="select all icon" />
@@ -176,8 +280,8 @@
                         <p class="search-label">Search Type</p>
                     </div>
                     <div id="search-type-combo">
-                        <ComboBox idOptions="searchOptions" 
-                         HandleSelectedOptionChanged="SearchOptionChanged"></ComboBox>
+                        <SCComboBox idOptions="searchOptions" 
+                         HandleSelectedOptionChanged="SearchOptionChanged"></SCComboBox>
                     </div>
                 </div>
 
@@ -188,8 +292,8 @@
                             <p class="search-label">ID Type</p>
                         </div>
                         <div id="id-type-combo">
-                            <ComboBox idOptions="idOptions"
-                              HandleSelectedOptionChanged="idOptionChanged"></ComboBox>
+                            <SCComboBox idOptions="idOptions"
+                              HandleSelectedOptionChanged="idOptionChanged"></SCComboBox>
                         </div>
                     </div>
                 }
@@ -327,10 +431,62 @@
     bool searchInConditions = true;
     bool aggregateSearches = false;
 
+    string? compOption = "none";
+    string? year1value;
+    string? year2value;
+
+    bool CountrySelectorVisible = false;
+
     bool t11, t12, t13, t14, t15, t16;
     bool s11, s14, s15, s16, s18, s21, s22, s25, s30;
     bool pe1, p1, p12, p2, p23, p3, p4, p0;
     bool ar, anr, ana, a0;
+    bool b11, b12, b21, b22, b23, b24, b25, b26;
+    bool b31, b32, b33, b34, b36, b44, b51, b52, b99;
+
+    private void SetAllTypes(bool check_state)
+    {
+        t11 = check_state;        t12 = check_state;
+        t13 = check_state;        t14 = check_state;
+        t15 = check_state;        t16 = check_state;
+    }
+
+    private void SetAllStatuses(bool check_state)
+    {
+        s11 = check_state;        s14 = check_state;
+        s15 = check_state;        s16 = check_state;
+        s18 = check_state;        s21 = check_state;
+        s22 = check_state;        s25 = check_state;
+        s30 = check_state;
+    }
+
+    private void SetAllPhases(bool check_state)
+    {
+        pe1 = check_state;       p1 = check_state;
+        p12 = check_state;       p2 = check_state;
+        p23 = check_state;       p3 = check_state;
+        p4 = check_state;        p0 = check_state;
+    }
+
+    private void SetAllAllocations(bool check_state)
+    {
+        ar = check_state;        anr = check_state;
+        ana = check_state;       a0 = check_state;
+    }
+
+    private void SetAllObjectTypes(bool check_state)
+    {
+        b11 = check_state;        b12 = check_state;
+        b21 = check_state;        b22 = check_state;
+        b23 = check_state;        b24 = check_state;
+        b25 = check_state;        b26 = check_state;
+        b31 = check_state;        b32 = check_state;
+        b33 = check_state;        b34 = check_state; 
+        b36 = check_state;        b44 = check_state;        
+        b51 = check_state;        b52 = check_state;   
+        b99 = check_state;
+    }
+
 
     private void ChangeFiltersBarVisibility(bool visibility)
     {
@@ -341,6 +497,27 @@
     {
         optionsBarShowing = visibility;
     }
+
+    private void SetCountrySelectorVisibility(bool value)
+    {
+        CountrySelectorVisible = value;
+    }
+
+    private Country? currentCountry;
+
+    private void AddCurrentCountry()
+    {
+        //optionsBarShowing = visibility;
+    }
+
+    private void currentCountryChanged(Option<string> s)
+    {
+        if (s is not null && Int32.TryParse(s.Value, out int id))
+        {
+            currentCountry = new Country(id, s.Text!);
+        }
+    }
+
 
     string? searchText;
     int? searchType = 1;
@@ -372,6 +549,18 @@
         SearchPossible = RecalculateSQL();
     }
 
+
+    private void yearCompOptionChanged(Option<string> s)
+    {
+
+    }
+
+
+    private void AddNewCountryCB()
+    {
+
+    }
+
     private void RecalculateFeedback()
     {
         // Provide the text for the 'SQL area'
@@ -388,6 +577,9 @@
 
     List<Option<string>> searchOptions = default!;
     List<Option<string>> idOptions = default!;
+    List<Option<string>> countryOptions = default!;
+
+    List<Country>? Countries;
 
     protected override void OnInitialized()
     {
@@ -406,6 +598,34 @@
             { new Option<string> { Value = "4", Text = "NIH CTRP ID"} },
             { new Option<string> { Value = "5", Text = "NHBL ID" } }
         };
+
+        countryOptions = new()
+        {
+            { new Option<string> { Value = "1", Text = "France" } },
+            { new Option<string> { Value = "2", Text = "Germany"} },
+            { new Option<string> { Value = "3", Text = "United Kingdom" } },
+            { new Option<string> { Value = "4", Text = "United States"} },
+            { new Option<string> { Value = "5", Text = "Spain" } },
+            { new Option<string> { Value = "1", Text = "Portugal" } },
+            { new Option<string> { Value = "2", Text = "Italy"} },
+            { new Option<string> { Value = "3", Text = "Belgium" } },
+            { new Option<string> { Value = "4", Text = "Netherlands"} },
+            { new Option<string> { Value = "5", Text = "Canada" } }
+        };
+
+
     }
 
+    internal class Country
+    {
+        int id { get; set; }
+        string name { get; set; }
+
+        public Country(int _id, string _name)
+        {
+            id = _id;
+            name = _name;
+        }
+    }
+}
 }

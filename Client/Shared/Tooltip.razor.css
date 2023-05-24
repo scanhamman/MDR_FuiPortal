@@ -10,7 +10,7 @@
 .tooltip-style {
     visibility: hidden;
     position: absolute;
-    background-color: khaki;
+    background-color: darkkhaki;
     color: black;
     text-align: center;
     padding: 4px 0;
@@ -27,17 +27,18 @@
     }
 
 .top-tooltip {
-    width: 80px;
-    bottom: 100%;
+    width: 80px; 
+    bottom: 115%;
     left: 50%;
     margin-left: -40px;
 }
 
     .top-tooltip::after {
-        top: 100%;
+        top: 98%;
         left: 50%;
         margin-left: -4px;
-        border-color: khaki transparent transparent transparent;
+        border-color: darkkhaki transparent transparent transparent;
+        border-bottom: 0;
     }
 
 .left-tooltip {
@@ -50,7 +51,7 @@
         top: 8px;
         left: 100%;
         margin-left: 0;
-        border-color: transparent transparent transparent khaki;
+        border-color: transparent transparent transparent darkkhaki;
     }
 
 .right-tooltip {
@@ -61,7 +62,7 @@
     .right-tooltip::after {
         top: 8px;
         left: -10px;
-        border-color: transparent khaki transparent transparent;
+        border-color: transparent darkkhaki transparent transparent;
     }
 
 

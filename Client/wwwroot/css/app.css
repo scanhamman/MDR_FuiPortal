@@ -10,7 +10,7 @@
     --top-bar: 700 3.5rem/1 var(--arial);
     --jt-big: 700 2rem/1.25 var(--arial);
     --jt-sub: 700 1.25rem/1.25 var(--arial);
-    --small-text: 500 0.8rem/1 var(--font-arial);
+    --small-text: 500 0.85rem/1 var(--font-arial);
 }
 
 :root {

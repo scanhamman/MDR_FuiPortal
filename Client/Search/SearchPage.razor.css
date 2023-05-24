@@ -165,13 +165,15 @@ input[type=text] {
     flex-direction: row-reverse;
 }
 
+
 .filter-btn {
-    background-color: var(--link-bg-colour); 
-    border: none; /* Remove borders */
-    padding: 1px 6px; /* Some padding */
-    cursor: pointer; /* Mouse pointer on hover */
+    background-color: darkslateblue;
+    color: var(--link-colour);
+    border: none;
+    padding: 1px 6px;
+    cursor: pointer;
     margin: 0 4px;
-    border-radius: 3px;
+    border-radius: 5px;
 }
     .filter-btn:hover {
         background-color: RoyalBlue;
@@ -190,8 +192,94 @@ input[type=text] {
     text-align: left
 }
 
+.filter-small-text-left {
+    font: var(--small-text);
+    text-align: left;
+    color: var(--txt-emph-colour);
+}
+
+.filter-small-text-center {
+    font: var(--small-text);
+    text-align: center;
+    color: var(--txt-emph-colour);
+}
+
+.vert-splitter {
+    display: flex
+}
+
+#yearLHS {
+    flex: 1 1 50%;
+    padding-left: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+#yearRHS {
+    flex: 1 1 50%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+#yearlabel {
+    flex: 0 0;
+    padding-bottom: 0.5rem;
+}
+
+#andlabel {
+    flex: 0 0;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+#year1-input, #year2-input, #reqlabel {
+    flex: 0 0;
+}
+
+#countries {
+   display: flex;
+   flex-direction: column;
+}
+
+#country-buttons {
+    display: flex;
+    padding: 0.8rem 0.2rem;
+}
+
+#countries-top {
+    display: flex;
+    padding: 0.8rem 0.2rem;
+}
+
+#select-countries {
+    flex: 0 0;
+    white-space: nowrap;
+}
+
+#add-selected {
+    flex: 1 1 60% ; 
+    background-color: teal;
+    white-space: nowrap;
+}
+
+#cancel-add {
+    flex: 1 1 30%;
+    background-color: maroon;
+}
+
+.country-cb {
+    padding-left: 0;
+    margin-left: -8px;
+}
+
+
 
 /* Right hand column area */
+
 #SearchButton {
     padding-top: 1rem;
     padding-bottom: 6rem;
@@ -290,7 +378,7 @@ input[type=text] {
     }
 
 #RemoveUnchecked {
-    background-color: darkslategrey;
+    background-color: darkslateblue;
     outline: 3px solid silver;
 }
 

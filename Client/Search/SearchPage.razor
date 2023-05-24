@@ -2,18 +2,172 @@
 
 <PageTitle>MDR Search</PageTitle>
 
-<TopBarSearch />
+<TopBarSearch onFiltersBarVisibilityChanged="ChangeFiltersBarVisibility"
+              onOptionsBarVisibilityChanged="ChangeOptionsBarVisibility" />
 
 
 <div id="body-outer">
     <div id="body-main">
 
-        <div id="left-bar">
-            
+        @if (filtersBarShowing)
+        {
+            <div id="left-bar">
+                <div id="filters-container">
+
+                    <FluentDesignSystemProvider FillColor="#ecedee">
+                        <FluentAccordion>
+                            <FluentAccordionItem Heading="By Type" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <div class="filter-line-rev">
+                                    <Tooltip Text="Clear all" Position="top">
+                                        <button class="filter-btn">
+                                            <img height="14" width="14"
+                                             src="/icons/delete-all-icon.svg"
+                                             alt="clear all icon" />
+                                        </button>
+                                    </Tooltip>
+                                    <Tooltip Text="Select all" Position="top">
+                                        <button class="filter-btn">
+                                            <img height="14" width="14"
+                                             src="/icons/double-tick-icon.svg"
+                                             alt="select all icon" />
+                                        </button>
+                                    </Tooltip>
+                                </div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="t11">Interventional</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="t12">Observational</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="t13">Patient&nbsp;registry</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="t14">Expanded&nbsp;access</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="t15">Funded&nbsp;programme</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="t16">Other</FluentCheckbox></div>
+                            </FluentAccordionItem>
+
+                            <FluentAccordionItem Heading="By Status" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <div class="filter-line-rev">
+                                    <Tooltip Text="Clear all" Position="top">
+                                        <button class="filter-btn">
+                                        <img height="14" width="14"
+                                         src="/icons/delete-all-icon.svg"
+                                             alt="clear all icon" />
+                                        </button>
+                                    </Tooltip>
+                                    <Tooltip Text="Select all" Position="top">
+                                        <button class="filter-btn">
+                                        <img height="14" width="14"
+                                         src="/icons/double-tick-icon.svg"
+                                         alt="select all icon" />
+                                        </button>
+                                    </Tooltip>
+                                </div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s16">Not&nbsp;yet&nbsp;recruiting</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s14">Recruiting</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s15">Active,&nbsp;not&nbsp;recruiting</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s25">Ongoing* </FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s21">Completed</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s11">Withdrawn</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s18">Suspended</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s22">Terminated</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="s30">Other</FluentCheckbox></div>
+                                <div class="filter-line"><i>* rec.&nbsp;status&nbsp;not&nbsp;clear</i></div>
+                            </FluentAccordionItem>
+
+                            <FluentAccordionItem Heading="By Start Year" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                
+                                Panel five content
+                            </FluentAccordionItem>
+
+                            <FluentAccordionItem Heading="By Location" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                Panel six content
+                            </FluentAccordionItem>
+
+                            <FluentAccordionItem Heading="By Linked Object(s)" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <div class="filter-line-rev">
+                                    <Tooltip Text="Clear all" Position="top">
+                                        <button class="filter-btn">
+                                            <img height="14" width="14"
+                                             src="/icons/delete-all-icon.svg"
+                                             alt="clear all icon" />
+                                        </button>
+                                    </Tooltip>
+                                    <Tooltip Text="Select all" Position="top">
+                                        <button class="filter-btn">
+                                            <img height="14" width="14"
+                                             src="/icons/double-tick-icon.svg"
+                                             alt="select all icon" />
+                                        </button>
+                                    </Tooltip>
+                                </div>
+                                Panel seven content
+                            </FluentAccordionItem>
+                        </FluentAccordion>
+                    </FluentDesignSystemProvider>
 
 
+                    <div class="filter-expln">
+                        <p class="filter-expln-text">The two filters below only apply to interventional studies (= clinical trials).
+                            <br />
+                            If included in a query the results will be drawn <i>only</i> from interventional studies.
+                        </p>
+                    </div>
 
-        </div>
+                    <FluentDesignSystemProvider FillColor="#ecedee">
+                        <FluentAccordion>
+                            <FluentAccordionItem Heading="By Phase" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <div class="filter-line-rev">
+                                    <Tooltip Text="Clear all" Position="top">
+                                        <button class="filter-btn">
+                                        <img height="14" width="14"
+                                         src="/icons/delete-all-icon.svg"
+                                             alt="clear all icon" />
+                                        </button>
+                                    </Tooltip>
+                                    <Tooltip Text="Select all" Position="top">
+                                        <button class="filter-btn">
+                                        <img height="14" width="14"
+                                         src="/icons/double-tick-icon.svg"
+                                         alt="select all icon" />
+                                        </button>
+                                    </Tooltip>
+
+                                </div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="pe1">Early&nbsp;phase 1</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="p1">Phase&nbsp;1</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="p12">Phase&nbsp;1/2</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="p2">Phase&nbsp;2</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="p23">Phase&nbsp;2/3</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="p3">Phase&nbsp;3</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="p4">Phase&nbsp;4</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="p0">Other</FluentCheckbox></div>
+                            </FluentAccordionItem>
+
+                            <FluentAccordionItem Heading="By Allocation" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <div class="filter-line-rev">
+                                    <Tooltip Text="Clear all" Position="top">
+                                        <button class="filter-btn">
+                                            <img height="14" width="14"
+                                             src="/icons/delete-all-icon.svg"
+                                             alt="clear all icon" />
+                                        </button>
+                                    </Tooltip>
+                                    <Tooltip Text="Select all" Position="top">
+                                        <button class="filter-btn">
+                                            <img height="14" width="14"
+                                             src="/icons/double-tick-icon.svg"
+                                             alt="select all icon" />
+                                        </button>
+                                    </Tooltip>
+                                </div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="ar">Randomised</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="anr">Nonrandomised</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="ana">Not&nbsp;applicable</FluentCheckbox></div>
+                                <div class="filter-line"><FluentCheckbox @bind-Value="a0">Other</FluentCheckbox></div>
+                            </FluentAccordionItem>
+
+                        </FluentAccordion>
+                    </FluentDesignSystemProvider>
+                </div>
+            </div>
+        }
+
         <div id="middle-bar">
 
             <div id="search-bar">
@@ -87,85 +241,111 @@
 
         </div>
 
-        <div id="right-bar">
+        @if (optionsBarShowing)
+        {
+            <div id="right-bar">
 
-           <div class="button-row" id="SearchButton" >
-                <button class="RHSbutton" id="Search">Search</button>
-           </div>
-
-            <div class="RHSCheck" id="ShowWhere">
-               <div class="RHSCheckTextSection">
-                    <p class="RHSCheckText">Show where clause</p>
-               </div>
-               <div class="RHSCheckBoxSection">
-                    <FluentCheckbox @bind-Value=showWhereClause></FluentCheckbox>
-               </div>
-           </div>
-
-            <div class="RHSCheck" id="SearchIn">
-                <div class="RHSCheckTextOnly">
-                    <p class="RHSCheckText">Search for key words in...</p>
-               </div>
-           </div>
-
-            <div class="RHSCheck">
-                <div class="RHSCheckTextSection">
-                    <p class="RHSCheckText">Study Titles</p>
-               </div>
-               <div class="RHSCheckBoxSection">
-                    <FluentCheckbox @bind-Value=searchInTitles></FluentCheckbox>
-               </div>
-           </div>
-
-            <div class="RHSCheck">
-                <div class="RHSCheckTextSection">
-                    <p class="RHSCheckText">Study Topics</p>
+                <div class="button-row" id="SearchButton" >
+                    <button class="RHSbutton" id="Search">Search</button>
                 </div>
-                <div class="RHSCheckBoxSection">
-                    <FluentCheckbox @bind-Value=searchInTopics></FluentCheckbox>
+                <div class="RHSCheck" id="ShowWhere">
+                     <div class="RHSCheckTextSection">
+                        <p class="RHSCheckText">Show query details</p>
+                     </div>
+                     <div class="RHSCheckBoxSection">
+                        <FluentCheckbox @bind-Value=showWhereClause></FluentCheckbox>
+                     </div>
+                </div>
+                <div class="RHSCheck" id="SearchIn">
+                    <div class="RHSCheckTextOnly">
+                        <p class="RHSCheckText">Search for key words in...</p>
+                    </div>
+                </div>
+                <div class="RHSCheck">
+                    <div class="RHSCheckTextSection">
+                        <p class="RHSCheckText">Study Titles</p>
+                    </div>
+                    <div class="RHSCheckBoxSection">
+                        <FluentCheckbox @bind-Value=searchInTitles></FluentCheckbox>
+                    </div>
+                </div>
+
+                <div class="RHSCheck">
+                    <div class="RHSCheckTextSection">
+                        <p class="RHSCheckText">Study Topics</p>
+                    </div>
+                    <div class="RHSCheckBoxSection">
+                        <FluentCheckbox @bind-Value=searchInTopics></FluentCheckbox>
+                    </div>
+                </div>
+
+                <div class="RHSCheck">
+                    <div class="RHSCheckTextSection">
+                        <p class="RHSCheckText">Study Conditions</p>
+                    </div>
+                    <div class="RHSCheckBoxSection">
+                        <FluentCheckbox @bind-Value=searchInConditions></FluentCheckbox>
+                    </div>
                </div>
-            </div>
 
-            <div class="RHSCheck">
-                <div class="RHSCheckTextSection">
-                    <p class="RHSCheckText">Study Conditions</p>
-                </div>
-                <div class="RHSCheckBoxSection">
-                    <FluentCheckbox @bind-Value=searchInConditions></FluentCheckbox>
-                </div>
-           </div>
+               <div class="RHSCheck" id="AggregateSearches">
+                    <div class="RHSCheckTextSection">
+                        <p class="RHSCheckText">Aggregate Searches</p>
+                   </div>
+                   <div class="RHSCheckBoxSection">
+                        <FluentCheckbox @bind-Value=aggregateSearches></FluentCheckbox>
+                   </div>
+               </div>
 
-            <div class="RHSCheck" id="AggregateSearches">
-                <div class="RHSCheckTextSection">
-                    <p class="RHSCheckText">Aggregate Searches</p>
-                </div>
-                <div class="RHSCheckBoxSection">
-                    <FluentCheckbox @bind-Value=aggregateSearches></FluentCheckbox>
-                </div>
-           </div>
+               <div class="button-row">
+                    <button class="RHSbutton" id="ClearFilters">Clear Filters</button>
+               </div>
 
-           <div class="button-row">
-                <button class="RHSbutton" id="ClearFilters">Clear Filters</button>
-           </div>
+               <div class="button-row">
+                    <button class="RHSbutton" id="ClearSearch">Clear Search</button>
+               </div>
 
-            <div class="button-row">
-                <button class="RHSbutton" id="ClearSearch">Clear Search</button>
-           </div>
-
-            <div class="button-row">
-                <button class="RHSbutton" id="RemoveUnchecked">Remove Unchecked</button>
-           </div>
+               <div class="button-row">
+                    <button class="RHSbutton" id="RemoveUnchecked">Remove Unchecked</button>
+               </div>
             
+            </div>
+        }
 
-        </div>
      </div>
 </div>
 
 @code {
+
+    bool filtersBarShowing = true;
+    bool optionsBarShowing = true;
+    bool SearchPossible = false;
+
+    bool showWhereClause = true;
+    bool searchInTitles = true;
+    bool searchInTopics = true;
+    bool searchInConditions = true;
+    bool aggregateSearches = false;
+
+    bool t11, t12, t13, t14, t15, t16;
+    bool s11, s14, s15, s16, s18, s21, s22, s25, s30;
+    bool pe1, p1, p12, p2, p23, p3, p4, p0;
+    bool ar, anr, ana, a0;
+
+    private void ChangeFiltersBarVisibility(bool visibility)
+    {
+        filtersBarShowing = visibility;
+    }
+
+    private void ChangeOptionsBarVisibility(bool visibility)
+    {
+        optionsBarShowing = visibility;
+    }
+
     string? searchText;
-    int? searchType;
+    int? searchType = 1;
     string? idText;
-    int? idType;
+    int? idType = 1;
     string? searchParamsValue;
     string paramsLabelText = "Parameters";
 
@@ -180,22 +360,34 @@
             3 => "PubMed ID",
             _ => "Parameters"
         };
+        RecalculateFeedback();
+        SearchPossible = RecalculateSQL();
     }
+
     private void idOptionChanged(Option<string> s)
     {
         idText = s?.Text ?? "None";
         idType = Int32.Parse(s?.Value ?? "0");
+        RecalculateFeedback();
+        SearchPossible = RecalculateSQL();
+    }
+
+    private void RecalculateFeedback()
+    {
+        // Provide the text for the 'SQL area'
+
+    }
+
+    private bool RecalculateSQL()
+    {
+        // provide the where clause for a SQL query (though this may be modified 
+        // at the server). Returns true or false dependent on whether query is possible.
+
+        return false;
     }
 
     List<Option<string>> searchOptions = default!;
     List<Option<string>> idOptions = default!;
-
-    bool showWhereClause;
-    bool searchInTitles;
-    bool searchInTopics;
-    bool searchInConditions;
-    bool aggregateSearches;
-
 
     protected override void OnInitialized()
     {

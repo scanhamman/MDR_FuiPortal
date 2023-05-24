@@ -1,53 +1,129 @@
 ﻿<div class="top-bar">
 
-    <div class="tb-filter">
-        <div class="tb-link-text">
-            <span>Filters</span>
-        </div>
-        <div class="tb-filter-icon">
-            <img height="18" width="18"
-                 src="/icons/search-icon.svg"
-                 alt="search icon" />
-        </div>
+    <div class="tb-filters">
+
+        @if (!filtersBarShowing)
+        {
+            <div class="tb-filters-invisible">
+                <div class="tb-filters-text">
+                    <span>Filters</span>
+                </div>
+                <Tooltip Text="Expand Filters" Position="right">
+                <div class="end-arrows" @onclick="(e) => HandleFiltersBarVisibilityChanged(e, true)">
+                    <img height="18" width="18"
+                     src="/icons/forward-icon.svg"
+                     alt="left-arrow icon" />
+                </div>
+                    </Tooltip>
+            </div>
+        }
+
+        @if (filtersBarShowing)
+        {
+            <div class="tb-filters-visible">
+                <div class="tb-filters-text">
+                    <span>Filters</span>
+                </div>
+            </div>
+        }
     </div>
 
+    <div class="tb-centre">
+        @if (filtersBarShowing)
+        {
+            <Tooltip Text="Collapse Filters" Position="right">
+            <div class="end-arrows" @onclick="(e) => HandleFiltersBarVisibilityChanged(e, false)">
+                <img height="18" width="18"
+                    src="/icons/backward-icon.svg"
+                    alt="left-arrow icon" />
+            </div>
+            </Tooltip>
+        }
 
-    <div class="tb-spacer">&nbsp;</div>
+        <div class="tb-spacer">&nbsp;</div>
 
-    <div class="tb-file">
-        <div class="tb-link-text">
-            <span>File</span>
+        <div class="tb-file">
+            <div class="tb-link-text">
+                <span>File</span>
+            </div>
         </div>
+
+
+        <div class="tb-spacer">&nbsp;</div>
+
+        <div class="tb-export">
+            <div class="tb-link-text">
+                <span>Export</span>
+            </div>
+        </div>
+ 
+        <div class="tb-spacer">&nbsp;</div>
+
+        @if (optionsBarShowing)
+        {
+            <Tooltip Text="Collapse Options" Position="left">
+            <div class="end-arrows" @onclick="(e) => HandleOptionsBarVisibilityChanged(e, false)">
+                <img height="18" width="18"
+                src="/icons/forward-icon.svg"
+                alt="left-arrow icon" />
+            </div>
+            </Tooltip>
+        }
     </div>
 
-
-    <div class="tb-spacer">&nbsp;</div>
-
-    <div class="tb-export">
-        <div class="tb-link-text">
-            <span>Export</span>
-        </div>
-    </div>
-
-
-    <div class="tb-spacer">&nbsp;</div>
 
     <div class="tb-options">
-        <div class="tb-options-icon">
-            <img height="18" width="18"
-                     src="/icons/search-icon.svg"
-                     alt="search icon"/>
-        </div>
-        <div class="tb-link-text">
-            <span>Options</span>
-        </div>
+
+        @if (optionsBarShowing)
+        {
+            <div class="tb-options-visible">
+                <div class="tb-options-text">
+                    <span>Options</span>
+                </div>
+            </div>
+        }
+
+        @if (!optionsBarShowing)
+        {
+            <div class="tb-options-invisible">
+                <Tooltip Text="Expand Options" Position="left">
+                <div class="end-arrows" @onclick="(e) => HandleOptionsBarVisibilityChanged(e, true)">
+                    <img height="18" width="18"
+                    src="/icons/backward-icon.svg"
+                    alt="left-arrow icon" />
+                </div>
+                </Tooltip>
+               <div class="tb-options-text">
+                    <span>Options</span>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
 
-
-
 @code {
+    bool filtersBarShowing = true;
+    bool optionsBarShowing = true;
 
+    [Parameter]
+    public EventCallback<bool> onFiltersBarVisibilityChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> onOptionsBarVisibilityChanged { get; set; }
+
+    private async Task HandleFiltersBarVisibilityChanged(EventArgs e, bool visibility)
+    {
+        filtersBarShowing = visibility;
+        await onFiltersBarVisibilityChanged.InvokeAsync(visibility);
+    }
+
+    private async Task HandleOptionsBarVisibilityChanged(EventArgs e, bool visibility)
+    {
+        optionsBarShowing = visibility;
+        await onOptionsBarVisibilityChanged.InvokeAsync(visibility);
+    }
+
+    
 
 }

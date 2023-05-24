@@ -10,61 +10,105 @@
     display: flex;
     flex-direction: row;
 }
-
     .top-bar a {
         color: var(--link-colour);
         text-decoration: none;
     }
 
-.tb-title {
-    flex: 0 0 10%;
+
+/* For sides of toolbar, over Filters / Options
+   Changes layout depending on visbility of Filters / Options columns
+*/
+
+
+/* Overall end div (flex box) */
+
+.tb-filters {
+    flex: 0 0 17%;
     align-self: center;
-    margin-left: 1.5rem;
-    width: 15rem;
     height: 2rem; /* fits with parent links-bar */
     max-height: 2rem;
+
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
 }
 
-.tb-title-text {
+
+.tb-options {
+    flex: 0 0 17%;
+    align-self: center;
+    height: 2rem; /* fits with parent links-bar */
+    max-height: 2rem;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+/* Left most div - only visible if column not visible */
+
+.tb-filters-invisible, .tb-options-invisible {
+    flex: 0 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Right hande div - only visible if column visible */
+.tb-filters-visible, .tb-options-visible {
+    flex: 1 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.tb-filters-text, .tb-options-text, .tb-link-text {
+    flex: 0 0;
     font: var(--link-text);
-    width: 15rem;
-    white-space: nowrap;
+}
+
+
+/* For central portion of toolbar, which expands, and 
+    arrows and contents may change visibility */
+
+.tb-centre {
+    flex: 1 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.end-arrows {
+    flex: 0 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+    .end-arrows:hover {
+        background-color: var(--link-hover-colour);
+    }
+
+
+.tb-file {
+    flex: 0 0;
+    align-self: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.tb-export {
+    flex: 0 0;
+    align-self: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .tb-spacer {
     flex: 1 1;
 }
 
-.tb-button {
-    flex: 0 0;
-    align-self: center;
-    margin-right: 1rem;
-    width: 14rem;
-    height: 2rem; /* fits with parent links-bar */
-    max-height: 2rem;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-}
 
-    .tb-button:hover {
-        background-color: var(--link-hover-colour);
-    }
 
-.tb-link-icon {
-    flex: 0 0;
-    align-self: center;
-}
 
-.tb-link-text {
-    flex: 0 0;
-    font: var(--link-text);
-    color: var(--link-colour);
-    padding-left: 0.4rem;
-    align-self: center;
-    padding-right: 1rem;
-}

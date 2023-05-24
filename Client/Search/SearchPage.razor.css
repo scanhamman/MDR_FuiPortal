@@ -147,8 +147,51 @@ input[type=text] {
     padding-right: 1.5rem
 }
 
-/* Right hand column area */
+/* Left hand column area */
 
+#filters-container {
+    padding-top: 5rem;
+    padding-left: 0.6rem;
+    padding-right: 1rem;
+}
+
+.filter-line {
+    display: flex;
+    padding-bottom: 0.2rem;
+}
+
+.filter-line-rev {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.filter-btn {
+    background-color: var(--link-bg-colour); 
+    border: none; /* Remove borders */
+    padding: 1px 6px; /* Some padding */
+    cursor: pointer; /* Mouse pointer on hover */
+    margin: 0 4px;
+    border-radius: 3px;
+}
+    .filter-btn:hover {
+        background-color: RoyalBlue;
+    }
+
+
+.filter-expln {
+    padding-left: 1rem;
+    padding-top: 2rem;
+    padding-left: 1rem;
+}
+
+.filter-expln-text {
+    font: var(--normal-text);
+    color: var(--txt-emph-colour);
+    text-align: left
+}
+
+
+/* Right hand column area */
 #SearchButton {
     padding-top: 1rem;
     padding-bottom: 6rem;

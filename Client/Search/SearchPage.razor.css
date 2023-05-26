@@ -16,12 +16,77 @@
     flex-direction: row;
 }
 
+/* fonts used */
+
+p {
+    padding: 0;
+    margin: 0;
+}
+
+.small-text-blue {
+    font: var(--small-text);
+    color: var(--txt-emph-colour);
+    text-align: left
+}
+
+.small-text-blue-italic {
+    font: var(--small-text);
+    color: var(--txt-emph-colour);
+    text-align: left;
+    font-style: italic;
+}
+
+.small-text {
+    font: var(--small-text);
+    text-align: left;
+    color: var(--txt-colour);
+}
+
+
+.small-text-italic {
+    font: var(--small-text);
+    text-align: left;
+    font-style: italic;
+}
+
+
+.small-text-blue-center {
+    font: var(--small-text);
+    text-align: center;
+    color: var(--txt-emph-colour);
+}
+
+
+.normal-blue-text {
+    text-align: left;
+    font: var(--normal-text);
+    color: var(--txt-emph-colour);
+}
+
+.big-button-text {
+    font: var(--normal-text);
+    font-weight: bold;
+    text-align: center;
+    color: var(--link-colour);
+}
+
+.small-button-text {
+    font: var(--small-text);
+    text-align: center;
+    color: var(--link-colour);
+}
+
+.no-wrap-text {
+    white-space: nowrap;
+}
+
 /* Three vertical divisions within the page */
 
 #left-bar {
     flex: 1 1 17%;
     text-align: center;
     overflow-y: auto;
+    min-width: 14rem;
 }
 
 #middle-bar {
@@ -36,6 +101,7 @@
 #right-bar {
     flex: 1 1 17%;
     overflow-y: auto;
+    min-width: 14rem;
 }
 
 
@@ -52,8 +118,6 @@
 }
 
 .search-label {
-    font: var(--normal-text);
-    color: var(--txt-emph-colour);
     white-space: nowrap;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -123,30 +187,6 @@ input[type=text] {
     }
 
 
-/* SQL area */
-
-#sql-area {
-    margin-top: 1rem;
-    padding-left: 1rem;
-    padding-right: 1.5rem;
-}
-
-#sql-container {
-    border-top: 3px solid var(--hbar-colour);
-    border-bottom: 3px solid var(--hbar-colour);
-    padding: 3px;
-    text-align: left;
-    font: var(--small-text);
-    font-style: italic;
-}
-    
-/* Results area */
-
-#result-area {
-    padding-left: 1rem;
-    padding-right: 1.5rem
-}
-
 /* Left hand column area */
 
 #filters-container {
@@ -160,15 +200,18 @@ input[type=text] {
     padding-bottom: 0.2rem;
 }
 
+filter-bottom-line {
+    display: flex;
+    padding: 0.5rem 0 0.2rem 0;
+}
+
 .filter-line-rev {
     display: flex;
     flex-direction: row-reverse;
 }
 
-
 .filter-btn {
     background-color: darkslateblue;
-    color: var(--link-colour);
     border: none;
     padding: 1px 6px;
     cursor: pointer;
@@ -181,28 +224,10 @@ input[type=text] {
 
 
 .filter-expln {
-    padding-left: 1rem;
-    padding-top: 2rem;
-    padding-left: 1rem;
+    padding: 1rem 0.5rem;
 }
 
-.filter-expln-text {
-    font: var(--normal-text);
-    color: var(--txt-emph-colour);
-    text-align: left
-}
 
-.filter-small-text-left {
-    font: var(--small-text);
-    text-align: left;
-    color: var(--txt-emph-colour);
-}
-
-.filter-small-text-center {
-    font: var(--small-text);
-    text-align: center;
-    color: var(--txt-emph-colour);
-}
 
 .vert-splitter {
     display: flex
@@ -211,7 +236,6 @@ input[type=text] {
 #yearLHS {
     flex: 1 1 50%;
     padding-left: 1rem;
-
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -219,30 +243,28 @@ input[type=text] {
 
 #yearRHS {
     flex: 1 1 50%;
-
     display: flex;
     flex-direction: column;
     align-items: start;
 }
 
-#yearlabel {
+.yearlabel {
+        flex: 0 0;
+        padding: 0.4rem 0;
+    }
+
+#year1-input, #year2-input {
     flex: 0 0;
-    padding-bottom: 0.5rem;
 }
 
-#andlabel {
-    flex: 0 0;
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
-}
 
-#year1-input, #year2-input, #reqlabel {
-    flex: 0 0;
+.taller-button {
+    padding: 6px;
 }
 
 #countries {
-   display: flex;
-   flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 #country-buttons {
@@ -276,7 +298,80 @@ input[type=text] {
     margin-left: -8px;
 }
 
+.selected-location {
+    display: flex;
+    padding: 0.2rem 0 0.2rem 2rem;
+}
 
+.selected-location-name {
+    flex: 1 1 80%;
+    padding-top: 0.4rem;
+}
+
+.selected-location-remove {
+    flex: 1 1 20%;
+}
+
+#object-top-spacer {
+    flex: 1 1;
+}
+
+#object-top-line {
+    flex: 0 0;
+    white-space: nowrap;
+}
+
+/* Middle results area */
+
+
+/* SQL area */
+
+#sql-area {
+    margin-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1.5rem;
+}
+
+#sql-container {
+    padding: 5px 8px;
+    text-align: left;
+    font: var(--small-text);
+    font-style: italic;
+    background-color: gainsboro;
+    border-radius: 5px;
+}
+
+/* Results */
+
+#result-area {
+    padding-left: 1rem;
+    padding-right: 1.5rem
+}
+
+
+#results-heading {
+    display: flex;
+    padding-top: 0.6rem;
+    border-bottom: 2px solid var(--txt-emph-colour);
+    height: 1.7rem;
+}
+
+#results-found {
+    flex: 0 0;
+}
+
+#results-spacer {
+    flex: 1 1;
+}
+
+#results-buttons {
+    flex: 0 0;
+    display: flex;
+}
+
+#results-list {
+    padding-top: 0.5rem;
+}
 
 /* Right hand column area */
 
@@ -291,7 +386,7 @@ input[type=text] {
 }
 
 #SearchIn {
-    padding: 0;
+    padding: 0 0 0.5rem 2rem;
     font-weight: bold;
 }
 
@@ -315,11 +410,6 @@ input[type=text] {
     padding-left: 2.5rem;
 }
 
-.RHSCheckText {
-    text-align: left;
-    font: var(--normal-text);
-    color: var(--txt-emph-colour);
-}
 
 .RHSCheckBoxSection {
     flex: 0 0 30%;
@@ -328,18 +418,13 @@ input[type=text] {
 .RHSbutton {
     width: 12rem;
     height: 2rem;
-    font: var(--normal-text);
-    font-weight: bold;
-    text-align: center;
     background-color: var(--link-bg-colour);
-    color: var(--link-colour);
     outline: 0.2rem solid var(--txt-emph-colour);
     border-radius: 8px;
 }
 
 .button-row {
     padding: 1rem;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -388,4 +473,23 @@ input[type=text] {
     }
 
 
+
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+    /* Hide the browser's default checkbox */
+    .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
 

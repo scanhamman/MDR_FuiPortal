@@ -3,6 +3,7 @@
     --arial: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --tahoma: 'Tahoma', Helvetica, Arial, sans-serif;
     --normal-text: 500 1rem/1.25 var(--arial);
+    --small-text: 500 0.85rem/1 var(--arial);
     --tree-text: 500 1rem/1.25 var(--tahoma);
     --link-text: 500 1rem/1 var(--arial);
     --mdr-h1: 700 2rem/1.25 var(--arial);
@@ -10,7 +11,6 @@
     --top-bar: 700 3.5rem/1 var(--arial);
     --jt-big: 700 2rem/1.25 var(--arial);
     --jt-sub: 700 1.25rem/1.25 var(--arial);
-    --small-text: 500 0.85rem/1 var(--font-arial);
 }
 
 :root {

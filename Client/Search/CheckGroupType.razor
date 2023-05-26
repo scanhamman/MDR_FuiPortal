@@ -1,0 +1,163 @@
+﻿
+<div class="filter-line-rev">
+    <div>
+        <Tooltip Text="Clear all" Position="top">
+            <button class="filter-btn" @onclick="() => SetAllCheckboxes(false)">
+                <img height="14" width="14"
+                     src="/icons/delete-all-icon.svg"
+                     alt="clear all icon" />
+            </button>
+        </Tooltip>
+    </div>
+    <div>
+        <Tooltip Text="Select all" Position="top">
+            <button class="filter-btn" @onclick="() => SetAllCheckboxes(true)">
+                <img height="14" width="14"
+                     src="/icons/double-tick-icon.svg"
+                     alt="select all icon" />
+            </button>
+        </Tooltip>
+    </div>
+    <div id="top-spacer">
+        &nbsp;
+    </div>
+    @if (!string.IsNullOrEmpty(@TopLine))
+    {
+        <div id="top-line">
+            <p class="small-text-blue-italic">@TopLine</p>
+        </div>
+    }
+</div>
+<div class="filter-line"><FluentCheckbox @bind-Value="t11">Interventional</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="t12">Observational</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="t13">Patient&nbsp;registry</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="t14">Expanded&nbsp;access</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="t15">Funded&nbsp;programme</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="t16">Other</FluentCheckbox></div>
+@if (!string.IsNullOrEmpty(@BottomLine))
+{
+    <div class="filter-bottom-line">
+        <p class="small-text-blue-italic">
+            @BottomLine
+        </p>
+    </div>
+}
+
+@code {
+
+    string? feedbackBase = "Study type one of (";
+    string? sqlBase = "study_type_id in (";
+    string? TopLine = "";
+    string? BottomLine = "";
+
+    bool _t11, _t12, _t13, _t14, _t15, _t16;
+  
+
+    [Parameter]
+    public Action<string>? OnFeedbackChange { get; set; }
+
+    [Parameter]
+    public Action<string>? OnSQLChange { get; set; }
+
+    string type_sql = "";
+    string type_fback = "";
+
+    public bool t11
+    {
+        get { return _t11; }
+        set
+        {
+            _t11 = value;
+            process_state();
+        }
+    }
+    public bool t12
+    {
+        get { return _t12; }
+        set
+        {
+            _t12 = value;
+            process_state();
+        }
+    }
+    public bool t13
+    {
+        get { return _t13; }
+        set
+        {
+            _t13 = value;
+            process_state();
+        }
+
+    }
+    public bool t14
+    {
+        get { return _t14; }
+        set
+        {
+            _t14 = value;
+            process_state();
+        }
+    }
+    public bool t15
+    {
+        get { return _t15; }
+        set
+        {
+            _t15 = value;
+            process_state();
+        }
+    }
+    public bool t16
+    {
+        get { return _t16; }
+        set
+        {
+            _t16 = value;
+            process_state();
+        }
+    }
+    
+    private void process_state()
+    {
+        if (!_t11 && !_t12 && !_t13 && !_t14 && !_t15 && !_t16)
+        {
+            OnFeedbackChange!.Invoke("");
+            OnSQLChange!.Invoke("");
+        }
+        else if (_t11 && _t12 && _t13 && _t14 && _t15 && _t16)
+        {
+            OnFeedbackChange!.Invoke("All study type options");
+            OnSQLChange!.Invoke("");
+        }
+        else
+        {
+            string type_fback_string = _t11 ? ", Interventional" : "";
+            type_fback_string += _t12 ? ", Observational" : "";
+            type_fback_string += _t13 ? ", Patient registry" : "";
+            type_fback_string += _t14 ? ", Expanded access" : "";
+            type_fback_string += _t15 ? ", Funded programme" : "";
+            type_fback_string += _t16 ? ", Other" : "";
+            type_fback = feedbackBase + type_fback_string[2..] + ")";
+            OnFeedbackChange!.Invoke(type_fback);
+
+            string type_sql_string = _t11 ? ", 11" : "";
+            type_sql_string += _t12 ? ", 12" : "";
+            type_sql_string += _t13 ? ", 13" : "";
+            type_sql_string += _t14 ? ", 14" : "";
+            type_sql_string += _t15 ? ", 15" : "";
+            type_sql_string += _t16 ? ", 16" : "";
+            type_sql = sqlBase + type_sql_string[2..] + ")";
+            OnSQLChange!.Invoke(type_sql);
+        }
+    }
+
+    private void SetAllCheckboxes(bool check_state)
+    {
+        t11 = check_state; t12 = check_state; 
+        t13 = check_state; t14 = check_state; 
+        t15 = check_state; t16 = check_state; 
+
+    }
+}
+

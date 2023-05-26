@@ -17,63 +17,18 @@
                     <FluentDesignSystemProvider FillColor="#ecedee">
                         <FluentAccordion>
                             <FluentAccordionItem Heading="By Type" Style="font-size: 1rem; color: var(--txt-emph-colour)">
-                                <div class="filter-line-rev">
-                                    <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllTypes(false)">
-                                            <img height="14" width="14"
-                                             src="/icons/delete-all-icon.svg"
-                                             alt="clear all icon" />
-                                        </button>
-                                    </Tooltip>
-                                    <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllTypes(true)">
-                                            <img height="14" width="14"
-                                             src="/icons/double-tick-icon.svg"
-                                             alt="select all icon" />
-                                        </button>
-                                    </Tooltip>
-                                </div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="t11">Interventional</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="t12">Observational</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="t13">Patient&nbsp;registry</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="t14">Expanded&nbsp;access</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="t15">Funded&nbsp;programme</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="t16">Other</FluentCheckbox></div>
+                                <CheckGroupType OnFeedbackChange="updateTypeFBack" OnSQLChange="updateTypeSQL" />
                             </FluentAccordionItem>
-
                             <FluentAccordionItem Heading="By Status" Style="font-size: 1rem; color: var(--txt-emph-colour)">
-                                <div class="filter-line-rev">
-                                    <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllStatuses(false)">
-                                        <img height="14" width="14"
-                                         src="/icons/delete-all-icon.svg"
-                                             alt="clear all icon" />
-                                        </button>
-                                    </Tooltip>
-                                    <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllStatuses(true)">
-                                        <img height="14" width="14"
-                                         src="/icons/double-tick-icon.svg"
-                                         alt="select all icon" />
-                                        </button>
-                                    </Tooltip>
-                                </div>  
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s16">Not&nbsp;yet&nbsp;recruiting</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s14">Recruiting</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s15">Active,&nbsp;not&nbsp;recruiting</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s25">Ongoing* </FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s21">Completed</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s11">Withdrawn</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s18">Suspended</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s22">Terminated</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="s30">Other</FluentCheckbox></div>
-                                <div class="filter-line filter-small-text-left"><i>*Includes 2 previous categories, plus when recruitment status not clear</i></div>
+                                <CheckGroupStatus OnFeedbackChange="updateStatusFBack" OnSQLChange="updateStatusSQL" />
                             </FluentAccordionItem>
 
                             <FluentAccordionItem Heading="By Start Year" Style="font-size: 1rem; color: var(--txt-emph-colour)">
                                 <div class="vert-splitter">
                                     <div id="yearLHS">
-                                        <label id="compLabel" class="filter-small-text-left">Comparator</label>
+                                        <div class="yearlabel">
+                                            <p class="complabel small-text-blue">Comparator</p>
+                                         </div>
                                         <FluentRadioGroup aria-labelledby="compLabel" @bind-Value=compOption
                                             Name="compOptions" Orientation="Orientation.Vertical">
                                             <FluentRadio Value="@("none")">none</FluentRadio>
@@ -87,27 +42,26 @@
 
                                         @if (@compOption != "none")
                                         {
-                                            <div id="yearlabel" class="filter-small-text-left">
-                                                Year
+                                            <div class="yearlabel">
+                                                <p class="small-text-blue">Year</p>
                                             </div>
 
                                             <div id="year1-input">
                                                 <input type="text" @bind="@year1value" @bind:event="oninput" style="width: 80px;" />
                                             </div>
 
-
                                             @if (@compOption == "bw")
                                             {
-                                                <div id="andlabel" class="filter-small-text-left">
-                                                    and
+                                                <div class="yearlabel">
+                                                    <p class="small-text-blue"> and </p>
                                                 </div>
                                                 <div id="year2-input">
                                                     <input type="text" @bind="@year2value" @bind:event="oninput" style="width: 80px;" />
                                                 </div>
                                             }
 
-                                            <div id="reqlabel" class="filter-small-text-left">
-                                                <i>Please enter year(s) as 4 digits</i>
+                                            <div class="yearlabel">
+                                               <p class="small-text-blue-italic"> Please enter year(s) as 4 digits</p>
                                             </div>
                                         }
 
@@ -119,96 +73,65 @@
                             <FluentAccordionItem Heading="By Location" Style="font-size: 1rem; color: var(--txt-emph-colour)">
                                 <div id="countries">
                                     <div id="countries-top">
-                                         <button id="select-countries" class="filter-btn" @onclick="() => SetCountrySelectorVisibility(true)">
+                                        <button id="select-countries" class="filter-btn small-button-text taller-button" 
+                                                @onclick="() => SetCountrySelectorVisibility(true)">
                                                 Select Country(ies)...
                                          </button>
                                     </div>
                                     @if (@CountrySelectorVisible)
                                     {
-
                                         <div id="new-country-cb" class="country-cb">
                                             <SCComboBox idOptions="countryOptions"
                                                 HandleSelectedOptionChanged="currentCountryChanged"></SCComboBox>
                                         </div>
                                         <div id="country-buttons">
-                                            <button class="filter-btn" id="add-selected" @onclick="() => AddCurrentCountry()">
+                                            <button id="add-selected" class="filter-btn small-button-text taller-button"
+                                                    @onclick="() => AddCurrentCountry()">
                                                 Add Selected
                                             </button>
-                                            <button class="filter-btn" id="cancel-add" @onclick="() => SetCountrySelectorVisibility(false)">
+                                            <button id="cancel-add" class="filter-btn small-button-text taller-button"
+                                                    @onclick="() => SetCountrySelectorVisibility(false)">
                                                 Cancel
                                             </button>
                                         </div>
 
                                     }
-
                                     <div id="location-header">
                                         <div id="loc-header-text">
-                                            <p class="filter-expln-text">Selected so far:</p>
+                                            <p class="small-text">Selected so far:</p>
                                         </div>
                                     </div>
-
-                                    
-
                                     @if (Countries?.Any() == true)
                                     {
                                         @foreach (Country c in Countries)
                                         {
-                                           <div id="loc-header-text">
-                                                <p class="filter-expln-text">c.Text</p>
+                                           <div class="selected-location">
+                                                <div class="selected-location-name">
+                                                   <p class="small-text">@c.name</p>
+                                               </div>
+                                                <div class="selected-location-remove">
+                                                    <Tooltip Text="Remove" Position="top">
+                                                        <button class="filter-btn" @onclick="() => RemoveCountry(c)">
+                                                            <img height="14" width="14"
+                                                            src="/icons/remove-icon.svg"
+                                                            alt="remove location icon" />
+                                                        </button>
+                                                    </Tooltip>
+                                               </div>
                                            </div>
                                         }
                                     }
                                 </div>
                             </FluentAccordionItem>
-
-                            <FluentAccordionItem Heading="By Linked Object(s)" Style="font-size: 1rem; color: var(--txt-emph-colour)">
-                                <div class="filter-line-rev">
-                                    <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllObjectTypes(false)">
-                                            <img height="14" width="14"
-                                             src="/icons/delete-all-icon.svg"
-                                             alt="clear all icon" />
-                                        </button>
-                                    </Tooltip>
-                                    <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllObjectTypes(true)">
-                                            <img height="14" width="14"
-                                             src="/icons/double-tick-icon.svg"
-                                             alt="select all icon" />
-                                        </button>
-                                    </Tooltip>
-                                </div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b11">Trial&nbsp;registry&nbsp;entry</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b12">Registry&nbsp;results&nbsp;summary</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b21">Journal&nbsp;article</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b22">Study&nbsp;protocol</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b34">IPD*</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b23">Study&nbsp;overview</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b24">Patient&nbsp;C/IS**</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b25">Data&nbsp;collection&nbsp;forms</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b26">Manual&nbsp;of&nbsp;procedures</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b31">SAP***</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b32">Clinical&nbsp;study&nbsp;report</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b33">Data&nbsp;Summary</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b36">Other&nbsp;study&nbsp;resource</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b44">Other&nbsp;info.&nbsp;resources</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b51">Website</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b52">Software</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="b99">Other</FluentCheckbox></div>
-                                <div class="filter-line filter-small-text-left">
-                                    <i>
-                                        *Individual Participant Data;
-                                    **Patient consent / information sheets; 
-                                    ***Statistical Analysis Plan</i></div>
+                            <FluentAccordionItem Heading="By Linked Object" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <CheckGroupObject OnFeedbackChange="updateObjectFBack" OnSQLChange="updateObjectSQL" />
                             </FluentAccordionItem>
                         </FluentAccordion>
                     </FluentDesignSystemProvider>
 
-
                     <div class="filter-expln">
-                        <p class="filter-expln-text">
-                            <b>N.B.</b>The two filters below only apply to interventional studies (= clinical trials).
-                            <br />
+                        <p class="small-text">
+                            <b>N.B.</b>The two filters below only apply to interventional studies (= clinical trials).<br/>
                             If included in a query the results will be drawn <i>only</i> from interventional studies.
                         </p>
                     </div>
@@ -216,56 +139,11 @@
                     <FluentDesignSystemProvider FillColor="#ecedee">
                         <FluentAccordion>
                             <FluentAccordionItem Heading="By Phase" Style="font-size: 1rem; color: var(--txt-emph-colour)">
-                                <div class="filter-line-rev">
-                                    <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllPhases(false)">
-                                        <img height="14" width="14"
-                                         src="/icons/delete-all-icon.svg"
-                                             alt="clear all icon" />
-                                        </button>
-                                    </Tooltip>
-                                    <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllPhases(true)">
-                                        <img height="14" width="14"
-                                         src="/icons/double-tick-icon.svg"
-                                         alt="select all icon" />
-                                        </button>
-                                    </Tooltip>
-
-                                </div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="pe1">Early&nbsp;phase 1</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="p1">Phase&nbsp;1</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="p12">Phase&nbsp;1/2</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="p2">Phase&nbsp;2</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="p23">Phase&nbsp;2/3</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="p3">Phase&nbsp;3</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="p4">Phase&nbsp;4</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="p0">Other</FluentCheckbox></div>
+                                <CheckGroupPhase OnFeedbackChange="updatePhaseFBack" OnSQLChange="updatePhaseSQL" />
                             </FluentAccordionItem>
-
                             <FluentAccordionItem Heading="By Allocation" Style="font-size: 1rem; color: var(--txt-emph-colour)">
-                                <div class="filter-line-rev">
-                                    <Tooltip Text="Clear all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllAllocations(false)">
-                                            <img height="14" width="14"
-                                             src="/icons/delete-all-icon.svg"
-                                             alt="clear all icon" />
-                                        </button>
-                                    </Tooltip>
-                                    <Tooltip Text="Select all" Position="top">
-                                        <button class="filter-btn" @onclick="() => SetAllAllocations(true)">
-                                            <img height="14" width="14"
-                                             src="/icons/double-tick-icon.svg"
-                                             alt="select all icon" />
-                                        </button>
-                                    </Tooltip>
-                                </div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="ar">Randomised</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="anr">Nonrandomised</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="ana">Not&nbsp;applicable</FluentCheckbox></div>
-                                <div class="filter-line"><FluentCheckbox @bind-Value="a0">Other</FluentCheckbox></div>
+                                <CheckGroupAlloc OnFeedbackChange="updateAllocFBack" OnSQLChange="updateAllocSQL"/>
                             </FluentAccordionItem>
-
                         </FluentAccordion>
                     </FluentDesignSystemProvider>
                 </div>
@@ -277,7 +155,7 @@
             <div id="search-bar">
                 <div id="search-type">
                     <div class="search-label-container">
-                        <p class="search-label">Search Type</p>
+                        <p class="search-label normal-blue-text">Search Type</p>
                     </div>
                     <div id="search-type-combo">
                         <SCComboBox idOptions="searchOptions" 
@@ -289,7 +167,7 @@
                 {
                     <div id="search-subtype">
                         <div class="search-label-container">
-                            <p class="search-label">ID Type</p>
+                            <p class="search-label normal-blue-text">ID Type</p>
                         </div>
                         <div id="id-type-combo">
                             <SCComboBox idOptions="idOptions"
@@ -300,7 +178,7 @@
 
                 <div id="search-params">
                      <div class="search-label-container">
-                        <p class="search-label">@paramsLabelText</p>
+                        <p class="search-label normal-blue-text">@paramsLabelText</p>
                     </div>
                     <div id="params-text">
                         <input type="text" @bind="@searchParamsValue" @bind:event="oninput" style="width: 100%;" />
@@ -308,40 +186,82 @@
                 </div>
             </div>
 
-
-            <div id="sql-area">
-                <div id="sql-container">
-                    <p>Selected Search Value: @searchType: @searchText,  
-                        Selected id type: @idType : @idText <br/>
-                        Search Parameters: @searchParamsValue
-                    </p>
+            @if (showWhereClause)
+            {
+                <div id="sql-area">
+                    <div id="sql-container">
+                        <p class="small-text-italic">
+                            Selected Search Value: @searchType: @searchText,
+                            Selected id type: @idType : @idText <br/>
+                            Search Parameters: @searchParamsValue  <br />
+                            Search Filters: @alloc_sql, @alloc_fback<br />
+                        </p>
+                    </div>
                 </div>
-            </div>
+            }
 
             <div id="result-area">
-                <p>Results to go here</p>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-                <h3>SearchPage</h3>
-            </div>
 
+                <div id="results-heading">
+                    <div id="results-found">
+                        <p class="small-text no-wrap-text">4 Results found</p>
+                    </div>
+                    <div id="results-spacer">
+                        
+                    </div>
+                    <div id="results-buttons">
+                        <p class="small-text no-wrap-text">items per page cb --- Fst-Prv (1 of N) Nxt-Lst</p>
+                    </div>
+                </div>
+
+                <div id="results-list" >
+                    <FluentDesignSystemProvider FillColor="#ecedee">
+                    <FluentAccordion >
+                        <FluentAccordionItem Heading="study title 1" Style="font-size: 1rem;">
+                            <div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                            </div> 
+                         </FluentAccordionItem>
+                         <FluentAccordionItem Heading="study title 2" Style="font-size: 1rem;">
+                            <div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                            </div> 
+                         </FluentAccordionItem>
+                         <FluentAccordionItem Heading="study title 3" Style="font-size: 1rem;">
+                            <div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                            </div>  
+                         </FluentAccordionItem>
+                         <FluentAccordionItem Heading="study title 4" Style="font-size: 1rem;">
+                            <div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                                <div> place holder for details</div>
+                            </div>  
+
+                        </FluentAccordionItem>
+                     </FluentAccordion>
+                     </FluentDesignSystemProvider>
+                </div>
+            </div>
 
         </div>
 
@@ -350,24 +270,24 @@
             <div id="right-bar">
 
                 <div class="button-row" id="SearchButton" >
-                    <button class="RHSbutton" id="Search">Search</button>
+                    <button class="RHSbutton big-button-text" id="Search">Search</button>
                 </div>
                 <div class="RHSCheck" id="ShowWhere">
                      <div class="RHSCheckTextSection">
-                        <p class="RHSCheckText">Show query details</p>
+                        <p class="normal-blue-text">Show query details</p>
                      </div>
                      <div class="RHSCheckBoxSection">
                         <FluentCheckbox @bind-Value=showWhereClause></FluentCheckbox>
                      </div>
                 </div>
                 <div class="RHSCheck" id="SearchIn">
-                    <div class="RHSCheckTextOnly">
-                        <p class="RHSCheckText">Search for key words in...</p>
+                    <div>
+                        <p class="normal-blue-text">Search for key words in...</p>
                     </div>
                 </div>
                 <div class="RHSCheck">
                     <div class="RHSCheckTextSection">
-                        <p class="RHSCheckText">Study Titles</p>
+                        <p class="normal-blue-text">Study Titles</p>
                     </div>
                     <div class="RHSCheckBoxSection">
                         <FluentCheckbox @bind-Value=searchInTitles></FluentCheckbox>
@@ -376,7 +296,7 @@
 
                 <div class="RHSCheck">
                     <div class="RHSCheckTextSection">
-                        <p class="RHSCheckText">Study Topics</p>
+                        <p class="normal-blue-text">Study Topics</p>
                     </div>
                     <div class="RHSCheckBoxSection">
                         <FluentCheckbox @bind-Value=searchInTopics></FluentCheckbox>
@@ -385,7 +305,7 @@
 
                 <div class="RHSCheck">
                     <div class="RHSCheckTextSection">
-                        <p class="RHSCheckText">Study Conditions</p>
+                        <p class="normal-blue-text">Study Conditions</p>
                     </div>
                     <div class="RHSCheckBoxSection">
                         <FluentCheckbox @bind-Value=searchInConditions></FluentCheckbox>
@@ -394,7 +314,7 @@
 
                <div class="RHSCheck" id="AggregateSearches">
                     <div class="RHSCheckTextSection">
-                        <p class="RHSCheckText">Aggregate Searches</p>
+                        <p class="normal-blue-text">Aggregate Searches</p>
                    </div>
                    <div class="RHSCheckBoxSection">
                         <FluentCheckbox @bind-Value=aggregateSearches></FluentCheckbox>
@@ -402,15 +322,15 @@
                </div>
 
                <div class="button-row">
-                    <button class="RHSbutton" id="ClearFilters">Clear Filters</button>
+                    <button class="RHSbutton big-button-text" id="ClearFilters">Clear Filters</button>
                </div>
 
                <div class="button-row">
-                    <button class="RHSbutton" id="ClearSearch">Clear Search</button>
+                    <button class="RHSbutton big-button-text" id="ClearSearch">Clear Search</button>
                </div>
 
                <div class="button-row">
-                    <button class="RHSbutton" id="RemoveUnchecked">Remove Unchecked</button>
+                    <button class="RHSbutton big-button-text" id="RemoveUnchecked">Remove Unchecked</button>
                </div>
             
             </div>
@@ -420,6 +340,62 @@
 </div>
 
 @code {
+    string type_sql = "", type_fback = "";
+    string status_sql = "", status_fback = "";
+    string object_sql = "", object_fback = "";
+    string phase_sql = "", phase_fback = "";
+    string alloc_sql = "", alloc_fback = "";
+
+    private void updateTypeFBack(string fback)
+    {
+        alloc_fback = fback; StateHasChanged();
+    }
+
+    private void updateTypeSQL(string sql)
+    {
+        alloc_sql = sql; StateHasChanged();
+    }
+
+    private void updateStatusFBack(string fback)
+    {
+        alloc_fback = fback; StateHasChanged();
+    }
+
+    private void updateStatusSQL(string sql)
+    {
+        alloc_sql = sql; StateHasChanged();
+    }
+
+    private void updateObjectFBack(string fback)
+    {
+        alloc_fback = fback; StateHasChanged();
+    }
+
+    private void updateObjectSQL(string sql)
+    {
+        alloc_sql = sql; StateHasChanged();
+    }
+
+    private void updatePhaseFBack(string fback)
+    {
+        alloc_fback = fback; StateHasChanged();
+    }
+
+    private void updatePhaseSQL(string sql)
+    {
+        alloc_sql = sql; StateHasChanged();
+    }
+
+   private void updateAllocFBack(string fback)
+    {
+        alloc_fback = fback; StateHasChanged();
+    }
+
+    private void updateAllocSQL(string sql)
+    {
+        alloc_sql = sql; StateHasChanged();
+    }
+        
 
     bool filtersBarShowing = true;
     bool optionsBarShowing = true;
@@ -434,59 +410,9 @@
     string? compOption = "none";
     string? year1value;
     string? year2value;
+    List<Country> Countries = default!;
 
     bool CountrySelectorVisible = false;
-
-    bool t11, t12, t13, t14, t15, t16;
-    bool s11, s14, s15, s16, s18, s21, s22, s25, s30;
-    bool pe1, p1, p12, p2, p23, p3, p4, p0;
-    bool ar, anr, ana, a0;
-    bool b11, b12, b21, b22, b23, b24, b25, b26;
-    bool b31, b32, b33, b34, b36, b44, b51, b52, b99;
-
-    private void SetAllTypes(bool check_state)
-    {
-        t11 = check_state;        t12 = check_state;
-        t13 = check_state;        t14 = check_state;
-        t15 = check_state;        t16 = check_state;
-    }
-
-    private void SetAllStatuses(bool check_state)
-    {
-        s11 = check_state;        s14 = check_state;
-        s15 = check_state;        s16 = check_state;
-        s18 = check_state;        s21 = check_state;
-        s22 = check_state;        s25 = check_state;
-        s30 = check_state;
-    }
-
-    private void SetAllPhases(bool check_state)
-    {
-        pe1 = check_state;       p1 = check_state;
-        p12 = check_state;       p2 = check_state;
-        p23 = check_state;       p3 = check_state;
-        p4 = check_state;        p0 = check_state;
-    }
-
-    private void SetAllAllocations(bool check_state)
-    {
-        ar = check_state;        anr = check_state;
-        ana = check_state;       a0 = check_state;
-    }
-
-    private void SetAllObjectTypes(bool check_state)
-    {
-        b11 = check_state;        b12 = check_state;
-        b21 = check_state;        b22 = check_state;
-        b23 = check_state;        b24 = check_state;
-        b25 = check_state;        b26 = check_state;
-        b31 = check_state;        b32 = check_state;
-        b33 = check_state;        b34 = check_state; 
-        b36 = check_state;        b44 = check_state;        
-        b51 = check_state;        b52 = check_state;   
-        b99 = check_state;
-    }
-
 
     private void ChangeFiltersBarVisibility(bool visibility)
     {
@@ -501,13 +427,39 @@
     private void SetCountrySelectorVisibility(bool value)
     {
         CountrySelectorVisible = value;
+        if (value)
+        {
+            currentCountry = null;  // match the blank combo
+        }
     }
 
     private Country? currentCountry;
-
     private void AddCurrentCountry()
     {
-        //optionsBarShowing = visibility;
+        if (currentCountry is not null)
+        {
+            // Do an 'already added' check
+
+            bool to_add = true;
+            foreach(Country c in Countries)
+            {
+                if (c.name == currentCountry.name)
+                {
+                    to_add = false;
+                    break;
+                }
+            }
+
+            if (!to_add)
+            {
+                string fb_message = $"But the country '{currentCountry.name}' has already been added!";
+
+            }
+            else
+            {
+                Countries.Add(currentCountry);
+            }
+        }
     }
 
     private void currentCountryChanged(Option<string> s)
@@ -518,6 +470,10 @@
         }
     }
 
+    private void RemoveCountry(Country currentCountry)
+    {
+        Countries.Remove(currentCountry);
+    }
 
     string? searchText;
     int? searchType = 1;
@@ -549,18 +505,6 @@
         SearchPossible = RecalculateSQL();
     }
 
-
-    private void yearCompOptionChanged(Option<string> s)
-    {
-
-    }
-
-
-    private void AddNewCountryCB()
-    {
-
-    }
-
     private void RecalculateFeedback()
     {
         // Provide the text for the 'SQL area'
@@ -572,14 +516,12 @@
         // provide the where clause for a SQL query (though this may be modified 
         // at the server). Returns true or false dependent on whether query is possible.
 
-        return false;
+        return false;  // for now
     }
 
     List<Option<string>> searchOptions = default!;
     List<Option<string>> idOptions = default!;
     List<Option<string>> countryOptions = default!;
-
-    List<Country>? Countries;
 
     protected override void OnInitialized()
     {
@@ -613,19 +555,7 @@
             { new Option<string> { Value = "5", Text = "Canada" } }
         };
 
-
+        Countries = new();
     }
 
-    internal class Country
-    {
-        int id { get; set; }
-        string name { get; set; }
-
-        public Country(int _id, string _name)
-        {
-            id = _id;
-            name = _name;
-        }
-    }
-}
 }

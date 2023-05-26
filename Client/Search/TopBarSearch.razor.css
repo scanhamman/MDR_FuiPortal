@@ -32,6 +32,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    min-width: 14rem;
 }
 
 
@@ -43,6 +44,7 @@
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
+    min-width: 14rem;
 }
 
 /* Left most div - only visible if column not visible */

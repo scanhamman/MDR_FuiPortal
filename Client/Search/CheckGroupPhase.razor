@@ -1,0 +1,204 @@
+﻿
+<div class="filter-line-rev">
+    <div>
+        <Tooltip Text="Clear all" Position="top">
+            <button class="filter-btn" @onclick="() => SetAllCheckboxes(false)">
+                <img height="14" width="14"
+                     src="/icons/delete-all-icon.svg"
+                     alt="clear all icon" />
+            </button>
+        </Tooltip>
+    </div>
+    <div>
+        <Tooltip Text="Select all" Position="top">
+            <button class="filter-btn" @onclick="() => SetAllCheckboxes(true)">
+                <img height="14" width="14"
+                     src="/icons/double-tick-icon.svg"
+                     alt="select all icon" />
+            </button>
+        </Tooltip>
+    </div>
+    <div id="top-spacer">
+        &nbsp;
+    </div>
+
+    @if (!string.IsNullOrEmpty(@TopLine))
+    {
+        <div id="top-line">
+            <p class="small-text-blue-italic">@TopLine</p>
+        </div>
+    }
+</div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p105">Early&nbsp;phase 1</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p110">Phase&nbsp;1</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p115">Phase&nbsp;1/2</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p120">Phase&nbsp;2</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p125">Phase&nbsp;2/3</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p130">Phase&nbsp;3</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p135">Phase&nbsp;4</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p100">Not&nbsp;applicable</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="p140">Not&nbsp;provided</FluentCheckbox></div>
+@if (!string.IsNullOrEmpty(@BottomLine))
+{
+    <div class="filter-bottom-line">
+        <p class="small-text-blue-italic">
+            @BottomLine
+        </p>
+    </div>
+}
+
+@code {
+
+    string? feedbackBase = "Phase type is one of (";
+    string? sqlBase = "phase_type_id in (";
+    string? TopLine = "";
+    string? BottomLine = "";
+
+    bool _p105, _p110, _p115, _p120, _p125, _p130, _p135, _p100, _p140;
+
+    [Parameter]
+    public Action<string>? OnFeedbackChange { get; set; }
+
+    [Parameter]
+    public Action<string>? OnSQLChange { get; set; }
+
+    string phase_sql = "";
+    string phase_fback = "";
+
+    public bool p105
+    {
+        get { return _p105; }
+        set
+        {
+            _p105 = value;
+            process_state();
+        }
+    }
+    public bool p110
+    {
+        get { return _p110; }
+        set
+        {
+            _p110 = value;
+            process_state();
+        }
+    }
+    public bool p115
+    {
+        get { return _p115; }
+        set
+        {
+            _p115 = value;
+            process_state();
+        }
+
+    }
+    public bool p120
+    {
+        get { return _p120; }
+        set
+        {
+            _p120 = value;
+            process_state();
+        }
+    }
+    public bool p125
+    {
+        get { return _p125; }
+        set
+        {
+            _p125 = value;
+            process_state();
+        }
+    }
+    public bool p130
+    {
+        get { return _p130; }
+        set
+        {
+            _p130 = value;
+            process_state();
+        }
+
+    }
+    public bool p135
+    {
+        get { return _p135; }
+        set
+        {
+            _p135 = value;
+            process_state();
+        }
+    }
+
+    public bool p100
+    {
+        get { return _p100; }
+        set
+        {
+            _p100 = value;
+            process_state();
+        }
+    }
+    public bool p140
+    {
+        get { return _p140; }
+        set
+        {
+            _p140 = value;
+            process_state();
+        }
+
+    }
+    
+    private void process_state()
+    {
+        if (!_p105 && !_p110 && !_p115 && !_p120 && !_p125 
+            && !_p130 && !_p135 && !_p100 && !_p140)
+        {
+            OnFeedbackChange!.Invoke("");
+            OnSQLChange!.Invoke("");
+        }
+        else if (_p105 && _p110 && _p115 && _p120 && _p125
+            && _p130 && _p135 && _p100 && _p140)
+        {
+            OnFeedbackChange!.Invoke("All phase options");
+            OnSQLChange!.Invoke("");
+        }
+        else
+        {
+            string phase_fback_string = _p105 ? ", Early phase 1" : "";
+            phase_fback_string += _p110 ? ", Phase 1" : "";
+            phase_fback_string += _p115 ? ", Phase 1/2" : "";
+            phase_fback_string += _p120 ? ", Phase 2" : "";
+            phase_fback_string += _p125 ? ", Phase 2/3" : "";
+            phase_fback_string += _p130 ? ", Phase 3" : "";
+            phase_fback_string += _p135 ? ", Phase 4" : "";
+            phase_fback_string += _p100 ? ", Not applicable" : "";
+            phase_fback_string += _p140 ? ", Not applicable" : "";
+            phase_fback = feedbackBase + phase_fback_string[2..] + ")";
+            OnFeedbackChange!.Invoke(phase_fback);
+
+            string phase_sql_string = _p105 ? ", 105" : "";
+            phase_sql_string += _p110 ? ", 110" : "";
+            phase_sql_string += _p115 ? ", 115" : "";
+            phase_sql_string += _p120 ? ", 120" : "";
+            phase_sql_string += _p125 ? ", 125" : "";
+            phase_sql_string += _p130 ? ", 130" : "";
+            phase_sql_string += _p135 ? ", 135" : "";
+            phase_sql_string += _p100 ? ", 100" : "";
+            phase_sql_string += _p140 ? ", 140" : "";
+            phase_sql = sqlBase + phase_sql_string[2..] + ")";
+            OnSQLChange!.Invoke(phase_sql);
+        }
+    }
+
+    private void SetAllCheckboxes(bool check_state)
+    {
+        p105 = check_state; p110 = check_state;
+        p115 = check_state; p120 = check_state;
+        p125 = check_state; p130 = check_state;
+        p135 = check_state; p100 = check_state;
+        p140 = check_state;
+    }
+}

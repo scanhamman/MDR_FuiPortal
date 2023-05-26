@@ -1,0 +1,291 @@
+﻿
+<div class="filter-line-rev">
+    <div>
+        <Tooltip Text="Clear all" Position="top">
+            <button class="filter-btn" @onclick="() => SetAllCheckboxes(false)">
+                <img height="14" width="14"
+                     src="/icons/delete-all-icon.svg"
+                     alt="clear all icon" />
+            </button>
+        </Tooltip>
+    </div>
+    <div>
+        <Tooltip Text="Select all" Position="top">
+            <button class="filter-btn" @onclick="() => SetAllCheckboxes(true)">
+                <img height="14" width="14"
+                     src="/icons/double-tick-icon.svg"
+                     alt="select all icon" />
+            </button>
+        </Tooltip>
+    </div>
+    <div id="top-spacer">
+        &nbsp;
+    </div>
+    <div id="top-line">
+        <p class="small-text-blue-italic">@TopLine</p>
+    </div>
+</div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b12">Registry&nbsp;results&nbsp;summary</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b21">Journal&nbsp;article</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b22">Study&nbsp;protocol</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b34">IPD*</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b23">Study&nbsp;overview</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b24">Patient&nbsp;consent/IS*</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b25">Data&nbsp;collection&nbsp;forms</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b26">Manual&nbsp;of&nbsp;procedures</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b31">SAP*</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b32">Clinical&nbsp;study&nbsp;report</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b33">Data&nbsp;summary</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b36">Other&nbsp;study&nbsp;resource*</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b44">Other&nbsp;info.&nbsp;resource*</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b51">Website</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b52">Software</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b99">Other</FluentCheckbox></div>
+@if (!string.IsNullOrEmpty(@BottomLine))
+{
+    <div class="filter-bottom-line">
+        <p class="small-text-blue-italic">
+            @BottomLine
+        </p>
+    </div>
+}
+
+@code {
+
+    string? feedbackBase = "Object type one of (";
+    string? sqlBase = "object_type_id in (";
+    string? TopLine = "Studies with...";
+    string? BottomLine = "*Please see Guide for explanation of acronyms and category definitions.";
+
+    bool _b12, _b21, _b22, _b23, _b24, _b25, _b26;
+    bool _b31, _b32, _b33, _b34, _b36, _b44, _b51, _b52, _b99;
+
+    [Parameter]
+    public Action<string>? OnFeedbackChange { get; set; }
+
+    [Parameter]
+    public Action<string>? OnSQLChange { get; set; }
+
+    string object_sql = "";
+    string object_fback = "";
+
+    public bool b12
+    {
+        get { return _b12; }
+        set
+        {
+            _b12 = value;
+            process_state();
+        }
+    }
+    public bool b21
+    {
+        get { return _b21; }
+        set
+        {
+            _b21 = value;
+            process_state();
+        }
+    }
+    public bool b22
+    {
+        get { return _b22; }
+        set
+        {
+            _b22 = value;
+            process_state();
+        }
+
+    }
+    public bool b23
+    {
+        get { return _b23; }
+        set
+        {
+            _b23 = value;
+            process_state();
+        }
+    }
+    public bool b24
+    {
+        get { return _b24; }
+        set
+        {
+            _b24 = value;
+            process_state();
+        }
+    }
+    public bool b25
+    {
+        get { return _b25; }
+        set
+        {
+            _b25 = value;
+            process_state();
+        }
+
+    }
+    public bool b26
+    {
+        get { return _b26; }
+        set
+        {
+            _b26 = value;
+            process_state();
+        }
+    }
+
+    public bool b31
+    {
+        get { return _b31; }
+        set
+        {
+            _b31 = value;
+            process_state();
+        }
+    }
+    public bool b32
+    {
+        get { return _b32; }
+        set
+        {
+            _b32 = value;
+            process_state();
+        }
+
+    }
+    public bool b33
+    {
+        get { return _b33; }
+        set
+        {
+            _b33 = value;
+            process_state();
+        }
+    }
+    public bool b34
+    {
+        get { return _b34; }
+        set
+        {
+            _b34 = value;
+            process_state();
+        }
+    }
+    public bool b36
+    {
+        get { return _b36; }
+        set
+        {
+            _b36 = value;
+            process_state();
+        }
+    }
+    public bool b44
+    {
+        get { return _b44; }
+        set
+        {
+            _b44 = value;
+            process_state();
+        }
+    }
+     public bool b51
+    {
+        get { return _b51; }
+        set
+        {
+            _b51 = value;
+            process_state();
+        }
+    }
+    public bool b52
+    {
+        get { return _b52; }
+        set
+        {
+            _b52 = value;
+            process_state();
+        }
+    }
+    public bool b99
+    {
+        get { return _b99; }
+        set
+        {
+            _b99 = value;
+            process_state();
+        }
+    }
+
+    private void process_state()
+    {
+        if (!_b12 && !_b21 && !_b22 && !_b23 && !_b24 && !_b25 && !_b26
+            && !_b31 && !_b32 && !_b33 && !_b34 && !_b36 && !_b44 
+            && !_b51 && !_b52 && !_b99)
+        {
+            OnFeedbackChange!.Invoke("");
+            OnSQLChange!.Invoke("");
+        }
+        else if (_b12 && _b21 && _b22 && _b23 && _b24 && _b25 && _b26
+                 && _b31 && _b32 && _b33 && _b34 && _b36 && _b44 
+                 && _b51 && _b52 && _b99)
+        {
+            OnFeedbackChange!.Invoke("All allocation options");
+            OnSQLChange!.Invoke("");
+        }
+        else
+        {
+            string object_fback_string = _b12 ? ", Registry results summary" : "";
+            object_fback_string += _b21 ? ", Journal article" : "";
+            object_fback_string += _b22 ? ", Study protocol" : "";
+            object_fback_string += _b23 ? ", Study overview" : "";
+            object_fback_string += _b24 ? ", Patient consent/IS" : "";
+            object_fback_string += _b25 ? ", Data collection forms" : "";
+            object_fback_string += _b26 ? ", Manual of procedures" : "";
+            object_fback_string += _b31 ? ", SAP" : "";
+            object_fback_string += _b32 ? ", Clinical study report" : "";
+            object_fback_string += _b33 ? ", Data summary" : "";
+            object_fback_string += _b34 ? ", IPD" : "";
+            object_fback_string += _b36 ? ", Other study resource" : "";
+            object_fback_string += _b44 ? ", Other info. resource" : "";
+            object_fback_string += _b51 ? ", Website" : "";
+            object_fback_string += _b52 ? ", Software" : "";
+            object_fback_string += _b99 ? ", Other" : "";
+            object_fback = feedbackBase + object_fback_string[2..] + ")";
+            OnFeedbackChange!.Invoke(object_fback);
+
+            string object_sql_string = _b12 ? ", 12" : "";
+            object_sql_string += _b21 ? ", 21" : "";
+            object_sql_string += _b22 ? ", 22" : "";
+            object_sql_string += _b23 ? ", 23" : "";
+            object_sql_string += _b24 ? ", 24" : "";
+            object_sql_string += _b25 ? ", 25" : "";
+            object_sql_string += _b26 ? ", 26" : "";
+            object_sql_string += _b31 ? ", 31" : "";
+            object_sql_string += _b32 ? ", 32" : "";
+            object_sql_string += _b33 ? ", 33" : "";
+            object_sql_string += _b34 ? ", 34" : "";
+            object_sql_string += _b36 ? ", 36" : "";
+            object_sql_string += _b44 ? ", 44" : "";
+            object_sql_string += _b51 ? ", 51" : "";
+            object_sql_string += _b52 ? ", 52" : "";
+            object_sql_string += _b99 ? ", 99" : "";
+            object_sql = sqlBase + object_sql_string[2..] + ")";
+            OnSQLChange!.Invoke(object_sql);
+        }
+    }
+
+    private void SetAllCheckboxes(bool check_state)
+    {
+        b12 = check_state;
+        b21 = check_state; b22 = check_state;
+        b23 = check_state; b24 = check_state;
+        b25 = check_state; b26 = check_state;
+        b31 = check_state; b32 = check_state;
+        b33 = check_state; b34 = check_state;
+        b36 = check_state; b44 = check_state;
+        b51 = check_state; b52 = check_state;
+        b99 = check_state;
+    }
+}

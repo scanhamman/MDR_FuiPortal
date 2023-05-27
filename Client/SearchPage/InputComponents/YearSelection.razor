@@ -1,0 +1,160 @@
+﻿<div class="vert-splitter">
+    <div id="yearLHS">
+        <div class="yearlabel">
+            <p id="complabel" class="small-text-blue">Comparator</p>
+        </div>
+        <FluentRadioGroup aria-labelledby="compLabel" @bind-Value=compOption
+                          Name="compOptions" Orientation="Orientation.Vertical">
+            <FluentRadio Value="@("none")">none</FluentRadio>
+            <FluentRadio Value="@("eq")">=</FluentRadio>
+            <FluentRadio Value="@("gt")">></FluentRadio>
+            <FluentRadio Value="@("lt")">&lt;</FluentRadio>
+            <FluentRadio Value="@("bw")">between</FluentRadio>
+        </FluentRadioGroup>
+    </div>
+    <div id="yearRHS">
+
+        @if (@compOption != "none")
+        {
+            <div class="yearlabel">
+                <p class="small-text-blue">Year</p>
+            </div>
+
+            <div id="year1-input">
+                <input type="text" @bind="@year1value" @bind:event="oninput" style="width: 80px;" />
+            </div>
+
+            @if (@compOption == "bw")
+            {
+                <div class="yearlabel">
+                    <p class="small-text-blue"> and </p>
+                </div>
+                <div id="year2-input">
+                    <input type="text" @bind="@year2value" @bind:event="oninput" style="width: 80px;" />
+                </div>
+            }
+            <div class="yearlabel">
+                <p class="small-text-blue-italic"> Please enter year(s) as 4 digits</p>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public Action<string>? OnFeedbackChange { get; set; }
+
+    [Parameter]
+    public Action<string>? OnSQLChange { get; set; }
+
+    string _compOption = "none";
+    string? _year1value;
+    string? _year2value;
+    string year_sql = "";
+    string year_fback = "";
+
+    public string compOption
+    {
+        get { return _compOption; }
+        set
+        {
+            _compOption = value;
+            process_state();
+        }
+    }
+
+    public string? year1value
+    {
+        get { return _year1value; }
+        set
+        {
+            _year1value = value;
+            if (_year1value is not null 
+                && _year1value.Length == 4)
+            {
+                process_state();
+            }
+        }
+    }
+
+    public string? year2value
+    {
+        get { return _year2value; }
+        set
+        {
+            _year2value = value;
+            if (_year2value is not null 
+                && _year2value.Length == 4)
+            {
+                process_state();
+            }
+        }
+    }
+
+    private void process_state()
+    {
+        if (_compOption == "none")
+        {
+            year1value = "";
+            year2value = "";
+            OnFeedbackChange!.Invoke("");
+            OnSQLChange!.Invoke("");
+        }
+        else
+        {
+            if (_compOption is "eq" or "gt" or "lt")
+            {
+                if (isvalid(year1value))
+                {
+                    string op = _compOption switch
+                    {
+                        "eq" => "=",
+                        "gt" => ">",
+                        "lt" => "<",
+                        _ => "",
+                    };
+
+                    year_fback = $"study start year {op} {year1value}";
+                    OnFeedbackChange!.Invoke(year_fback);
+
+                    year_sql = $"study_start_year {op} {year1value}";
+                    OnSQLChange!.Invoke(year_sql);
+                }
+            }
+            else if (_compOption == "bw")
+            {
+                if (isvalid(year1value) && isvalid(year2value))
+                {
+                    year_fback = $"study start year between {year1value} and {year2value} (inc.)";
+                    OnFeedbackChange!.Invoke(year_fback);
+
+                    year_sql = $"study_start_year between ({year1value}, {year2value})";
+                    OnSQLChange!.Invoke(year_sql);
+                }
+                else
+                {
+                    OnFeedbackChange!.Invoke("");
+                    OnSQLChange!.Invoke("");
+                }
+            }
+        }
+    }
+
+    private bool isvalid(string? yearString)
+    {
+        if (string.IsNullOrEmpty(yearString))
+        {
+            return false;
+        }
+        if (yearString.Length == 4 
+            && (yearString[0..2] == "19" || yearString[0..2] == "20")
+            && Int32.TryParse(yearString, out int _))
+        {
+            return true;
+        }
+        return false;
+    }
+
+}

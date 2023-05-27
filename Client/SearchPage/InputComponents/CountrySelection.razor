@@ -1,0 +1,143 @@
+﻿@inject HttpClient Http
+
+<div id="countries">
+    <div id="countries-top">
+        <button id="select-countries" class="filter-btn small-button-text taller-button"
+                @onclick="() => SetCountrySelectorVisibility(true)">
+            Select Country(ies)...
+        </button>
+    </div>
+    @if (@CountrySelectorVisible)
+    {
+        <div id="new-country-cb" class="country-cb">
+            <SCComboBox idOptions="countryOptions"
+                    HandleSelectedOptionChanged="currentCountryChanged"></SCComboBox>
+        </div>
+        <div id="country-buttons">
+            <button id="add-selected" class="filter-btn small-button-text taller-button"
+                @onclick="() => AddCurrentCountry()">
+                Add Selected
+            </button>
+            <button id="cancel-add" class="filter-btn small-button-text taller-button"
+                @onclick="() => SetCountrySelectorVisibility(false)">
+                Cancel
+            </button>
+        </div>
+    }
+    <div id="location-header">
+        <div id="loc-header-text">
+            <p class="small-text">Selected so far:</p>
+        </div>
+    </div>
+
+    @if (SelectedCountries?.Any() == true)
+    {
+        @foreach (Country c in SelectedCountries)
+        {
+            <div class="selected-location">
+                <div class="selected-location-name">
+                    <p class="small-text">@c.name</p>
+                </div>
+                <div class="selected-location-remove">
+                    <Tooltip Text="Remove" Position="top">
+                        <button class="filter-btn" @onclick="() => RemoveCountry(c)">
+                            <img height="14" width="14"
+                         src="/icons/remove-icon.svg"
+                         alt="remove location icon" />
+                        </button>
+                    </Tooltip>
+                </div>
+            </div>
+        }
+
+    }
+</div>
+
+@code {
+    /* Country selection code*/
+
+    [Parameter]
+    public EventCallback<List<Country>> onListChanged {get; set;}
+
+    private void ListChanged()
+    {
+        onListChanged.InvokeAsync(SelectedCountries);
+    }
+
+
+    List<Country> SelectedCountries = default!;
+    private Country? currentCountry;
+    bool CountrySelectorVisible = false;
+
+    private void SetCountrySelectorVisibility(bool value)
+    {
+        CountrySelectorVisible = value;
+        if (value)
+        {
+            currentCountry = null;  // match the blank combo
+        }
+    }
+
+    private void AddCurrentCountry()
+    {
+        if (currentCountry is not null)
+        {
+            // Do an 'already added' check
+
+            bool to_add = true;
+            foreach (Country c in SelectedCountries)
+            {
+                if (c.name == currentCountry.name)
+                {
+                    to_add = false;
+                    break;
+                }
+            }
+
+            if (!to_add)
+            {
+                string fb_message = $"But the country '{currentCountry.name}' has already been added!";
+
+            }
+            else
+            {
+                SelectedCountries.Add(currentCountry);
+                ListChanged(); // raise an event to inform parent component
+            }
+        }
+    }
+
+    private void currentCountryChanged(Option<string> s)
+    {
+        if (s is not null && Int32.TryParse(s.Value, out int id))
+        {
+            currentCountry = new Country(id, s.Text!);
+        }
+    }
+
+    private void RemoveCountry(Country currentCountry)
+    {
+        SelectedCountries.Remove(currentCountry);
+        ListChanged(); // raise an event to inform parent component
+    }
+
+    List<Option<string>> countryOptions = default!;
+
+    protected async override Task OnInitializedAsync()
+    {
+        SelectedCountries = new();
+        countryOptions = new();
+
+        // fetch country list
+
+        string countries_url = "api/lookup/countryList";
+        var countryList = await Http.GetFromJsonAsync<List<Country>?>(countries_url);
+        if (countryList?.Any() == true)
+        {
+            foreach (var c in countryList)
+            {
+                countryOptions.Add(new Option<string> { Value = c.id.ToString(), Text = c.name });
+            }
+        }
+    }
+}

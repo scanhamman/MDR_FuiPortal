@@ -1,5 +1,4 @@
-﻿
-<div class="filter-line-rev">
+﻿<div class="filter-line-rev">
     <div>
         <Tooltip Text="Clear all" Position="top">
             <button class="filter-btn" @onclick="() => SetAllCheckboxes(false)">
@@ -22,7 +21,7 @@
         &nbsp;
     </div>
     <div id="top-line">
-        <p class="small-text-blue-italic">@TopLine</p>
+        <p class="small-text-blue-italic">Studies with...</p>
     </div>
 </div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b12">Registry&nbsp;results&nbsp;summary</FluentCheckbox></div>
@@ -41,21 +40,17 @@
 <div class="filter-line"><FluentCheckbox @bind-Value="b51">Website</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b52">Software</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b99">Other</FluentCheckbox></div>
-@if (!string.IsNullOrEmpty(@BottomLine))
-{
-    <div class="filter-bottom-line">
-        <p class="small-text-blue-italic">
-            @BottomLine
-        </p>
-    </div>
-}
+<div class="filter-bottom-line">
+    <p class="small-text-blue-italic">
+        *Please see Guide for explanation of acronyms and category definitions.
+    </p>
+</div>
+
 
 @code {
 
     string? feedbackBase = "Object type one of (";
     string? sqlBase = "object_type_id in (";
-    string? TopLine = "Studies with...";
-    string? BottomLine = "*Please see Guide for explanation of acronyms and category definitions.";
 
     bool _b12, _b21, _b22, _b23, _b24, _b25, _b26;
     bool _b31, _b32, _b33, _b34, _b36, _b44, _b51, _b52, _b99;

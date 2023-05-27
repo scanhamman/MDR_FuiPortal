@@ -1,48 +1,14 @@
-﻿.small-text {
-    font: var(--small-text);
-    text-align: left;
-    color: var(--txt-colour);
-}
-
-.small-text-blue {
-    font: var(--small-text);
-    color: var(--txt-emph-colour);
-    text-align: left
-}
-
-.small-text-blue-italic {
+﻿.small-text-blue-italic {
     font: var(--small-text);
     color: var(--txt-emph-colour);
     text-align: left;
     font-style: italic;
-}
-
-.small-text-blue-center {
-    font: var(--small-text);
-    text-align: center;
-    color: var(--txt-emph-colour);
-}
-
-.small-button-text {
-    font: var(--small-text);
-    text-align: center;
-    color: var(--link-colour);
-}
-
-.no-wrap-text {
-    white-space: nowrap;
+    margin-bottom: 0;
 }
 
 .filter-line-rev {
     display: flex;
     flex-direction: row-reverse;
-}
-
-
-#filters-container {
-    padding-top: 5rem;
-    padding-left: 0.6rem;
-    padding-right: 1rem;
 }
 
 .filter-line {

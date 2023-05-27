@@ -1,0 +1,108 @@
+﻿<div class="RHSCheck" id="SearchIn">
+    <div>
+        <p class="normal-blue-text">Search for key words in...</p>
+    </div>
+</div>
+
+<div class="RHSCheck">
+    <div class="RHSCheckTextSection">
+        <p class="normal-blue-text">Study Titles</p>
+    </div>
+    <div class="RHSCheckBoxSection">
+        <FluentCheckbox @bind-Value=searchInTitles></FluentCheckbox>
+    </div>
+</div>
+
+<div class="RHSCheck">
+    <div class="RHSCheckTextSection">
+        <p class="normal-blue-text">Study Topics</p>
+    </div>
+    <div class="RHSCheckBoxSection">
+        <FluentCheckbox @bind-Value=searchInTopics></FluentCheckbox>
+    </div>
+</div>
+
+<div class="RHSCheck">
+    <div class="RHSCheckTextSection">
+        <p class="normal-blue-text">Study Conditions</p>
+    </div>
+    <div class="RHSCheckBoxSection">
+        <FluentCheckbox @bind-Value=searchInConditions></FluentCheckbox>
+    </div>
+</div>
+
+
+
+@code {
+
+    bool _searchInTitles;
+    bool _searchInTopics;
+    bool _searchInConditions;
+    int _searchScope;
+
+    [Parameter]
+    public Action<string>? OnFeedbackChange { get; set; }
+
+    [Parameter]
+    public Action<int>? OnScopeChange { get; set; }
+
+    public bool searchInTitles
+    {
+        get { return _searchInTitles; }
+        set
+        {
+            _searchInTitles = value;
+            process_state();
+        }
+    }
+
+    public bool searchInTopics
+    {
+        get { return _searchInTopics; }
+        set
+        {
+            _searchInTopics = value;
+            process_state();
+        }
+    }
+
+    public bool searchInConditions
+    {
+        get { return _searchInConditions; }
+        set
+        {
+            _searchInConditions = value;
+            process_state();
+        }
+    }
+
+    private void process_state()
+    {
+        string scope_fback_string = _searchInTitles ? ", titles" : "";
+        scope_fback_string += _searchInTopics ? ", topics" : "";
+        scope_fback_string += _searchInConditions ? ", conditions" : "";
+        string scope_fback;
+        if (scope_fback_string == "")
+        {
+            scope_fback = "No scope defined - searching by key words impossible!!!";
+        }
+        else
+        {
+            scope_fback = "Searching in " + scope_fback_string[2..];
+        }
+        OnFeedbackChange!.Invoke(scope_fback);
+
+        _searchScope = _searchInTitles ? 1 : 0;
+        _searchScope += _searchInTopics ? 2 : 0;
+        _searchScope += _searchInConditions ? 4 : 0;
+        OnScopeChange!.Invoke(_searchScope);
+    }
+
+    protected override void OnInitialized()
+    {
+        _searchInTitles = true;
+        _searchInTopics = true;
+        _searchInConditions = false;
+        process_state();
+    }
+}

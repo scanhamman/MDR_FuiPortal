@@ -1,0 +1,35 @@
+﻿.small-text-blue-italic {
+    font: var(--small-text);
+    color: var(--txt-emph-colour);
+    text-align: left;
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+.filter-line-rev {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.filter-line {
+    display: flex;
+    padding-bottom: 0.2rem;
+}
+
+filter-bottom-line {
+    display: flex;
+    padding: 0.5rem 0 0.2rem 0;
+}
+
+.filter-btn {
+    background-color: darkslateblue;
+    border: none;
+    padding: 1px 6px;
+    cursor: pointer;
+    margin: 0 4px;
+    border-radius: 5px;
+}
+
+    .filter-btn:hover {
+        background-color: RoyalBlue;
+    }

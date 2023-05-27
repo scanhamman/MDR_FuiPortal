@@ -1,5 +1,4 @@
-﻿
-<div class="filter-line-rev">
+﻿<div class="filter-line-rev">
     <div>
     <Tooltip Text="Clear all" Position="top">
         <button class="filter-btn" @onclick="() => SetAllCheckboxes(false)">
@@ -18,15 +17,6 @@
         </button>
     </Tooltip>
     </div>
-    <div id="top-spacer">
-        &nbsp;
-    </div>
-    @if (!string.IsNullOrEmpty(@TopLine))
-    {
-        <div id="top-line">
-            <p class="small-text-blue-italic">@TopLine</p>
-        </div>
-    }
 </div>
 
 <div class="filter-line"><FluentCheckbox @bind-Value="v205">Randomised</FluentCheckbox></div>
@@ -34,22 +24,10 @@
 <div class="filter-line"><FluentCheckbox @bind-Value="v200">Not&nbsp;applicable</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="v215">Not&nbsp;provided</FluentCheckbox></div>
 
-
-@if (!string.IsNullOrEmpty(@BottomLine))
-{
-    <div class="filter-bottom-line">
-        <p class="small-text-blue-italic">
-            
-        </p>
-    </div>
-}
-
 @code {
 
     string? feedbackBase = "Allocation type one of (";
     string? sqlBase = "allocation_type_id in (";
-    string? TopLine = "";
-    string? BottomLine = "";
 
     [Parameter]
     public Action<string>? OnFeedbackChange { get; set; }

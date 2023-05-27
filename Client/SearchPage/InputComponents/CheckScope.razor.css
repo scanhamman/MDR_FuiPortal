@@ -1,0 +1,25 @@
+﻿
+.normal-blue-text {
+    text-align: left;
+    font: var(--normal-text);
+    color: var(--txt-emph-colour);
+}
+
+#SearchIn {
+    padding: 0 0 0.5rem 2rem;
+}
+
+.RHSCheck {
+    display: flex;
+    padding-bottom: 0;
+}
+
+.RHSCheckTextSection {
+    flex: 0 0 70%;
+    padding-left: 2.5rem;
+}
+
+
+.RHSCheckBoxSection {
+    flex: 0 0 30%;
+}

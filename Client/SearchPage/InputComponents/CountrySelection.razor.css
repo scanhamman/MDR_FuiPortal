@@ -1,0 +1,83 @@
+﻿.small-text {
+    font: var(--small-text);
+    text-align: left;
+    color: var(--txt-colour);
+}
+
+.small-button-text {
+    font: var(--small-text);
+    text-align: center;
+    color: var(--link-colour);
+}
+
+.filter-btn {
+    background-color: darkslateblue;
+    border: none;
+    padding: 1px 6px;
+    cursor: pointer;
+    margin: 0 4px;
+    border-radius: 5px;
+}
+
+    .filter-btn:hover {
+        background-color: RoyalBlue;
+    }
+
+
+.filter-expln {
+    padding: 1rem 0.5rem;
+}
+
+.taller-button {
+    padding: 6px;
+}
+
+#countries {
+    display: flex;
+    flex-direction: column;
+}
+
+#country-buttons {
+    display: flex;
+    padding: 0.8rem 0.2rem;
+}
+
+#countries-top {
+    display: flex;
+    padding: 0.8rem 0.2rem;
+}
+
+#select-countries {
+    flex: 0 0;
+    white-space: nowrap;
+}
+
+#add-selected {
+    flex: 1 1 60%;
+    background-color: teal;
+    white-space: nowrap;
+}
+
+#cancel-add {
+    flex: 1 1 30%;
+    background-color: maroon;
+}
+
+.country-cb {
+    padding-left: 0;
+    margin-left: -8px;
+}
+
+.selected-location {
+    display: flex;
+    padding: 0.2rem 0 0.2rem 2rem;
+}
+
+.selected-location-name {
+    flex: 1 1 80%;
+    padding-top: 0.4rem;
+}
+
+.selected-location-remove {
+    flex: 1 1 20%;
+}

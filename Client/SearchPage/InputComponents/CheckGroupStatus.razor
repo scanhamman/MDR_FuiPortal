@@ -1,5 +1,4 @@
-﻿
-<div class="filter-line-rev">
+﻿<div class="filter-line-rev">
     <div>
         <Tooltip Text="Clear all" Position="top">
             <button class="filter-btn" @onclick="() => SetAllCheckboxes(false)">
@@ -18,16 +17,6 @@
             </button>
         </Tooltip>
     </div>
-    <div id="top-spacer">
-        &nbsp;
-    </div>
-
-    @if (!string.IsNullOrEmpty(@TopLine))
-    {
-        <div id="top-line">
-            <p class="small-text-blue-italic">@TopLine</p>
-        </div>
-    }
 </div>
 <div class="filter-line"><FluentCheckbox @bind-Value="s16">Not&nbsp;yet&nbsp;recruiting</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="s14">Recruiting</FluentCheckbox></div>
@@ -38,21 +27,17 @@
 <div class="filter-line"><FluentCheckbox @bind-Value="s18">Suspended</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="s22">Terminated</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="s30">Other</FluentCheckbox></div>
-@if (!string.IsNullOrEmpty(@BottomLine))
-{
-    <div class="filter-bottom-line">
-        <p class="small-text-blue-italic">
-            @BottomLine
-        </p>
-    </div>
-}
+<div class="filter-bottom-line">
+    <p class="small-text-blue-italic">
+        *Includes 2 previous categories, plus studies described only as 'ongoing'
+    </p>
+</div>
+
 
 @code {
 
     string? feedbackBase = "Study status one of (";
     string? sqlBase = "study_status_id in (";
-    string? TopLine = "";
-    string? BottomLine = "*Includes 2 previous categories, plus studies described only as 'ongoing'";
 
     bool _s16, _s14, _s15, _s25, _s21, _s11, _s18, _s22, _s30;
 
@@ -167,9 +152,9 @@
         }
         else
         {
-            string status_fback_string = _s16 ? ", Not&nbsp;yet&nbsp;recruiting" : "";
+            string status_fback_string = _s16 ? ", Not yet recruiting" : "";
             status_fback_string += _s14 ? ", Recruiting" : "";
-            status_fback_string += _s15 ? ", Active,&nbsp;not&nbsp;recruiting" : "";
+            status_fback_string += _s15 ? ", Active, not recruiting" : "";
             status_fback_string += _s25 ? ", Ongoing" : "";
             status_fback_string += _s21 ? ", Completed" : "";
             status_fback_string += _s11 ? ", Withdrawn" : "";

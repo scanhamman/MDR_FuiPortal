@@ -1,5 +1,4 @@
-﻿
-<div class="filter-line-rev">
+﻿<div class="filter-line-rev">
     <div>
         <Tooltip Text="Clear all" Position="top">
             <button class="filter-btn" @onclick="() => SetAllCheckboxes(false)">
@@ -18,16 +17,6 @@
             </button>
         </Tooltip>
     </div>
-    <div id="top-spacer">
-        &nbsp;
-    </div>
-
-    @if (!string.IsNullOrEmpty(@TopLine))
-    {
-        <div id="top-line">
-            <p class="small-text-blue-italic">@TopLine</p>
-        </div>
-    }
 </div>
 <div class="filter-line"><FluentCheckbox @bind-Value="p105">Early&nbsp;phase 1</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="p110">Phase&nbsp;1</FluentCheckbox></div>
@@ -38,21 +27,11 @@
 <div class="filter-line"><FluentCheckbox @bind-Value="p135">Phase&nbsp;4</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="p100">Not&nbsp;applicable</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="p140">Not&nbsp;provided</FluentCheckbox></div>
-@if (!string.IsNullOrEmpty(@BottomLine))
-{
-    <div class="filter-bottom-line">
-        <p class="small-text-blue-italic">
-            @BottomLine
-        </p>
-    </div>
-}
 
 @code {
 
     string? feedbackBase = "Phase type is one of (";
     string? sqlBase = "phase_type_id in (";
-    string? TopLine = "";
-    string? BottomLine = "";
 
     bool _p105, _p110, _p115, _p120, _p125, _p130, _p135, _p100, _p140;
 

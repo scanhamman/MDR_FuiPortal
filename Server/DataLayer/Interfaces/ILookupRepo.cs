@@ -1,5 +1,8 @@
-﻿namespace MDR_FuiPortal.Server;
+﻿using MDR_FuiPortal.Shared;
 
-public interface ILookupRepo
+namespace MDR_FuiPortal.Server;
+
+public interface ILookUpRepo
 {
+    public List<Country>? FetchCountries();
 }

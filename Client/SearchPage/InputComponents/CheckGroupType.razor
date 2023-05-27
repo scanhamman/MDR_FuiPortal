@@ -1,5 +1,4 @@
-﻿
-<div class="filter-line-rev">
+﻿<div class="filter-line-rev">
     <div>
         <Tooltip Text="Clear all" Position="top">
             <button class="filter-btn" @onclick="() => SetAllCheckboxes(false)">
@@ -18,15 +17,6 @@
             </button>
         </Tooltip>
     </div>
-    <div id="top-spacer">
-        &nbsp;
-    </div>
-    @if (!string.IsNullOrEmpty(@TopLine))
-    {
-        <div id="top-line">
-            <p class="small-text-blue-italic">@TopLine</p>
-        </div>
-    }
 </div>
 <div class="filter-line"><FluentCheckbox @bind-Value="t11">Interventional</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="t12">Observational</FluentCheckbox></div>
@@ -34,25 +24,15 @@
 <div class="filter-line"><FluentCheckbox @bind-Value="t14">Expanded&nbsp;access</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="t15">Funded&nbsp;programme</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="t16">Other</FluentCheckbox></div>
-@if (!string.IsNullOrEmpty(@BottomLine))
-{
-    <div class="filter-bottom-line">
-        <p class="small-text-blue-italic">
-            @BottomLine
-        </p>
-    </div>
-}
+
 
 @code {
 
     string? feedbackBase = "Study type one of (";
     string? sqlBase = "study_type_id in (";
-    string? TopLine = "";
-    string? BottomLine = "";
 
     bool _t11, _t12, _t13, _t14, _t15, _t16;
   
-
     [Parameter]
     public Action<string>? OnFeedbackChange { get; set; }
 
@@ -157,7 +137,6 @@
         t11 = check_state; t12 = check_state; 
         t13 = check_state; t14 = check_state; 
         t15 = check_state; t16 = check_state; 
-
     }
 }
 

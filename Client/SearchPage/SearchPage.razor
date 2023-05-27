@@ -1,0 +1,419 @@
+﻿@page "/Search"
+@using MDR_FuiPortal.Client.SearchPage.InputComponents
+@using MDR_FuiPortal.Client.SearchPage.ResultComponents
+
+<PageTitle>MDR Search</PageTitle>
+
+<TopBarSearch onFiltersBarVisibilityChanged="ChangeFiltersBarVisibility"
+              onOptionsBarVisibilityChanged="ChangeOptionsBarVisibility" />
+
+
+<div id="body-outer">
+    <div id="body-main">
+
+        @if (filtersBarShowing)
+        {
+            <div id="left-bar">
+                <div id="filters-container">
+                    <FluentDesignSystemProvider FillColor="#ecedee">
+                        <FluentAccordion>
+                            <FluentAccordionItem Heading="By Type" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <CheckGroupType OnFeedbackChange="updateTypeFBack" OnSQLChange="updateTypeSQL" />
+                            </FluentAccordionItem>
+                            <FluentAccordionItem Heading="By Status" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <CheckGroupStatus OnFeedbackChange="updateStatusFBack" OnSQLChange="updateStatusSQL" />
+                            </FluentAccordionItem>
+                            <FluentAccordionItem Heading="By Start Year" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <YearSelection OnFeedbackChange="updateYearFBack" OnSQLChange="updateYearSQL" />
+                            </FluentAccordionItem>
+                            <FluentAccordionItem Heading="By Location" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <CountrySelection onListChanged="updateCountryList" />
+                            </FluentAccordionItem>
+                            <FluentAccordionItem Heading="By Linked Object" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <CheckGroupObject OnFeedbackChange="updateObjectFBack" OnSQLChange="updateObjectSQL" />
+                            </FluentAccordionItem>
+                        </FluentAccordion>
+                    </FluentDesignSystemProvider>
+
+                    <div class="filter-expln">
+                        <p class="small-text small-text-expanded">
+                            <b>N.B.</b>The two filters below only apply to interventional studies (= clinical trials).<br /><br />
+                            If included in a query the results will be drawn <b><i>only</i></b> from interventional studies.
+                        </p>
+                    </div>
+
+                    <FluentDesignSystemProvider FillColor="#ecedee">
+                        <FluentAccordion>
+                            <FluentAccordionItem Heading="By Phase" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <CheckGroupPhase OnFeedbackChange="updatePhaseFBack" OnSQLChange="updatePhaseSQL" />
+                            </FluentAccordionItem>
+                            <FluentAccordionItem Heading="By Allocation" Style="font-size: 1rem; color: var(--txt-emph-colour)">
+                                <CheckGroupAlloc OnFeedbackChange="updateAllocFBack" OnSQLChange="updateAllocSQL"/>
+                            </FluentAccordionItem>
+                        </FluentAccordion>
+                    </FluentDesignSystemProvider>
+                </div>
+            </div>
+        }
+
+        <div id="middle-bar">
+
+            <div id="search-bar">
+                <div id="search-type">
+                    <div class="search-label-container">
+                        <p class="search-label normal-blue-text">Search Type</p>
+                    </div>
+                    <div id="search-type-combo">
+                        <SCComboBox idOptions="searchOptions" 
+                         HandleSelectedOptionChanged="SearchOptionChanged"></SCComboBox>
+                    </div>
+                </div>
+
+                @if (searchType == 2)
+                {
+                    <div id="search-subtype">
+                        <div class="search-label-container">
+                            <p class="search-label normal-blue-text">ID Type</p>
+                        </div>
+                        <div id="id-type-combo">
+                            <SCComboBox idOptions="idOptions"
+                              HandleSelectedOptionChanged="idOptionChanged"></SCComboBox>
+                        </div>
+                    </div>
+                }
+
+                <div id="search-params">
+                     <div class="search-label-container">
+                        <p class="search-label normal-blue-text">@paramsLabelText</p>
+                    </div>
+                    <div id="params-text">
+                        <input type="text" @bind="@searchParamsValue" @bind:event="oninput"
+                                           style="width: 100%;" />
+                    </div>
+                </div>
+            </div>
+
+            @if (showWhereClause)
+            {
+                <div id="sql-area">
+                    <div id="sql-container">
+                        <p class="small-text-italic">
+                            SEARCH TYPE: @searchType: @searchText,
+                            @if (idType > 0)
+                            {
+                                <span>ID TYPE: @idType: @idText</span><br/>
+                            }
+                            SEARCH TEXT: @searchParamsValue  <br />
+                            FILTER(S): @filter_fback<br />
+                            FILTER sql: @filter_sql<br />
+                            TEXT SEARCH SCOPE: @scope_fback (@search_scope)
+                        </p>
+                    </div>
+                </div>
+            }
+
+            <div id="result-area">
+
+                <div id="results-heading">
+                    <div id="results-found">
+                        <p class="small-text no-wrap-text">4 Results found</p>
+                    </div>
+                    <div id="results-spacer">
+                        
+                    </div>
+                    <div id="results-buttons">
+                        <p class="small-text no-wrap-text">items per page cb --- Fst-Prv (1 of N) Nxt-Lst</p>
+                    </div>
+                </div>
+
+                <div id="results-list" >
+                    <FluentDesignSystemProvider FillColor="#ecedee">
+                    <FluentAccordion >
+                        <PageContents />
+                     </FluentAccordion>
+                     </FluentDesignSystemProvider>
+                </div>
+            </div>
+
+        </div>
+
+        @if (optionsBarShowing)
+        {
+            <div id="right-bar">
+
+                <BigButton id="SearchButton" Caption="Search" onClicked="Search" />
+
+                <div class="RHSCheck" id="ShowWhere">
+                     <div class="RHSCheckTextSection">
+                        <p class="normal-blue-text">Show query details</p>
+                     </div>
+                     <div class="RHSCheckBoxSection">
+                        <FluentCheckbox @bind-Value=showWhereClause></FluentCheckbox>
+                     </div>
+                </div>
+
+                <CheckScope OnFeedbackChange="updateScopeFeedback" OnScopeChange="updateScopeScore" />
+                
+                <div class="RHSCheck" id="AggregateSearches">
+                     <div class="RHSCheckTextSection">
+                        <p class="normal-blue-text">Aggregate Searches</p>
+                    </div>
+                    <div class="RHSCheckBoxSection">
+                        <FluentCheckbox @bind-Value=aggregateSearches></FluentCheckbox>
+                    </div>
+                </div>
+
+                <BigButton id="ClearFilters" Caption="Clear Filters" onClicked="ClearFilters" />
+                <BigButton id="ClearSearch" Caption="Clear Search" onClicked="ClearSearch" />
+                <BigButton id="RemoveUnchecked" Caption="Remove Unchecked" onClicked="RemoveUnchecked" />
+            </div>
+        }
+
+     </div>
+</div>
+
+@code {
+    List<StudySummary>? BaseSet;
+    List<StudySummary>? ShowSet;
+
+    bool filtersBarShowing = true;
+    bool optionsBarShowing = true;
+
+    private void ChangeFiltersBarVisibility(bool visibility)
+    {
+        filtersBarShowing = visibility;
+    }
+
+    private void ChangeOptionsBarVisibility(bool visibility)
+    {
+        optionsBarShowing = visibility;
+    }
+
+    private void Search()
+    {
+        Console.WriteLine("Hey - I'm doing the search!");
+    }
+
+    private void ClearFilters()
+    {
+        Console.WriteLine("boo - I am still clearing filters");
+    }
+
+    private void ClearSearch()
+    {
+        Console.WriteLine("boo - I am still clearing searches");
+    }
+
+    private void RemoveUnchecked()
+    {
+        Console.WriteLine("boo - I am still removing the unchecked");
+    }
+
+    
+
+
+    string? searchText;
+    int searchType = 1;
+    string? idText;
+    int? idType = 1;
+    string? searchParamsValue;
+    string paramsLabelText = "Parameters";
+
+    bool SearchPossible = false;
+
+    private void RecalculateSearchFeedback()
+    {
+        // Provide the text for the 'SQL area'
+
+    }
+
+    private bool RecalculateSearchSQL()
+    {
+        // provide the where clause for a SQL query (though this may be modified
+        // at the server). Returns true or false dependent on whether query is possible.
+
+        return false;  // for now
+    }
+
+    private void ProcessSearchParams()
+    {
+
+    }
+
+    string filter_sql = "", filter_fback = "";
+    string type_sql = "", type_fback = "";
+    string status_sql = "", status_fback = "";
+    string year_sql = "", year_fback = "";
+    string country_sql = "", country_fback = "";
+    string object_sql = "", object_fback = "";
+    string phase_sql = "", phase_fback = "";
+    string alloc_sql = "", alloc_fback = "";
+    string scope_fback = "";
+    int search_scope = 3;
+
+    private void RecalcFilterFeedback()
+    {
+        string fb_string = "";
+        fb_string += type_fback == "" ? "" : " AND " + type_fback;
+        fb_string += status_fback == "" ? "" : " AND " + status_fback;
+        fb_string += year_fback == "" ? "" : " AND " + year_fback;
+        fb_string += country_fback == "" ? "" : " AND " + country_fback;
+        fb_string += object_fback == "" ? "" : " AND HAS " + object_fback;
+        fb_string += phase_fback == "" ? "" : " AND " + phase_fback;
+        fb_string += alloc_fback == "" ? "" : " AND " + alloc_fback;
+        filter_fback = fb_string == "" ? "" : fb_string[5..];
+        StateHasChanged();
+    }
+
+    private void updateTypeFBack(string fback)
+    {
+        type_fback = fback;  RecalcFilterFeedback();
+    }
+
+    private void updateStatusFBack(string fback)
+    {
+        status_fback = fback; RecalcFilterFeedback(); 
+    }
+
+    private void updateYearFBack(string fback)
+    {
+        year_fback = fback; RecalcFilterFeedback();
+    }
+
+    private void updateCountryList(List<Country> countriesSelected)
+    {
+        string sqlparams = ""; string fback = "";
+        if (countriesSelected?.Any() == true)
+        {
+            foreach (Country c in countriesSelected)
+            {
+                fback += ", " + c.name;
+                sqlparams += ", " + c.id.ToString();
+            }
+        }
+        country_fback = $"countries include one of ({fback[2..]})";
+        country_sql = $"country_id in ({sqlparams[2..]})";
+        RecalcFilterFeedback();
+        RecalcFilterSQL();
+    }
+
+    private void updateObjectFBack(string fback)
+    {
+        object_fback = fback; RecalcFilterFeedback();
+    }
+
+    private void updatePhaseFBack(string fback)
+    {
+        phase_fback = fback; RecalcFilterFeedback();
+    }
+
+    private void updateAllocFBack(string fback)
+    {
+        alloc_fback = fback; RecalcFilterFeedback();
+    }
+
+
+    private void RecalcFilterSQL()
+    {
+        string sql_string = "";
+        sql_string += type_sql == "" ? "" : ", " + type_sql;
+        sql_string += status_sql == "" ? "" : ", " + status_sql;
+        sql_string += year_sql == "" ? "" : ", " + year_sql;
+        sql_string += country_sql == "" ? "" : ", " + country_sql;
+        sql_string += object_sql == "" ? "" : ", " + object_sql;
+        sql_string += phase_sql == "" ? "" : ", " + phase_sql;
+        sql_string += alloc_sql == "" ? "" : ", " + alloc_sql;
+        filter_sql = sql_string == "" ? "" : "WITH " + sql_string[2..];
+        StateHasChanged();
+    }
+
+    private void updateTypeSQL(string sql)
+    {
+        type_sql = sql; RecalcFilterSQL();
+    }
+
+    private void updateStatusSQL(string sql)
+    {
+        status_sql = sql; RecalcFilterSQL();
+    }
+
+    private void updateYearSQL(string sql)
+    {
+        year_sql = sql; RecalcFilterSQL();
+    }
+
+    private void updateObjectSQL(string sql)
+    {
+        object_sql = sql; RecalcFilterSQL();
+    }
+
+    private void updatePhaseSQL(string sql)
+    {
+        phase_sql = sql; RecalcFilterSQL();
+    }
+
+    private void updateAllocSQL(string sql)
+    {
+        alloc_sql = sql; RecalcFilterSQL();
+    }
+    private void updateScopeFeedback(string feedback)
+    {
+        scope_fback = feedback; StateHasChanged();
+    }
+
+    private void updateScopeScore(int scopeScore)
+    {
+        search_scope = scopeScore; StateHasChanged();
+    }
+        
+    bool showWhereClause = true;
+    bool aggregateSearches = false;
+
+
+    List<Option<string>> searchOptions = default!;
+    List<Option<string>> idOptions = default!;
+
+    protected override void OnInitialized()
+    {
+        searchOptions = new()
+        {
+            { new Option<string> { Value = "1", Text = "Key word(s)", Selected = true } },
+            { new Option<string> { Value = "2", Text = "Study identifier"} },
+            { new Option<string> { Value = "3", Text = "Paper identifier (PMID)" } }
+        };
+
+        idOptions = new()
+        {
+            { new Option<string> { Value = "1", Text = "Trial registry ID", Selected = true } },
+            { new Option<string> { Value = "2", Text = "Funder’s ID"} },
+            { new Option<string> { Value = "3", Text = "Sponsor’s ID" } },
+            { new Option<string> { Value = "4", Text = "NIH CTRP ID"} },
+            { new Option<string> { Value = "5", Text = "NHBL ID" } }
+        };
+
+    }
+    
+    private void SearchOptionChanged(Option<string> s)
+    {
+        searchText = s?.Text ?? "None";
+        searchType = Int32.Parse(s?.Value ?? "0");
+        paramsLabelText = searchType switch
+        {
+            1 => "Words",
+            2 => "Identifier",
+            3 => "PubMed ID",
+            _ => "Parameters"
+        };
+        RecalculateSearchFeedback();
+        SearchPossible = RecalculateSearchSQL();
+    }
+
+    private void idOptionChanged(Option<string> s)
+    {
+        idText = s?.Text ?? "None";
+        idType = Int32.Parse(s?.Value ?? "0");
+        RecalculateSearchFeedback();
+        SearchPossible = RecalculateSearchSQL();
+    }
+
+}

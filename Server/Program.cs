@@ -33,7 +33,7 @@ builder.Services.AddSingleton<IUriService>(o =>
 });
 
 
-builder.Services.AddSingleton<ILookupRepo, LookupRepo>();
+builder.Services.AddSingleton<ILookUpRepo, LookUpRepo>();
 builder.Services.AddSingleton<ITreeRepo, TreeRepo>();
 
 builder.Services.AddScoped<IObjectRepo, ObjectRepo>();

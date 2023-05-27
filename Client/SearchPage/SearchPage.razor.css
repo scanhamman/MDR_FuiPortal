@@ -1,0 +1,269 @@
+﻿#body-outer {
+    position: absolute;
+    top: 8.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: hidden;
+
+}
+
+#body-main {
+    background-color: var(--bg-colour);
+    overflow-y: hidden;
+    max-height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+/* fonts used */
+
+/*
+p {
+    padding: 0;
+    margin: 0;
+}
+*/
+
+.small-text, .small-text-expanded {
+    font: var(--small-text);
+    text-align: left;
+    color: var(--txt-colour);
+}
+
+.small-text-expanded {
+    line-height: 1.25;
+}
+
+
+.small-text-italic {
+    font: var(--small-text);
+    text-align: left;
+    font-style: italic;
+}
+
+
+.normal-blue-text {
+    text-align: left;
+    font: var(--normal-text);
+    color: var(--txt-emph-colour);
+}
+
+.big-button-text {
+    font: var(--normal-text);
+    font-weight: bold;
+    text-align: center;
+    color: var(--link-colour);
+}
+
+.no-wrap-text {
+    white-space: nowrap;
+}
+
+/* Three vertical divisions within the page */
+
+#left-bar {
+    flex: 1 1 17%;
+    text-align: center;
+    overflow-y: auto;
+    min-width: 14rem;
+}
+
+#middle-bar {
+    flex: 4 4 66%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    overflow-y: auto;
+}
+
+
+#right-bar {
+    flex: 1 1 17%;
+    overflow-y: auto;
+    min-width: 14rem;
+}
+
+
+/* Search bar */
+
+#search-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+.search-label-container {
+    padding-left: 0.5rem;
+    flex: 0 0;
+}
+
+.search-label {
+    white-space: nowrap;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+}
+
+/* Search bar - Search Type */
+
+#search-type {
+    flex: 0 0;
+    min-width: 23rem;
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: row
+}
+
+#search-type-combo {
+    flex: 0 0;
+}
+
+/* Search bar - Id Type */
+
+#search-subtype {
+    flex: 0 0;
+    min-width: 21rem;
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: row
+}
+
+#id-type-combo {
+    flex: 0 0;
+}
+
+
+/* Search bar - Search Parameters*/
+
+#search-params {
+    flex: 1 1;
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: row
+}
+
+#params-text {
+    flex: 1 1;
+    padding-right: 1.5rem;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 6px 12px 4px 12px;
+    margin: 0;
+    display: inline-block;
+    border: 0;
+    border-bottom: 1px solid #aaa;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+    input[type=text]:focus {
+        outline: none;
+        border-bottom: 2px solid royalblue;
+    }
+
+
+/* Left hand column area */
+
+#filters-container {    /* Used for the entire group of ilter boxes*/
+    padding-top: 5rem;
+    padding-left: 0.6rem;
+    padding-right: 1rem;
+}
+
+
+.filter-expln {
+    padding: 1rem 0.5rem;
+}
+
+
+/* Middle results area */
+
+
+/* SQL area */
+
+#sql-area {
+    margin-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1.5rem;
+}
+
+#sql-container {
+    padding: 5px 8px;
+    text-align: left;
+    font: var(--small-text);
+    font-style: italic;
+    background-color: gainsboro;
+    border-radius: 5px;
+}
+
+/* Results */
+
+#result-area {
+    padding-left: 1rem;
+    padding-right: 1.5rem
+}
+
+
+#results-heading {
+    display: flex;
+    padding-top: 0.6rem;
+    border-bottom: 2px solid var(--txt-emph-colour);
+    height: 1.7rem;
+}
+
+#results-found {
+    flex: 0 0;
+}
+
+#results-spacer {
+    flex: 1 1;
+}
+
+#results-buttons {
+    flex: 0 0;
+    display: flex;
+}
+
+
+#results-list {
+    padding-top: 0.5rem;
+}
+
+/* Right hand column area */
+
+#ShowWhere {
+    padding-top: 0;
+    padding-bottom: 3rem;
+}
+
+
+#AggregateSearches {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+
+.RHSCheck {
+    display: flex;
+    padding-bottom: 0;
+}
+
+.RHSCheckTextSection {
+    flex: 0 0 70%;
+    padding-left: 2.5rem;
+}
+
+.RHSCheckTextOnly {
+    padding-left: 2.5rem;
+}
+
+.RHSCheckBoxSection {
+    flex: 0 0 30%;
+}
+
+

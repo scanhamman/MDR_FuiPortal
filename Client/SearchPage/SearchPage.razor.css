@@ -18,13 +18,6 @@
 
 /* fonts used */
 
-/*
-p {
-    padding: 0;
-    margin: 0;
-}
-*/
-
 .small-text, .small-text-expanded {
     font: var(--small-text);
     text-align: left;
@@ -35,13 +28,11 @@ p {
     line-height: 1.25;
 }
 
-
 .small-text-italic {
     font: var(--small-text);
     text-align: left;
     font-style: italic;
 }
-
 
 .normal-blue-text {
     text-align: left;
@@ -229,7 +220,6 @@ input[type=text] {
     display: flex;
 }
 
-
 #results-list {
     padding-top: 0.5rem;
 }
@@ -241,12 +231,10 @@ input[type=text] {
     padding-bottom: 3rem;
 }
 
-
 #AggregateSearches {
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
-
 
 .RHSCheck {
     display: flex;

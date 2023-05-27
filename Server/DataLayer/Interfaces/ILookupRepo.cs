@@ -4,5 +4,5 @@ namespace MDR_FuiPortal.Server;
 
 public interface ILookUpRepo
 {
-    public List<Country>? FetchCountries();
+    public Task<IEnumerable<Country>?> FetchCountries();
 }

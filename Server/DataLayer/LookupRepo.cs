@@ -1,17 +1,61 @@
 ﻿using MDR_FuiPortal.Shared;
-using Microsoft.Fast.Components.FluentUI;
+using Npgsql;
+using Dapper.Contrib;
+using Dapper;
 
 namespace MDR_FuiPortal.Server;
+/*
+   
+public async Task<bool> OrgExists(int id)
+{
+    string sqlString = $@"select exists (select 1 from lup.organisations
+                              where id = {id.ToString()})";
+    await using var conn = new NpgsqlConnection(_dbRmsConnString);
+    return await conn.ExecuteScalarAsync<bool>(sqlString);
+}
+
+
+
+// All organisations (id, name from relevant org names)
+public async Task<IEnumerable<OrgTableDataInDb>> GetOrgsTableData()
+{
+    var sqlString = $@"Select id, default_name from lup.organisations
+                           order by default_name";
+    await using var conn = new NpgsqlConnection(_dbRmsConnString);
+    return await conn.QueryAsync<OrgTableDataInDb>(sqlString);
+}
+*/
 
 public class LookUpRepo : ILookUpRepo
 {
-    public List<Country>? FetchCountries()
+    private readonly string _dbConnString;
+
+    public LookUpRepo(ICreds creds)
     {
-        // designed to mimic a call to the database
-        // seeking About Tree items from a table;
+        _dbConnString = creds.GetConnectionString("context");
+    }
 
-        List<Country> countries = new();
+    public async Task<IEnumerable<Country>?> FetchCountries()
+    {
+        var sqlString = @"select geoname_id, country_name
+                           from ctx.countries
+                           where rank = 1";
+        using var conn = new NpgsqlConnection(_dbConnString);
 
+        try
+        {
+            var res = await conn.QueryAsync<Country>(sqlString);
+            return res;
+        }
+        catch(Exception e)
+        {
+            string s = e.Message;
+            return null;
+        }
+
+        
+
+        /*
         countries.Add(new Country(1, "France" ));
         countries.Add(new Country(2, "Germany"));
         countries.Add(new Country(3, "United Kingdom"));
@@ -31,8 +75,8 @@ public class LookUpRepo : ILookUpRepo
         countries.Add(new Country(17, "Romania"));
         countries.Add(new Country(18, "Slovenia"));
         countries.Add(new Country(19, "Latvia"));
-
-        return countries;
+        */
+        //return countries;
 
     }
 }

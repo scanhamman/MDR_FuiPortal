@@ -140,9 +140,7 @@
         @if (optionsBarShowing)
         {
             <div id="right-bar">
-
                 <BigButton id="SearchButton" Caption="Search" onClicked="Search" />
-
                 <div class="RHSCheck" id="ShowWhere">
                      <div class="RHSCheckTextSection">
                         <p class="normal-blue-text">Show query details</p>
@@ -151,9 +149,7 @@
                         <FluentCheckbox @bind-Value=showWhereClause></FluentCheckbox>
                      </div>
                 </div>
-
                 <CheckScope OnFeedbackChange="updateScopeFeedback" OnScopeChange="updateScopeScore" />
-                
                 <div class="RHSCheck" id="AggregateSearches">
                      <div class="RHSCheckTextSection">
                         <p class="normal-blue-text">Aggregate Searches</p>
@@ -162,7 +158,6 @@
                         <FluentCheckbox @bind-Value=aggregateSearches></FluentCheckbox>
                     </div>
                 </div>
-
                 <BigButton id="ClearFilters" Caption="Clear Filters" onClicked="ClearFilters" />
                 <BigButton id="ClearSearch" Caption="Clear Search" onClicked="ClearSearch" />
                 <BigButton id="RemoveUnchecked" Caption="Remove Unchecked" onClicked="RemoveUnchecked" />

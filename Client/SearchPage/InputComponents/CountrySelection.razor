@@ -131,7 +131,7 @@
         // fetch country list
 
         string countries_url = "api/lookup/countryList";
-        var countryList = await Http.GetFromJsonAsync<List<Country>?>(countries_url);
+        var countryList = await Http.GetFromJsonAsync<IEnumerable<Country>?>(countries_url);
         if (countryList?.Any() == true)
         {
             foreach (var c in countryList)

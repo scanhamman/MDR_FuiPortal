@@ -14,11 +14,9 @@ public class LookUpController : BaseApiController
     }
 
     [HttpGet("countryList")]
-    public async Task<List<Country>?> GetCountryList()
+    public async Task<IEnumerable<Country>?> GetCountryList()
     {
-        var countryList = _lookUpRepo.FetchCountries();
-        
-        return countryList;
+        return await _lookUpRepo.FetchCountries();
     }
 
     

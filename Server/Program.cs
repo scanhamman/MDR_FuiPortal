@@ -32,7 +32,7 @@ builder.Services.AddSingleton<IUriService>(o =>
     return new UriService(uri);
 });
 
-
+builder.Services.AddSingleton<ICreds, Creds>();
 builder.Services.AddSingleton<ILookUpRepo, LookUpRepo>();
 builder.Services.AddSingleton<ITreeRepo, TreeRepo>();
 

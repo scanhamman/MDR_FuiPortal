@@ -1,12 +1,13 @@
 ﻿@page "/Search"
+@inject HttpClient Http
 @using MDR_FuiPortal.Client.SearchPage.InputComponents
 @using MDR_FuiPortal.Client.SearchPage.ResultComponents
+@using System.Text.RegularExpressions;
 
 <PageTitle>MDR Search</PageTitle>
 
 <TopBarSearch onFiltersBarVisibilityChanged="ChangeFiltersBarVisibility"
               onOptionsBarVisibilityChanged="ChangeOptionsBarVisibility" />
-
 
 <div id="body-outer">
     <div id="body-main">
@@ -64,8 +65,8 @@
                         <p class="search-label normal-blue-text">Search Type</p>
                     </div>
                     <div id="search-type-combo">
-                        <SCComboBox idOptions="searchOptions" 
-                         HandleSelectedOptionChanged="SearchOptionChanged"></SCComboBox>
+                        <MDRComboBox idOptions="searchOptions" 
+                         HandleSelectedOptionChanged="SearchOptionChanged"></MDRComboBox>
                     </div>
                 </div>
 
@@ -76,8 +77,8 @@
                             <p class="search-label normal-blue-text">ID Type</p>
                         </div>
                         <div id="id-type-combo">
-                            <SCComboBox idOptions="idOptions"
-                              HandleSelectedOptionChanged="idOptionChanged"></SCComboBox>
+                            <MDRComboBox idOptions="idOptions"
+                              HandleSelectedOptionChanged="idOptionChanged"></MDRComboBox>
                         </div>
                     </div>
                 }
@@ -116,20 +117,30 @@
 
                 <div id="results-heading">
                     <div id="results-found">
-                        <p class="small-text no-wrap-text">4 Results found</p>
+                        <p class="small-text no-wrap-text">@rec_num_indicator</p>
                     </div>
                     <div id="results-spacer">
                         
                     </div>
-                    <div id="results-buttons">
-                        <p class="small-text no-wrap-text">items per page cb --- Fst-Prv (1 of N) Nxt-Lst</p>
+                    <div id="items-cb">
+                        <p class="small-text no-wrap-text">items per page </p>
+                    </div>
+                    <div id="items-cb-label">
+                        <select id="page_num_select" >
+                            <option>10</option>
+                            <option>25</option>
+                            <option>50</option>
+                        </select>
+                    </div>
+                     <div id="results-buttons">
+                        <p>&nbsp;&nbsp;Fst-Prv (1 of @num_pages) Nxt-Lst</p>
                     </div>
                 </div>
 
                 <div id="results-list" >
                     <FluentDesignSystemProvider FillColor="#ecedee">
                     <FluentAccordion >
-                        <PageContents />
+                        <PageContents Contents=@PageSet/>
                      </FluentAccordion>
                      </FluentDesignSystemProvider>
                 </div>
@@ -163,16 +174,25 @@
                 <BigButton id="RemoveUnchecked" Caption="Remove Unchecked" onClicked="RemoveUnchecked" />
             </div>
         }
-
      </div>
 </div>
 
 @code {
-    List<StudySummary>? BaseSet;
-    List<StudySummary>? ShowSet;
+
+    List<string>? BaseSet;
+    List<string>? ShowSet;
+    List<string>? PageSet = null;
+
+    int rec_num;
+    int num_pages;
+    int num_recs_per_page = 10;
+    string rec_num_indicator = "";
+    int current_page = 1;
 
     bool filtersBarShowing = true;
     bool optionsBarShowing = true;
+
+    private Dictionary<string, string> roman_suffixes = default!;
 
     private void ChangeFiltersBarVisibility(bool visibility)
     {
@@ -184,9 +204,76 @@
         optionsBarShowing = visibility;
     }
 
-    private void Search()
+    private async Task Search()
     {
-        Console.WriteLine("Hey - I'm doing the search!");
+        string search_url = "api/Study/";
+        if (searchType == 1)
+        {
+
+            if (!string.IsNullOrEmpty(searchParamsValue))
+            {
+                string processedPars = ProcessSearchParams(searchParamsValue);
+                search_url += $"BySearch/{search_scope}/{processedPars}";
+            }
+        }
+
+        if (searchType == 2)
+        {
+
+            search_url += "ByRegId/11/NCT01746290";
+        }
+
+        if (searchType == 3)
+        {
+            string? pmid = searchParamsValue;
+            if (pmid is null || !int.TryParse(pmid, out int _))
+            {
+                // need some sort of message
+                // saying this is not valid
+            }
+            else
+            {
+                search_url += $"ByPMID/{searchParamsValue}";
+            }
+        }
+
+        BaseSet = await Http.GetFromJsonAsync<List<string>?>(search_url);
+        if (BaseSet?.Any() == true)
+        {
+            rec_num = BaseSet.Count;
+            num_pages = (rec_num / num_recs_per_page) + 1;
+
+            rec_num_indicator = $"{rec_num} result";
+            rec_num_indicator += rec_num > 1 ? "s" : "";
+            rec_num_indicator += " found";
+            current_page =  1;
+
+            // if filter aplied - apply filter using linq
+
+            ShowSet =  BaseSet;  // for now
+
+            // if paging applied - select portion
+
+            if (ShowSet.Count <= num_recs_per_page)
+            {
+                PageSet = ShowSet;
+
+            }
+            else
+            {
+                int next_page_pos = num_recs_per_page * current_page;
+                int start_pos = next_page_pos - num_recs_per_page;
+                int num_recs_on_page = rec_num - start_pos > num_recs_per_page
+                                   ? num_recs_per_page
+                                   : rec_num - start_pos;
+                PageSet = ShowSet.GetRange(start_pos, num_recs_on_page);
+            }
+    }
+        else
+        {
+            // post a 'none found message somewhere
+            rec_num_indicator = "No records found";
+        }
     }
 
     private void ClearFilters()
@@ -204,7 +291,7 @@
         Console.WriteLine("boo - I am still removing the unchecked");
     }
 
-    
+
 
 
     string? searchText;
@@ -213,7 +300,6 @@
     int? idType = 1;
     string? searchParamsValue;
     string paramsLabelText = "Parameters";
-
     bool SearchPossible = false;
 
     private void RecalculateSearchFeedback()
@@ -230,9 +316,93 @@
         return false;  // for now
     }
 
-    private void ProcessSearchParams()
+    private string ProcessSearchParams(string in_pars)
     {
+        string new_st = in_pars.ToLower() + " ";  // ' ' added to catch final numbers below
+        new_st = new_st.Replace("'", "");      // simplifies things
+        new_st = new_st.Replace("‘", "");
+        new_st = new_st.Replace("’", "");
+        new_st = new_st.Replace(".", "");      // simplifies things
+        new_st = new_st.Replace("/", " ");     // split these words up
 
+        if (new_st.Contains("in "))
+        {
+            new_st = new_st.Replace("in situ", "insitu");
+            new_st = new_st.Replace("in vivo", "invivo");
+            new_st = new_st.Replace("in vitro", "invitro");
+            new_st = new_st.Replace("in silico", "insilico");
+            new_st = new_st.Replace("in utero", "inutero");
+        }
+        if (new_st.Contains(" a "))
+        {
+            new_st = new_st.Replace("hepatitis a ", "hepatitis-a ");
+            new_st = new_st.Replace("influenza a ", "influenza-a ");
+            new_st = new_st.Replace("philia a ", "philia-a ");
+            new_st = new_st.Replace("globin a ", "globin-a ");
+            new_st = new_st.Replace("virus a ", "virus-a ");
+            new_st = new_st.Replace("protein a ", "protein-a ");
+            new_st = new_st.Replace("group a ", "group-a ");
+            new_st = new_st.Replace("type a ", "type-a ");
+            new_st = new_st.Replace("vitamin a ", "vitamin-a ");
+            new_st = new_st.Replace("factor a ", "factor-a ");
+            new_st = new_st.Replace("family a ", "family-a ");
+            new_st = new_st.Replace("coenzyme a ", "coenzyme-a ");
+            new_st = new_st.Replace("kinase a ", "kinase-a ");
+            new_st = new_st.Replace("ferase a ", "ferase-a ");
+            new_st = new_st.Replace("tidase a ", "tidase-a ");
+            new_st = new_st.Replace("tidases a ", "tidases-a ");
+            new_st = new_st.Replace("kinin a ", "kinin-a ");
+        }
+        if (new_st.Contains(" term "))
+        {
+            new_st = new_st.Replace("short term ", "short-term ");
+            new_st = new_st.Replace("medium term ", "medium-term ");
+            new_st = new_st.Replace("long term ", "long-term ");
+        }
+        if (Regex.IsMatch(new_st, @" \d{1,2} "))
+        {
+            while (Regex.IsMatch(new_st, @" \d{1,2} "))   // may be more than one
+            {
+                string to_replace = Regex.Match(new_st, @" \d{1,2} ").Value;
+                string new_value;
+                if (Regex.IsMatch(new_st, @" \d{1,2} mg"))
+                {
+                    new_value = to_replace[..^1]; // may be a dosage figure, usually mg;
+                }
+                else
+                {
+                    new_value = to_replace[1..];  // more often a suffix
+                }
+                new_st = new_st.Replace(to_replace, new_value);
+            }
+        }
+        if (Regex.IsMatch(new_st, @" (?=[xvi])(x{0,2})(i[xv]|v?i{0,3}) "))
+        {
+            while (Regex.IsMatch(new_st, @" (?=[xvi])(x{0,2})(i[xv]|v?i{0,3}) "))
+            {
+                string to_replace = Regex.Match(new_st, @" (?=[xvi])(x{0,2})(i[xv]|v?i{0,3}) ").Value;
+                string new_value = roman_suffixes[to_replace];
+                new_st = new_st.Replace(to_replace, new_value);
+            }
+        }
+        if (new_st.Contains("phase "))   // some phase types not picked up above
+        {
+            new_st = new_st.Replace("phase 1a ", "phase1a ");
+            new_st = new_st.Replace("phase 1b ", "phase1b ");
+            new_st = new_st.Replace("phase 1/2 ", "phase12 ");
+            new_st = new_st.Replace("phase i/ii ", "phase12 ");
+            new_st = new_st.Replace("phase 2/3 ", "phase23 ");
+            new_st = new_st.Replace("phase ii/iii ", "phase23 ");
+            new_st = new_st.Replace("phase 2a ", "phase2a ");
+            new_st = new_st.Replace("phase 2b ", "phase2b ");
+            new_st = new_st.Replace("phase 3/4 ", "phase34 ");
+            new_st = new_st.Replace("phase iii/iv ", "phase34 ");
+        }
+
+        new_st = new_st.Replace(" or ", " | ");  
+        new_st = new_st.Replace(" not(", " !(");
+
+        return new_st.Trim();
     }
 
     string filter_sql = "", filter_fback = "";
@@ -351,6 +521,7 @@
     {
         alloc_sql = sql; RecalcFilterSQL();
     }
+
     private void updateScopeFeedback(string feedback)
     {
         scope_fback = feedback; StateHasChanged();
@@ -360,10 +531,9 @@
     {
         search_scope = scopeScore; StateHasChanged();
     }
-        
+
     bool showWhereClause = true;
     bool aggregateSearches = false;
-
 
     List<Option<string>> searchOptions = default!;
     List<Option<string>> idOptions = default!;
@@ -379,28 +549,71 @@
 
         idOptions = new()
         {
-            { new Option<string> { Value = "1", Text = "Trial registry ID", Selected = true } },
-            { new Option<string> { Value = "2", Text = "Funder’s ID"} },
-            { new Option<string> { Value = "3", Text = "Sponsor’s ID" } },
-            { new Option<string> { Value = "4", Text = "NIH CTRP ID"} },
-            { new Option<string> { Value = "5", Text = "NHBL ID" } }
+            { new Option<string> { Value = "11", Text = "Trial registry ID", Selected = true } },
+            { new Option<string> { Value = "12", Text = "Ethics Review ID"} },
+            { new Option<string> { Value = "13", Text = "Funder’s ID"} },
+            { new Option<string> { Value = "14", Text = "Sponsor’s ID" } },
+            { new Option<string> { Value = "41", Text = "Regulatory Authority ID" } },
+            { new Option<string> { Value = "39", Text = "NIH CTRP ID"} },
+            { new Option<string> { Value = "40", Text = "DAIDS ID"} },
+            { new Option<string> { Value = "42", Text = "NHBLI ID" } },
+            { new Option<string> { Value = "45", Text = "Obsolete NTR number" } },
+            { new Option<string> { Value = "45", Text = "CDR Number" } }
+        };
+
+
+        roman_suffixes = new()
+        {
+            {" i ", "1 "}, {" ii ", "2 "},{" iii ", "3 "},{" iv ", "4 "},{" v ", "5 "},
+            {" vi ", "6 "},{" vii ", "7 "},{" viii ", "8 "},{" ix ", "9 "},{" x ", "10 "},
+            {" xi ", "11 "}, {" xii ", "12 "},{" xiii ", "13 "},{" xiv ", "14 "},{" xv ", "15 "},
+            {" xvi ", "16 "},{" xvii ", "17 "},{" xviii ", "18 "},{" xix ", "19 "},{" xx ", "20 " },
+            {" xxi ", "21 "},{" xxii ", "22 "},{" xxiii ", "23 "},{" xxiv ", "24 "},{" xxv ", "25 " },
+            {" xxvi ", "26 "},{" xxvii ", "27 "},{" xxviii ", "28 "},
+            {" xxix ", "29 "},{" xxx ", "30 " }
         };
 
     }
-    
+
+
     private void SearchOptionChanged(Option<string> s)
     {
         searchText = s?.Text ?? "None";
         searchType = Int32.Parse(s?.Value ?? "0");
-        paramsLabelText = searchType switch
+        paramsLabelText = searchType switch 
         {
             1 => "Words",
             2 => "Identifier",
             3 => "PubMed ID",
             _ => "Parameters"
         };
+
+
+        // for now - to make testing easier
+
+        if (searchType == 1)
+        {
+            idType = 11;
+            searchParamsValue = "brca";
+        }
+
+        if (searchType == 2)
+        {
+
+            searchParamsValue = "NCT01746290";
+        }
+
+        if (searchType == 3)
+        {
+
+            searchParamsValue = "1017769";
+        }
+
+
         RecalculateSearchFeedback();
         SearchPossible = RecalculateSearchSQL();
+
+
     }
 
     private void idOptionChanged(Option<string> s)
@@ -409,6 +622,16 @@
         idType = Int32.Parse(s?.Value ?? "0");
         RecalculateSearchFeedback();
         SearchPossible = RecalculateSearchSQL();
+
+        // for now - to make testing easier
+        if (idType == 11)
+        {
+            searchParamsValue = "NCT01746290";
+        }
+        if (idType == 14)
+        {
+            searchParamsValue = "19.05.CLI";
+        }
     }
 
 }

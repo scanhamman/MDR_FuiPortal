@@ -4,9 +4,11 @@ namespace MDR_FuiPortal.Server.Controllers
 {
     public class ObjectController : Controller
     {
+        /*
         public IActionResult Index()
         {
-            return View();
+            //return View();
         }
+        */
     }
 }

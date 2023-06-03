@@ -1,13 +1,110 @@
-﻿
-<StudyCard Title="study 1"/>
-<StudyCard Title="study 2" />
-<StudyCard Title="study 3" />
-<StudyCard Title="study 4" />
-<StudyCard Title="study 5" />
-<StudyCard Title="study 6" />
-<StudyCard Title="study 7" />
+﻿@using System.Text.Json;
+
+
+@if (@Contents?.Any() == true)
+{
+    @foreach(string @c in @Contents)
+    {
+        // deserialise the string and set up the display card
+
+        DisplayStudy? @ds = Deserialise(@c);
+        if (@ds is not null)
+        {
+            <StudyCard Title=@ds.short_title DS=@ds />
+        }
+    }
+}
+
 
 
 @code {
+    [Parameter]
+    public List<string>? Contents { get; set; }
+
+    JsonSerializerOptions? json_options = null;
+
+    private DisplayStudy? Deserialise(string json)
+    {
+        var json_options = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            AllowTrailingCommas = true
+        };
+
+        StudySummary? s = JsonSerializer.Deserialize<StudySummary?>(json, json_options);
+
+        DisplayStudy ds = new DisplayStudy();
+
+        ds.study_id = s.study_id;
+        if (s.study_name is not null)
+        {
+            ds.study_name = s.study_name;
+            ds.short_title = s.study_name!.Length > 103 ? s.study_name[0..100] + "..." : s.study_name;
+        }
+        else
+        {
+            ds.study_name = "No study name provided - ????";
+            ds.short_title = "[No study name provided]";
+        }
+        ds.description = "Description: " + (s.description == null ? "none provided" : s.description);
+        ds.dss = "Data sharing Statement: " + (s.dss == null ? "none provided" : s.dss); 
+        if (s.start_year is not null)
+        {
+            if (s.start_month is not null)
+            {
+                ds.start_date = "Sart Date: " + get_month(s.start_month) + " " + s.start_year;
+            }
+            else
+            {
+                ds.start_date = "Sart Date: " + s.start_year;
+            }
+        }
+        else
+        {
+            ds.start_date = "Sart Date: not given";
+        }
+        ds.type_name = "Study Type: " + (s.type_name == null ? "not given" : s.type_name);
+        ds.status_name = "Study Status: " + (s.status_name == null ? "not given" : s.status_name);
+        ds.gender_elig = "Gender Elibility: " + (s.gender_elig == null ? "not given" : s.gender_elig);
+        ds.min_age = "Minimum Age: " + (s.min_age == null ? "not given" : s.min_age);
+        ds.max_age = "Maximum Age: " + (s.max_age == null ? "not given" : s.max_age);
+        ds.feature_list = "Listed Design Features: " + (s.feature_list == null ? "none given" : s.feature_list); 
+        ds.country_list = "Geographic Location(s): " + (s.country_list == null ? "none given" : s.country_list);
+        ds.condition_list = "Listed target condition(s): " + (s.condition_list == null ? "none given" : s.condition_list);
+        ds.provenance = s.provenance!;
+
+        return ds;
+    }
+
+    private string get_month(int? start_month)
+    {
+        return start_month switch
+        {
+            1 => "January",
+            2 => "February",
+            3 => "March",
+            4 => "April",
+            5 => "May",
+            6 => "June",
+            7 => "July",
+            8 => "August",
+            9 => "September",
+           10 => "October",
+           11 => "November",
+           12 => "December",
+            _ => ""            
+        };
+    }
+
+    protected override void OnInitialized()
+    {
+        json_options = new()
+        {
+            PropertyNameCaseInsensitive = true,
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            AllowTrailingCommas = true
+        };
+    }
 
 }

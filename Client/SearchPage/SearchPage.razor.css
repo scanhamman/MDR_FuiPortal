@@ -215,6 +215,16 @@ input[type=text] {
     flex: 1 1;
 }
 
+#items-cb-label {
+    flex: 0 0;
+    display: flex;
+}
+
+#items-cb {
+    flex: 0 0;
+    display: flex;
+}
+
 #results-buttons {
     flex: 0 0;
     display: flex;

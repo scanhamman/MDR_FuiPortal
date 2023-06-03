@@ -1,7 +1,16 @@
 ﻿
 <FluentAccordionItem Heading="@Title" Style="font-size: 1rem;">
-    <StudyCardDets />
+    <StudyCardDets study_name=@DS?.study_name description=@DS?.description
+                   dss=@DS?.dss start_date=@DS?.start_date type_name=@DS?.type_name
+                   status_name=@DS?.status_name gender_elig=@DS?.gender_elig
+                   min_age=@DS?.min_age  max_age=@DS?.max_age feature_list=@DS?.feature_list
+                   country_list=@DS?.country_list  condition_list=@DS?.condition_list  
+                   provenance=@DS?.provenance />
+
+    <!-- Here needs a loop for each json object  -->
+
     <ObjectCardDets />
+
 </FluentAccordionItem>
 
 @code {
@@ -9,4 +18,7 @@
     [Parameter]
     public string? Title { get; set; }
 
+    [Parameter]
+    public DisplayStudy? DS { get; set; }
 }
+

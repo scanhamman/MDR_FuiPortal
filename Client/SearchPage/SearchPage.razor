@@ -6,8 +6,7 @@
 
 <PageTitle>MDR Search</PageTitle>
 
-<TopBarSearch onFiltersBarVisibilityChanged="ChangeFiltersBarVisibility"
-              onOptionsBarVisibilityChanged="ChangeOptionsBarVisibility" />
+<TopBarSearch onFiltersBarVisibilityChanged="ChangeFiltersBarVisibility" />
 
 <div id="body-outer">
     <div id="body-main">
@@ -59,121 +58,120 @@
 
         <div id="middle-bar">
 
-            <div id="search-bar">
-                <div id="search-type">
-                    <div class="search-label-container">
-                        <p class="search-label normal-blue-text">Search Type</p>
-                    </div>
-                    <div id="search-type-combo">
-                        <MDRComboBox idOptions="searchOptions" 
-                         HandleSelectedOptionChanged="SearchOptionChanged"></MDRComboBox>
-                    </div>
-                </div>
-
-                @if (searchType == 2)
-                {
-                    <div id="search-subtype">
+            <div id="fixed-top">   <!-- Fixed area at top-->
+                <div id="search-bar">
+                    <div id="search-type">
                         <div class="search-label-container">
-                            <p class="search-label normal-blue-text">ID Type</p>
+                            <p class="search-label normal-blue-text">Search Type</p>
                         </div>
-                        <div id="id-type-combo">
-                            <MDRComboBox idOptions="idOptions"
-                              HandleSelectedOptionChanged="idOptionChanged"></MDRComboBox>
+                        <div id="search-type-combo" >
+                            <MDRComboBox idOptions="searchOptions" 
+                             HandleSelectedOptionChanged="SearchOptionChanged"></MDRComboBox>
                         </div>
                     </div>
-                }
 
-                <div id="search-params">
-                     <div class="search-label-container">
-                        <p class="search-label normal-blue-text">@paramsLabelText</p>
-                    </div>
-                    <div id="params-text">
-                        <input type="text" @bind="@searchParamsValue" @bind:event="oninput"
-                                           style="width: 100%;" />
+                    @if (searchType == 2)
+                    {
+                        <div id="search-subtype">
+                            <div class="search-label-container">
+                                <p class="search-label normal-blue-text">ID Type</p>
+                            </div>
+                            <div id="id-type-combo">
+                                <MDRComboBox idOptions="idOptions"
+                                  HandleSelectedOptionChanged="idOptionChanged"></MDRComboBox>
+                            </div>
+                        </div>
+                    }
+
+                    <div id="search-params">
+                         <div class="search-label-container">
+                            <p class="search-label normal-blue-text">@paramsLabelText</p>
+                        </div>
+                        <div id="params-text">
+                            <input type="text" @bind="@searchParamsValue" @bind:event="oninput"
+                                               style="width: 100%;" />
+                        </div>
                     </div>
                 </div>
-            </div>
+           
+                
+                <div id="switch-area">
+                    <ClearButton id="ClearFilters" Caption="Clear Filters" onClicked="ClearFilters" />
+                    <div id="small-switch-spacer">
+                    </div>
+                    <ClearButton id="ClearSearch" Caption="Clear Search" onClicked="ClearSearch" />
+                    <div id="switch-spacer">
+                    </div>
+                    <div id="agg-switch" class="small-text no-wrap-text">
+                        <FluentSwitch @bind-Value=aggregateSearches style="margin-inline-end: 12px;">Aggregate Results</FluentSwitch>
+                    </div>
+                    <div id="switch-spacer">
+                    </div>
+                    <div id="tt-switch" class="small-text no-wrap-text">
+                        <FluentSwitch @bind-Value=searchInTTs style="margin-inline-end: 12px;">Search in Titles and Topics</FluentSwitch>
+                    </div>
+                    <div id="cond-switch" class="small-text no-wrap-text">
+                        <FluentSwitch @bind-Value=searchInConds style="margin-inline-end: 12px;">Search in Conditions</FluentSwitch>
+                    </div>
+                </div>
 
-            @if (showWhereClause)
-            {
-                <div id="sql-area">
+                    <!--
                     <div id="sql-container">
                         <p class="small-text-italic">
-                            SEARCH TYPE: @searchType: @searchText,
-                            @if (idType > 0)
+                            @if (searchType == 1)
                             {
-                                <span>ID TYPE: @idType: @idText</span><br/>
+                                <span>KEY WORDS SEARCH, using @searchParamsValue, in @scope_fback; <br />
+                                FILTER(S): @filter_fback</span>
                             }
-                            SEARCH TEXT: @searchParamsValue  <br />
-                            FILTER(S): @filter_fback<br />
-                            FILTER sql: @filter_sql<br />
-                            TEXT SEARCH SCOPE: @scope_fback (@search_scope)
+                            @if (searchType == 2)
+                            {
+                                <span>ID SEARCH, using type: @idType, identifier: @idText</span>
+                            }
+                            @if (searchType == 3)
+                            {
+                                <span>PMID SEARCH, using @searchParamsValue</span>
+                            }
                         </p>
                     </div>
-                </div>
-            }
+                    -->
 
-            <div id="result-area">
 
                 <div id="results-heading">
                     <div id="results-found">
                         <p class="small-text no-wrap-text">@rec_num_indicator</p>
                     </div>
                     <div id="results-spacer">
-                        
                     </div>
-                    <div id="items-cb">
-                        <p class="small-text no-wrap-text">items per page </p>
+                    <div id="page-control">
+                        <PageControl total_recs=rec_num ObtainRange="ShowRange" @ref="pagecon"/>
                     </div>
-                    <div id="items-cb-label">
-                        <select id="page_num_select" >
-                            <option>10</option>
-                            <option>25</option>
-                            <option>50</option>
-                        </select>
-                    </div>
-                     <div id="results-buttons">
-                        <p>&nbsp;&nbsp;Fst-Prv (1 of @num_pages) Nxt-Lst</p>
-                    </div>
-                </div>
-
-                <div id="results-list" >
-                    <FluentDesignSystemProvider FillColor="#ecedee">
-                    <FluentAccordion >
-                        <PageContents Contents=@PageSet/>
-                     </FluentAccordion>
-                     </FluentDesignSystemProvider>
                 </div>
             </div>
 
+
+            <div id="fixed-results-container">
+                <div id="results-list">         <!-- Scrolling area -->
+                    <FluentDesignSystemProvider FillColor="#fdfeff">
+                        <!--#ecedee -->
+                    @if (@PageSet is not null)
+                    {   
+                        <FluentAccordion>
+                            <PageContents Contents=@PageSet />
+                        </FluentAccordion>
+                    }
+                    else
+                    {
+                         <FluentAccordion />  
+                    }
+                    </FluentDesignSystemProvider>
+                </div>
+            </div>
         </div>
 
-        @if (optionsBarShowing)
-        {
-            <div id="right-bar">
-                <BigButton id="SearchButton" Caption="Search" onClicked="Search" />
-                <div class="RHSCheck" id="ShowWhere">
-                     <div class="RHSCheckTextSection">
-                        <p class="normal-blue-text">Show query details</p>
-                     </div>
-                     <div class="RHSCheckBoxSection">
-                        <FluentCheckbox @bind-Value=showWhereClause></FluentCheckbox>
-                     </div>
-                </div>
-                <CheckScope OnFeedbackChange="updateScopeFeedback" OnScopeChange="updateScopeScore" />
-                <div class="RHSCheck" id="AggregateSearches">
-                     <div class="RHSCheckTextSection">
-                        <p class="normal-blue-text">Aggregate Searches</p>
-                    </div>
-                    <div class="RHSCheckBoxSection">
-                        <FluentCheckbox @bind-Value=aggregateSearches></FluentCheckbox>
-                    </div>
-                </div>
-                <BigButton id="ClearFilters" Caption="Clear Filters" onClicked="ClearFilters" />
-                <BigButton id="ClearSearch" Caption="Clear Search" onClicked="ClearSearch" />
-                <BigButton id="RemoveUnchecked" Caption="Remove Unchecked" onClicked="RemoveUnchecked" />
-            </div>
-        }
+        <div id="right-bar">
+             <SearchButton id="SearchButton" Caption="Search" onClicked="Search" />
+        </div>
+
      </div>
 </div>
 
@@ -183,14 +181,15 @@
     List<string>? ShowSet;
     List<string>? PageSet = null;
 
+    PageControl? pagecon;
     int rec_num;
     int num_pages;
     int num_recs_per_page = 10;
-    string rec_num_indicator = "";
+    string rec_num_indicator = "No search yet run";
     int current_page = 1;
+    string page_indicator = "";
 
     bool filtersBarShowing = true;
-    bool optionsBarShowing = true;
 
     private Dictionary<string, string> roman_suffixes = default!;
 
@@ -199,16 +198,14 @@
         filtersBarShowing = visibility;
     }
 
-    private void ChangeOptionsBarVisibility(bool visibility)
-    {
-        optionsBarShowing = visibility;
-    }
 
     private async Task Search()
     {
         string search_url = "api/Study/";
         if (searchType == 1)
         {
+            int search_scope = searchInTTs ? 1 : 0; 
+            search_scope += searchInConds ? 2 : 0;
 
             if (!string.IsNullOrEmpty(searchParamsValue))
             {
@@ -240,40 +237,43 @@
         BaseSet = await Http.GetFromJsonAsync<List<string>?>(search_url);
         if (BaseSet?.Any() == true)
         {
-            rec_num = BaseSet.Count;
-            num_pages = (rec_num / num_recs_per_page) + 1;
+            // if filter(s) set - apply filter using linq
 
-            rec_num_indicator = $"{rec_num} result";
-            rec_num_indicator += rec_num > 1 ? "s" : "";
+            if (pagecon is not null)
+            {
+                pagecon.old_num_recs = 0;   // reset this page control's property
+            }
+
+            ShowSet =  BaseSet;  // for now, no filters!
+
+            rec_num = ShowSet.Count;
+            rec_num_indicator = ShowSet.Count.ToString() + " Record";
+            rec_num_indicator += rec_num == 1 ? "" : "s";
             rec_num_indicator += " found";
-            current_page =  1;
 
-            // if filter aplied - apply filter using linq
+            // setting rec_num will trigger the page control
+            // to set up the initial page contents call, 1 to n
+            // After that the page control's buttons will get the
+            // relevant portion of the 'show set'
 
-            ShowSet =  BaseSet;  // for now
-
-            // if paging applied - select portion
-
-            if (ShowSet.Count <= num_recs_per_page)
-            {
-                PageSet = ShowSet;
-
-            }
-            else
-            {
-                int next_page_pos = num_recs_per_page * current_page;
-                int start_pos = next_page_pos - num_recs_per_page;
-                int num_recs_on_page = rec_num - start_pos > num_recs_per_page
-                                   ? num_recs_per_page
-                                   : rec_num - start_pos;
-                PageSet = ShowSet.GetRange(start_pos, num_recs_on_page);
-            }
-    }
+            // may be better to use two separate mechnanisms here!
+            // One for navigating through a set, one for the initial
+            // 1 to n set... needs further thought. Perhaps don't have 
+            // num_recs as a parameter - instead set as a property
+            // using ref - stops the infinite loop that is set up otherwise
+        }
         else
         {
             // post a 'none found message somewhere
             rec_num_indicator = "No records found";
         }
+    }
+
+
+    private void ShowRange(Tuple<int, int> t)
+    {
+        // PageSet = null;
+        PageSet = ShowSet?.GetRange(t.Item1, t.Item2);
     }
 
     private void ClearFilters()
@@ -291,9 +291,6 @@
         Console.WriteLine("boo - I am still removing the unchecked");
     }
 
-
-
-
     string? searchText;
     int searchType = 1;
     string? idText;
@@ -301,6 +298,10 @@
     string? searchParamsValue;
     string paramsLabelText = "Parameters";
     bool SearchPossible = false;
+
+    bool aggregateSearches = false;
+    bool searchInTTs = true;
+    bool searchInConds = true;
 
     private void RecalculateSearchFeedback()
     {
@@ -427,6 +428,10 @@
         fb_string += phase_fback == "" ? "" : " AND " + phase_fback;
         fb_string += alloc_fback == "" ? "" : " AND " + alloc_fback;
         filter_fback = fb_string == "" ? "" : fb_string[5..];
+        if (filter_fback == "")
+        {
+            filter_fback = "None applied";
+        }
         StateHasChanged();
     }
 
@@ -522,18 +527,6 @@
         alloc_sql = sql; RecalcFilterSQL();
     }
 
-    private void updateScopeFeedback(string feedback)
-    {
-        scope_fback = feedback; StateHasChanged();
-    }
-
-    private void updateScopeScore(int scopeScore)
-    {
-        search_scope = scopeScore; StateHasChanged();
-    }
-
-    bool showWhereClause = true;
-    bool aggregateSearches = false;
 
     List<Option<string>> searchOptions = default!;
     List<Option<string>> idOptions = default!;
@@ -572,7 +565,6 @@
             {" xxvi ", "26 "},{" xxvii ", "27 "},{" xxviii ", "28 "},
             {" xxix ", "29 "},{" xxx ", "30 " }
         };
-
     }
 
 
@@ -587,7 +579,6 @@
             3 => "PubMed ID",
             _ => "Parameters"
         };
-
 
         // for now - to make testing easier
 
@@ -606,13 +597,11 @@
         if (searchType == 3)
         {
 
-            searchParamsValue = "1017769";
+            searchParamsValue = "1017769"; // "1017769"; "462143";
         }
-
 
         RecalculateSearchFeedback();
         SearchPossible = RecalculateSearchSQL();
-
 
     }
 

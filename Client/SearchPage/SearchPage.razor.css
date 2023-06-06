@@ -65,22 +65,55 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 
 #right-bar {
-    flex: 1 1 17%;
+    flex: 0 0 11rem;
     overflow-y: auto;
-    min-width: 14rem;
+    min-width: 11rem;
 }
 
+
+
+/* Left hand column area */
+
+#filters-container { /* Used for the entire group of ilter boxes*/
+    padding-top: 4.5rem;
+    padding-left: 0.6rem;
+    padding-right: 1rem;
+}
+
+
+.filter-expln {
+    padding: 1rem 0.5rem;
+}
+
+
+/* Middle Search and results area */
+
+#fixed-top { /* top bar with search boxes, switches and results summary */
+    flex: 0 0 content;
+    display: flex;
+    flex-direction: column;
+}
+
+#fixed-results-container { /* area that includes scrolling results */
+    flex: 1 1 auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.5rem;
+}
 
 /* Search bar */
 
 #search-bar {
+    flex: 1 1 auto;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .search-label-container {
@@ -158,53 +191,57 @@ input[type=text] {
     }
 
 
-/* Left hand column area */
+/* Switch area */
 
-#filters-container {    /* Used for the entire group of ilter boxes*/
-    padding-top: 5rem;
-    padding-left: 0.6rem;
-    padding-right: 1rem;
-}
-
-
-.filter-expln {
-    padding: 1rem 0.5rem;
-}
-
-
-/* Middle results area */
-
-
-/* SQL area */
-
-#sql-area {
-    margin-top: 1rem;
+#switch-area {
+    flex: 1 1 2rem;
     padding-left: 1rem;
     padding-right: 1.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-#sql-container {
-    padding: 5px 8px;
-    text-align: left;
-    font: var(--small-text);
-    font-style: italic;
-    background-color: gainsboro;
-    border-radius: 5px;
+.switch {
+    white-space: nowrap;
 }
 
-/* Results */
 
-#result-area {
-    padding-left: 1rem;
-    padding-right: 1.5rem
+#agg-switch {
+    flex: 0 0;
 }
 
+#switch-spacer {    
+    flex: 2 2;
+    display: flex;
+}
+
+#small-switch-spacer {
+    flex: 1 1;
+    display: flex;
+}
+
+#tt-switch {
+    flex: 0 0;
+}
+
+#cond-switch {
+    flex: 0 0;
+}
+
+
+/* Results Summary and buttons at the top */
 
 #results-heading {
-    display: flex;
+    flex: 0 0 auto;
     padding-top: 0.6rem;
+    margin-left: 1rem;
+    margin-right: 1.5rem;
     border-bottom: 2px solid var(--txt-emph-colour);
     height: 1.7rem;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 #results-found {
@@ -215,27 +252,25 @@ input[type=text] {
     flex: 1 1;
 }
 
-#items-cb-label {
+#page-control {
     flex: 0 0;
-    display: flex;
+    justify-self: right;
 }
 
-#items-cb {
-    flex: 0 0;
-    display: flex;
-}
 
-#results-buttons {
-    flex: 0 0;
-    display: flex;
-}
 
+
+/* For the listed results themselves*/
 #results-list {
-    padding-top: 0.5rem;
+    padding: 1rem 1.5rem 0.5rem 1rem;
+    overflow-y: auto;
 }
+
+
 
 /* Right hand column area */
 
+/*
 #ShowWhere {
     padding-top: 0;
     padding-bottom: 3rem;
@@ -263,5 +298,6 @@ input[type=text] {
 .RHSCheckBoxSection {
     flex: 0 0 30%;
 }
+    */
 
 

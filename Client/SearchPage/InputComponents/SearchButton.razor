@@ -1,0 +1,19 @@
+﻿<div class="search-button-container">
+    <button class="search-button search-button-text" id=@id @onclick="() => clicked()">@Caption</button>
+</div >
+
+@code {
+    [Parameter]
+    public string? Caption { get; set; }
+
+    [Parameter]
+    public string? id { get; set; }
+
+    [Parameter]
+    public EventCallback onClicked { get; set; }
+
+    private void clicked()
+    {
+        onClicked.InvokeAsync();
+    }
+}

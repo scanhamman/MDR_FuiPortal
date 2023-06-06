@@ -1,0 +1,105 @@
+﻿
+
+
+.card-text, .card-label, .fixed-label {
+    font: var(--small-text);
+    color: var(--txt-colour);
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.card-text {
+    flex: 1 1;
+}
+
+.fixed-label {
+    flex: 0 0 22rem;
+    text-align: left;
+}
+
+.card-label {
+    font-weight: bold;
+    white-space: nowrap;
+    flex: 0 0;
+    color:darkslategrey;
+}
+
+
+.card-line {
+    width: 100%;
+    padding: 0.1rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.card-spaced {
+    justify-content: space-between;
+    margin: 0;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.link-button {
+    font: var(--small-text);
+    font-style: italic;
+    color: royalblue;
+    padding-left: 0.5rem;
+    cursor: pointer;
+}
+
+
+#countries {
+    flex: 0 0 55rem;
+    text-align: left;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#prov-icon {
+    flex: 0 0;
+    padding-left: 1rem;
+}
+
+
+.card-spacer {
+    flex: 1 1;
+}
+
+.details-button-container {
+    flex: 1 1;
+}
+
+.details-button {
+    width: 8rem;
+    height: 1.2rem;
+    border: none;
+    outline: 0.2rem solid grey;
+    background-color: snow;
+    border-radius: 8px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0.5rem;
+}
+
+.details-button-text {
+    font: var(--normal-text);
+    line-height: 1;
+    text-align: center;
+    color: darkslategray;
+    white-space: nowrap;
+}
+
+
+.details-button:hover {
+    color: var(--link-colour);
+    background-color: var(--link-hover-colour);
+    outline: 0.2rem solid var(--graphic-emph-colour);
+}
+
+
+
+
+

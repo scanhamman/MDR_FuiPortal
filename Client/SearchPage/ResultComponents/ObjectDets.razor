@@ -1,0 +1,97 @@
+﻿<div id="ob-dets">
+    <div id="ob-icon">
+        <img height="20" width="20" src=@res_icon alt="resource icon" />
+    </div>
+
+    <div id="ob-text">
+        <div class="card-line">
+            <div id="left-card-text">
+                <span class="top-line-label">@typename</span>
+            </div>
+            <div id="centre-card-text">
+                <span class="top-line-label">@year_pub</span>
+            </div>
+            <div id="right-card-text">
+                <div id="link">
+                    <img id="link-icon" height="12" width="12" src="/icons/ext-link.svg" alt="link icon" /> 
+                    &nbsp;&nbsp;
+                    <span id="link-url"><a href="@url" target="_blank">@url</a></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-line">
+            <div id="object-title">
+                <span class="title-label">Title:&nbsp;</span><span class="title-text">@object_title</span>
+            </div>
+            <Tooltip Text="@provenance" Position="left" Size="large">
+            <div id="prov-icon">
+                <img height="16" width="16" src="/icons/provenance.svg" alt="resource icon" />
+            </div>
+            </Tooltip>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public ObjectSummary? ob { get; set; }
+
+    string object_title = "";
+    string url = "";
+    string typename = "";
+    string provenance = "";
+    string year_pub = "";
+    string access_icon = "";
+    string res_icon = "";
+
+    protected override void OnParametersSet()
+    {
+        if (ob is not null)
+        {
+            typename = ob.typename == null ? "not given" : ob.typename;
+            typename = typename.Replace(" - unspecified", "");
+
+            object_title = ob.ob_name == null ? "not given" : ob.ob_name;
+            url = ob.url == null ? "not given" : ob.url;
+            year_pub = ob.year_pub == null ? "" : ob.year_pub.ToString()!;
+            provenance = ob.prov!;
+
+            if (ob.acc_icon is "G" or "T")
+            {
+                access_icon = "/icons/circle-green.svg";
+            }
+            else
+            {
+                access_icon = "/icons/circle-orange.svg";
+            }
+
+            res_icon = ob.res_icon! switch
+            {
+                "WA" => "/icons/web-api.svg",
+                "WD" => "/icons/web-download.svg",
+                "WO" => "/icons/web-text.svg",
+                "P" => "/icons/pdf.svg",
+                "D" => "/icons/datasvg",
+                "S" => "/icons/spreadsheet.svg",
+                "T" => "/icons/doc.svg",
+                "O" => "/icons/other-file.svg",
+                _ => "/icons/other-file.svg"
+            };
+
+            if (ob.res_type_id == 40)
+            {
+                typename = typename.Replace("Journal article", "PubMed abstract");
+                access_icon = "/icons/circle-green.svg";
+            }
+
+            if (ob.res_type_id == 36)
+            {
+                res_icon = "/icons/journal.svg";
+            }
+
+
+        }
+    }
+}

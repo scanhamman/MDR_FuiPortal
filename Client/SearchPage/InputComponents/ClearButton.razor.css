@@ -1,0 +1,33 @@
+﻿clear-button-container {
+    flex: 1 1;
+}
+
+
+.clear-button-text {
+    font: var(--normal-text);
+    line-height: 1;
+    text-align: center;
+    color: var(--txt-emph-colour);
+}
+
+
+.clear-button {
+    width: 8rem;
+    height: 1.2rem;
+    border: none;
+    outline: 0.2rem solid #466ecc;
+    border-radius: 8px;
+}
+
+
+#ClearFilters:hover {
+    color: var(--link-colour);
+    background-color: var(--link-hover-colour);
+    outline: 0.2rem solid var(--graphic-emph-colour);
+}
+
+#ClearSearch:hover {
+    color: var(--link-colour);
+    background-color: var(--link-hover-colour);
+    outline: 0.2rem solid var(--graphic-emph-colour);
+}

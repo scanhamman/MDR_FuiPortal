@@ -58,11 +58,11 @@ namespace MDR_FuiPortal.Server
             { 
                  sqlString += $" where  tt_lex @@ to_tsquery('core.mdr_english_config', '{search_string}')";
             }
-            else if (search_scope == 4)
+            else if (search_scope == 2)
             {
                 sqlString += $" where  conditions_lex @@ to_tsquery('core.mdr_english_config', '{search_string}')";
             }
-            else if (search_scope == 5)
+            else if (search_scope == 3)
             {
                 sqlString += $@" where  tt_lex @@ to_tsquery('core.mdr_english_config', '{search_string}') 
                                  or conditions_lex @@ to_tsquery('core.mdr_english_config', '{search_string}')";

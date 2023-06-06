@@ -1,24 +1,218 @@
-﻿
-<FluentAccordionItem Heading="@Title" Style="font-size: 1rem;">
-    <StudyCardDets study_name=@DS?.study_name description=@DS?.description
-                   dss=@DS?.dss start_date=@DS?.start_date type_name=@DS?.type_name
-                   status_name=@DS?.status_name gender_elig=@DS?.gender_elig
-                   min_age=@DS?.min_age  max_age=@DS?.max_age feature_list=@DS?.feature_list
-                   country_list=@DS?.country_list  condition_list=@DS?.condition_list  
-                   provenance=@DS?.provenance />
+﻿@using System.Text.Json;
 
-    <!-- Here needs a loop for each json object  -->
+<FluentAccordionItem Heading="@short_name" Style="font-size: 1rem; background-color:#ecedee; border-width:1px 0; border-color: royalblue  ; border-radius: 0" Expanded=@ItemExpanded>
+   
+    @if (@study_name != @short_name)
+    {
+        <div class="card-line">
+            <span class="card-label">Full Title:&nbsp;</span><span class="card-text">@study_name</span>
+        </div>
+    }
+    <div class="card-line">
+        <span class="card-label">Description:&nbsp;&nbsp;</span><span class="card-text">@desc_source
+        @if (@description != @short_desc)
+        {
+            <span class="inline link-button" @onclick="() => toggle_desc()">@desc_link_text</span>
+        }
+        </span>
+    </div>
+    
+    <div class="card-line">
+        <span class="card-label">Data Sharing:&nbsp;</span><span class="card-text">@dss</span>
+    </div>
+    <div class="card-line card-spaced">
+        <div class="fixed-label">
+            <span class="card-label">Start Date:&nbsp;</span><span class="card-text">@start_date</span>
+        </div>
+        <div class="fixed-label">
+            <span class="card-label">Type:&nbsp;</span><span class="card-text">@type_name</span>
+        </div>
+        <div class="card-text">
+            <span class="card-label">Status:&nbsp;</span><span class="card-text">@status_name</span>
+        </div>
+    </div>
+    <div class="card-line card-spaced">
+        <div class="fixed-label">
+            <span class="card-label">Gender Eligibility:&nbsp;</span><span class="card-text">@gender_elig</span>
+        </div>
+        <div class="fixed-label">
+            <span class="card-label">Min Age:&nbsp;</span><span class="card-text">@min_age</span>
+        </div>
+        <div class="card-text">
+            <span class="card-label">Max Age:&nbsp;</span><span class="card-text">@max_age</span>
+        </div>
+    </div>
+    <div class="card-line">
+        <span class="card-label">Target Conditions:&nbsp;</span><span class="card-text">@condition_list</span>
+    </div>
+    <div  class="card-line">
+        <span class="card-label">Design Features:&nbsp;</span><span class="card-text">@feature_list</span>
+    </div>
 
-    <ObjectCardDets />
+    <div class="card-line">
+        <div id="countries" class="card-text">
+            <span class="card-label">Country or Countries:&nbsp;</span><span class="card-text">@country_list</span>
+        </div>
+        <div class="details-button-container">
+            <button class="details-button details-button-text" @onclick="() => more_details_clicked()">More Details</button>
+        </div>
+        <Tooltip Text="@provenance" Position="left" Size="large">
+            <div id="prov-icon" class="card-text">
+                <img height="16" width="16" src="/icons/provenance.svg" alt="resource icon" />
+            </div>
+        </Tooltip>
+    </div>
+
+    @if (obs is not null)
+    {
+        @foreach (ObjectSummary @ob in obs)
+        {
+            <p></p>
+            <FluentDivider />
+            <p></p>            
+            <ObjectDets ob=@ob />
+        }
+    }
+
+    <div class="card-line">
+        <div class="card-spacer"></div>
+        
+    </div>
 
 </FluentAccordionItem>
 
 @code {
 
     [Parameter]
-    public string? Title { get; set; }
+    public string? JsonString { get; set; }
 
-    [Parameter]
-    public DisplayStudy? DS { get; set; }
+    int study_id;
+    string study_name = default!;
+    string short_name = default!;
+    string description = default!;
+    string short_desc = default!;
+    string dss = default!;
+    string start_date = default!;
+    string type_name = default!;
+    string status_name = default!;
+    string gender_elig = default!;
+    string min_age = default!;
+    string max_age = default!;
+    string feature_list = default!;
+    string country_list = default!;
+    string condition_list = default!;
+    string provenance = default!;
+    List<ObjectSummary>? obs;
+
+    string desc_source = "";
+    string desc_link_text = "more >";
+
+    bool ItemExpanded = false;
+
+    private void more_details_clicked()
+    {
+
+    }
+
+    private string get_month(int? start_month)
+    {
+        return start_month switch
+        {
+            1 => "January",
+            2 => "February",
+            3 => "March",
+            4 => "April",
+            5 => "May",
+            6 => "June",
+            7 => "July",
+            8 => "August",
+            9 => "September",
+            10 => "October",
+            11 => "November",
+            12 => "December",
+            _ => ""
+        };
+    }
+
+    private void toggle_desc()
+    {
+        if (desc_link_text == "more >")
+        {
+            desc_source = description;
+            desc_link_text = "< less";
+        }
+        else
+        {
+            desc_source = short_desc;
+            desc_link_text = "more >";
+        }
+    }
+
+
+    protected override void OnParametersSet()
+    {
+        if (JsonString is not null)
+        {
+            StudySummary? s = JsonSerializer.Deserialize<StudySummary?>(JsonString);
+
+            if (s is not null)
+            {
+                study_id = s.study_id;
+                if (s.study_name is not null)
+                {
+                    study_name = s.study_name;
+                    short_name = s.study_name!.Length > 103 ? s.study_name[0..100] + "..." : s.study_name;
+                }
+                else
+                {
+                    study_name = "No study name provided - ????";
+                    short_name = "[No study name provided]";
+                }
+                if (s.description is not null)
+                {
+                    description = s.description;
+                    short_desc = s.description!.Length > 300 ? s.description[0..300] + "..." : s.description;
+                    desc_source = short_desc;
+                }
+                else
+                {
+                    description = "No study description provided";
+                    short_desc = description;
+                    desc_source = description;
+                }
+                desc_link_text = "more >";
+                dss = s.dss == null ? "No statement provided" : s.dss;
+                if (s.start_year is not null)
+                {
+                    if (s.start_month is not null)
+                    {
+                        start_date = get_month(s.start_month) + " " + s.start_year?.ToString();
+                    }
+                    else
+                    {
+                        start_date = s.start_year?.ToString() + "";
+                    }
+                }
+                else
+                {
+                    start_date = "not given";
+                }
+                type_name = s.type_name == null ? "not given" : s.type_name;
+                status_name = s.status_name == null ? "not given" : s.status_name;
+                gender_elig = s.gender_elig == null ? "not given" : s.gender_elig;
+                min_age = s.min_age == null ? "not given" : s.min_age;
+                max_age = s.max_age == null ? "not given" : s.max_age ;
+                feature_list = s.feature_list == null ? "none given" : s.feature_list;
+                country_list = s.country_list == null ? "none given" : s.country_list;
+                condition_list = s.condition_list == null ? "none given" : s.condition_list;
+                provenance = s.provenance!;
+                obs = s.objects?.OrderBy(b => b.year_pub).ToList();
+            }
+        }
+
+        ItemExpanded = false;
+    }
+
 }
+
 

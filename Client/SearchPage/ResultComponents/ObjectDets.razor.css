@@ -1,0 +1,96 @@
+﻿#ob-dets {
+    display: flex;
+}
+
+#ob-icon{
+    flex: 0 0 2rem;
+}
+
+#ob-text {
+    flex: 1 1 auto;
+    color: var(--txt-colour);
+}
+
+.card-line {
+    width: 100%;
+    padding: 0 1rem 0.1rem 1rem;
+    display: flex;
+}
+
+#left-card-text {
+    flex: 0 0 20rem;
+    text-align: left;
+}
+
+#centre-card-text {
+    flex: 0 0 3rem;
+    text-align: left;
+}
+
+.top-line-label {
+    font: var(--small-text);
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 0;
+    color: darkslategrey;
+}
+
+#right-card-text {
+    flex: 1 1;
+    font: var(--small-text);
+    margin-bottom: 0;
+    display: flex;
+    justify-content: right;
+}
+
+
+#link {
+    flex: 0 0;
+    align-items: center;
+    display: flex;
+    margin-bottom: 0;
+}
+
+#link-icon {
+    flex: 0 0;
+    margin-bottom: 0;
+}
+
+#link-url {
+    flex: 1 1;
+    font: var(--small-text);
+    text-align: right;
+    white-space: nowrap;
+    margin-bottom: 0;
+}
+
+
+#object-title {
+    flex: 1 1;
+    text-align: left;
+}
+
+.title-text, .title-label {
+    font: var(--small-text);
+    text-align: left;
+}
+
+.title-label {
+    flex: 0 0;
+    font-weight: bold;
+    white-space: nowrap;
+    color: darkslategrey;
+}
+
+.title-text {
+    flex: 1 1;
+}
+
+#prov-icon {
+    flex: 0 0;
+    padding-left: 1rem;
+    padding-top: 4px;
+}
+
+
+

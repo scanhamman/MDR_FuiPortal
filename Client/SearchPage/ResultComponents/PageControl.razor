@@ -1,0 +1,206 @@
+﻿<div id="this-control">
+
+    @if (num_pages > 0)
+    {
+        <div id="items-cb-label">
+            <p class="small-text no-wrap-text">items per page</p>
+        </div>
+
+        <div id="items-cb">
+            <select id="page_num_select" @onchange="(e) => combo_changed(e)">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+            </select>
+        </div>
+
+
+        <div id="results-buttons">
+        <button id ="fb" class="page-button" @onclick="() => first_button_clicked()" disabled=@fb_disabled>
+            <img height="12" width="12" src=@first_button_image alt="first record" />
+        </button>
+        <button id="pb" class="page-button" @onclick="() => prev_button_clicked()" disabled=@pb_disabled>
+            <img height="12" width="12" src=@prev_button_image alt="previous record" />
+        </button>
+        <div>
+            <p class="small-text no-wrap-text" id="indic">@page_indicator</p>
+        </div>
+        <button id="nb" class="page-button" @onclick="() => next_button_clicked()" disabled=@nb_disabled>
+            <img height="12" width="12" src=@next_button_image alt="next record" />
+        </button>
+        <button id="lb" class="page-button" @onclick="() => last_button_clicked()" disabled=@lb_disabled>
+            <img height="12" width="12" src=@last_button_image alt="last record" />
+        </button>
+    </div>
+    }
+    
+
+</div>
+
+@code {
+    [Parameter]
+    public int total_recs { get; set; } = 0;
+
+    [Parameter]
+    public EventCallback<Tuple<int, int>> ObtainRange { get; set; }
+
+    string page_indicator = "";
+    int recs_per_page = 10;
+    int current_page = 0;
+    int num_pages = 0;
+    public int old_num_recs = 0;
+
+    string first_button_image = "/icons/step-back-dis.svg";
+    string prev_button_image = "/icons/arr-left-dis.svg";
+    string next_button_image = "/icons/arr-right-dis.svg";
+    string last_button_image = "/icons/step-forw-dis.svg";
+
+    bool fb_disabled = true;
+    bool pb_disabled = true;
+    bool nb_disabled = true;
+    bool lb_disabled = true;
+
+    private void recalc_range()
+    {
+        page_indicator = current_page.ToString() + " of " + num_pages.ToString();
+
+        int next_page_pos = recs_per_page * current_page;
+        int start_pos = next_page_pos - recs_per_page;
+        int num_recs_on_page = total_recs - start_pos > recs_per_page
+                           ? recs_per_page
+                           : total_recs - start_pos;
+        ObtainRange.InvokeAsync(Tuple.Create(start_pos, num_recs_on_page));
+    }
+
+
+    private void combo_changed(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value!.ToString(), out int intValue))
+        {
+            recs_per_page = intValue;
+            ResetPages();
+        }
+
+    }
+
+    private void first_button_clicked()
+    {
+        current_page = 1;
+        first_button_image = "/icons/step-back-dis.svg";
+        prev_button_image = "/icons/arr-left-dis.svg";
+        fb_disabled = true;
+        pb_disabled = true;
+        if (num_pages > 1)
+        {
+            next_button_image = "/icons/arr-right-en.svg";
+            last_button_image = "/icons/step-forw-en.svg";
+            nb_disabled = false;
+            lb_disabled = false;
+        }
+        recalc_range();
+    }
+
+    private void prev_button_clicked()
+    {
+        current_page--;
+        if (current_page < 1)
+        {
+            current_page = 1;
+        }
+        if (current_page == 1)
+        {
+            first_button_image = "/icons/step-back-dis.svg";
+            prev_button_image = "/icons/arr-left-dis.svg";
+            fb_disabled = true;
+            pb_disabled = true;
+        }
+        next_button_image = "/icons/arr-right-en.svg";
+        last_button_image = "/icons/step-forw-en.svg";
+        nb_disabled = false;
+        lb_disabled = false;
+
+        recalc_range();
+    }
+
+    private void next_button_clicked()
+    {
+        current_page++;
+        if (current_page > num_pages)
+        {
+            current_page = num_pages;
+        }
+        if (current_page == num_pages)
+        {
+            next_button_image = "/icons/arr-right-dis.svg";
+            last_button_image = "/icons/step-forw-dis.svg";
+            nb_disabled = true;
+            lb_disabled = true;
+        }
+        first_button_image = "/icons/step-back-en.svg";
+        prev_button_image = "/icons/arr-left-en.svg";
+        fb_disabled = false;
+        pb_disabled = false;
+
+        recalc_range();
+    }
+
+    private void last_button_clicked()
+    {
+        current_page = num_pages;
+        next_button_image = "/icons/arr-right-dis.svg";
+        last_button_image = "/icons/step-forw-dis.svg";
+        nb_disabled = true;
+        lb_disabled = true;
+        if (num_pages > 1)
+        {
+            first_button_image = "/icons/step-back-en.svg";
+            prev_button_image = "/icons/arr-left-en.svg";
+            fb_disabled = false;
+            pb_disabled = false;
+        }
+        recalc_range();
+    }
+
+    private void ResetPages()
+    {
+        if (total_recs > 0)
+        {
+            num_pages = (total_recs / recs_per_page) + 1;
+
+            current_page = 1;
+            page_indicator = "1 of " + num_pages.ToString();
+            first_button_image = "/icons/step-back-dis.svg";
+            prev_button_image = "/icons/arr-left-dis.svg";
+            fb_disabled = true;
+            pb_disabled = true;
+
+            if (num_pages == 1)
+            {
+                next_button_image = "/icons/arr-right-dis.svg";
+                last_button_image = "/icons/step-forw-dis.svg";
+                nb_disabled = true;
+                lb_disabled = true;
+            }
+            else
+            {
+                next_button_image = "/icons/arr-right-en.svg";
+                last_button_image = "/icons/step-forw-en.svg";
+                nb_disabled = false;
+                lb_disabled = false;
+            }
+            old_num_recs = total_recs;
+            recalc_range();
+        }
+    }
+
+
+    protected override void OnParametersSet()
+    {
+        // new (probably) total_recs;
+        if (old_num_recs != total_recs)
+        {
+            ResetPages();
+        }
+    }
+
+}

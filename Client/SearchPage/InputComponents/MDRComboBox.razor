@@ -4,8 +4,8 @@
            OptionText="@(i => i?.Text)"
            OptionValue="@(i => i?.Value)"
            OptionSelected="@(i => i == null ? false : i.Selected)"
-           SelectedOptionChanged="HandleSelectedOptionChanged"          
-           />
+           SelectedOptionChanged="HandleSelectedOptionChanged"
+           Position="SelectPosition.Below" />
 
 @code {
     [Parameter]

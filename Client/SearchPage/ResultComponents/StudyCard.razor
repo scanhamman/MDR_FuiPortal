@@ -1,6 +1,8 @@
 ﻿@using System.Text.Json;
 
-<FluentAccordionItem Heading="@short_name" Style="font-size: 1rem; background-color:#ecedee; border-width:1px 0; border-color: royalblue  ; border-radius: 0" Expanded=@ItemExpanded>
+<FluentAccordionItem Heading="@short_name" Expanded=@ItemExpanded
+    Style="font-size: 1rem; background-color:#ecede0; border-width:1px 0; 
+           border-color: royalblue  ; border-radius: 0" >
    
     @if (@study_name != @short_name)
     {
@@ -53,8 +55,14 @@
         <div id="countries" class="card-text">
             <span class="card-label">Country or Countries:&nbsp;</span><span class="card-text">@country_list</span>
         </div>
+
         <div class="details-button-container">
+            <a class="details-button"  href="/Study/@study_id" target="_blank">
+                <span class="details-button-text">More Details</span>
+            </a>
+            <!--
             <button class="details-button details-button-text" @onclick="() => more_details_clicked()">More Details</button>
+            -->
         </div>
         <Tooltip Text="@provenance" Position="left" Size="large">
             <div id="prov-icon" class="card-text">
@@ -111,7 +119,7 @@
 
     private void more_details_clicked()
     {
-
+        
     }
 
     private string get_month(int? start_month)

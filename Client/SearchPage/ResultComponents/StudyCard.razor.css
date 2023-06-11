@@ -77,27 +77,35 @@
     height: 1.2rem;
     border: none;
     outline: 0.2rem solid grey;
-    background-color: snow;
     border-radius: 8px;
     margin-left: 2rem;
     margin-right: 2rem;
     margin-top: 0.5rem;
+    padding: 0.2rem 1.5rem;
+
+    font: var(--normal-text);
+    color: darkslategray;
+    line-height: 1;
+    text-align: center;   
+    white-space: nowrap;
+    text-decoration: none;
 }
 
+    .details-button:hover {
+        color: var(--link-colour);
+        background-color: darkslategray;
+        outline: 0.2rem solid var(--graphic-emph-colour);
+    }
+
+/*
 .details-button-text {
-    font: var(--normal-text);
-    line-height: 1;
-    text-align: center;
+    
     color: darkslategray;
     white-space: nowrap;
+    text-decoration: none;
 }
+    */
 
-
-.details-button:hover {
-    color: var(--link-colour);
-    background-color: var(--link-hover-colour);
-    outline: 0.2rem solid var(--graphic-emph-colour);
-}
 
 
 

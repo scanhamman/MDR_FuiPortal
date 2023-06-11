@@ -27,7 +27,7 @@
 <div class="filter-line"><FluentCheckbox @bind-Value="b12">Registry&nbsp;results&nbsp;summary</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b21">Journal&nbsp;article</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b22">Study&nbsp;protocol</FluentCheckbox></div>
-<div class="filter-line"><FluentCheckbox @bind-Value="b34">IPD*</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b34">IPDnbsp/nbspData*</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b23">Study&nbsp;overview</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b24">Patient&nbsp;consent/IS*</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b25">Data&nbsp;collection&nbsp;forms</FluentCheckbox></div>
@@ -36,7 +36,7 @@
 <div class="filter-line"><FluentCheckbox @bind-Value="b32">Clinical&nbsp;study&nbsp;report</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b33">Data&nbsp;summary</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b36">Other&nbsp;study&nbsp;resource*</FluentCheckbox></div>
-<div class="filter-line"><FluentCheckbox @bind-Value="b44">Other&nbsp;info.&nbsp;resource*</FluentCheckbox></div>
+<div class="filter-line"><FluentCheckbox @bind-Value="b41">Other&nbsp;info.&nbsp;resource*</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b51">Website</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b52">Software</FluentCheckbox></div>
 <div class="filter-line"><FluentCheckbox @bind-Value="b99">Other</FluentCheckbox></div>
@@ -47,13 +47,15 @@
 </div>
 
 
+
+
 @code {
 
     string? feedbackBase = "Object type one of (";
     string? sqlBase = "object_type_id in (";
 
     bool _b12, _b21, _b22, _b23, _b24, _b25, _b26;
-    bool _b31, _b32, _b33, _b34, _b36, _b44, _b51, _b52, _b99;
+    bool _b31, _b32, _b33, _b34, _b36, _b41, _b51, _b52, _b99;
 
     [Parameter]
     public Action<string>? OnFeedbackChange { get; set; }
@@ -176,12 +178,12 @@
             process_state();
         }
     }
-    public bool b44
+    public bool b41
     {
-        get { return _b44; }
+        get { return _b41; }
         set
         {
-            _b44 = value;
+            _b41 = value;
             process_state();
         }
     }
@@ -216,14 +218,14 @@
     private void process_state()
     {
         if (!_b12 && !_b21 && !_b22 && !_b23 && !_b24 && !_b25 && !_b26
-            && !_b31 && !_b32 && !_b33 && !_b34 && !_b36 && !_b44 
+            && !_b31 && !_b32 && !_b33 && !_b34 && !_b36 && !_b41 
             && !_b51 && !_b52 && !_b99)
         {
             OnFeedbackChange!.Invoke("");
             OnSQLChange!.Invoke("");
         }
         else if (_b12 && _b21 && _b22 && _b23 && _b24 && _b25 && _b26
-                 && _b31 && _b32 && _b33 && _b34 && _b36 && _b44 
+                 && _b31 && _b32 && _b33 && _b34 && _b36 && _b41 
                  && _b51 && _b52 && _b99)
         {
             OnFeedbackChange!.Invoke("All allocation options");
@@ -241,9 +243,9 @@
             object_fback_string += _b31 ? ", SAP" : "";
             object_fback_string += _b32 ? ", Clinical study report" : "";
             object_fback_string += _b33 ? ", Data summary" : "";
-            object_fback_string += _b34 ? ", IPD" : "";
+            object_fback_string += _b34 ? ", IPD / Data" : "";
             object_fback_string += _b36 ? ", Other study resource" : "";
-            object_fback_string += _b44 ? ", Other info. resource" : "";
+            object_fback_string += _b41 ? ", Other info. resource" : "";
             object_fback_string += _b51 ? ", Website" : "";
             object_fback_string += _b52 ? ", Software" : "";
             object_fback_string += _b99 ? ", Other" : "";
@@ -262,7 +264,7 @@
             object_sql_string += _b33 ? ", 33" : "";
             object_sql_string += _b34 ? ", 34" : "";
             object_sql_string += _b36 ? ", 36" : "";
-            object_sql_string += _b44 ? ", 44" : "";
+            object_sql_string += _b41 ? ", 41" : "";
             object_sql_string += _b51 ? ", 51" : "";
             object_sql_string += _b52 ? ", 52" : "";
             object_sql_string += _b99 ? ", 99" : "";
@@ -279,7 +281,7 @@
         b25 = check_state; b26 = check_state;
         b31 = check_state; b32 = check_state;
         b33 = check_state; b34 = check_state;
-        b36 = check_state; b44 = check_state;
+        b36 = check_state; b41 = check_state;
         b51 = check_state; b52 = check_state;
         b99 = check_state;
     }

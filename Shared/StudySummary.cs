@@ -123,3 +123,10 @@ public class ObjectDetails
     List<string>? ObjectPeople { get; set; }
     List<string>? ObjectOrganisations { get; set; }
 }
+
+
+public class IECLine
+{
+
+}
+

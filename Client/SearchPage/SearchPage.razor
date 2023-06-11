@@ -93,20 +93,16 @@
                         </div>
                     </div>
                 </div>
-           
-                
+                           
                 <div id="switch-area">
                     <ClearButton id="ClearFilters" Caption="Clear Filters" onClicked="ClearFilters" />
-                    <div id="small-switch-spacer">
-                    </div>
+                    <div id="small-switch-spacer"></div>
                     <ClearButton id="ClearSearch" Caption="Clear Search" onClicked="ClearSearch" />
-                    <div id="switch-spacer">
-                    </div>
+                    <div id="switch-spacer"></div>
                     <div id="agg-switch" class="small-text no-wrap-text">
                         <FluentSwitch @bind-Value=aggregateSearches style="margin-inline-end: 12px;">Aggregate Results</FluentSwitch>
                     </div>
-                    <div id="switch-spacer">
-                    </div>
+                    <div id="switch-spacer"></div>
                     <div id="tt-switch" class="small-text no-wrap-text">
                         <FluentSwitch @bind-Value=searchInTTs style="margin-inline-end: 12px;">Search in Titles and Topics</FluentSwitch>
                     </div>
@@ -115,64 +111,69 @@
                     </div>
                 </div>
 
-                    <!--
-                    <div id="sql-container">
-                        <p class="small-text-italic">
-                            @if (searchType == 1)
-                            {
-                                <span>KEY WORDS SEARCH, using @searchParamsValue, in @scope_fback; <br />
-                                FILTER(S): @filter_fback</span>
-                            }
-                            @if (searchType == 2)
-                            {
-                                <span>ID SEARCH, using type: @idType, identifier: @idText</span>
-                            }
-                            @if (searchType == 3)
-                            {
-                                <span>PMID SEARCH, using @searchParamsValue</span>
-                            }
-                        </p>
-                    </div>
-                    -->
-
+                <!--
+                <div id="sql-container">
+                    <p class="small-text-italic">
+                        @if (searchType == 1)
+                        {
+                            <span>KEY WORDS SEARCH, using @searchParamsValue, in @scope_fback; <br />
+                            FILTER(S): @filter_fback</span>
+                        }
+                        @if (searchType == 2)
+                        {
+                            <span>ID SEARCH, using type: @idType, identifier: @idText</span>
+                        }
+                        @if (searchType == 3)
+                        {
+                            <span>PMID SEARCH, using @searchParamsValue</span>
+                        }
+                    </p>
+                </div>
+                -->
 
                 <div id="results-heading">
                     <div id="results-found">
                         <p class="small-text no-wrap-text">@rec_num_indicator</p>
                     </div>
-                    <div id="results-spacer">
-                    </div>
+                    <div id="results-spacer"> </div>
                     <div id="page-control">
                         <PageControl total_recs=rec_num ObtainRange="ShowRange" @ref="pagecon"/>
                     </div>
                 </div>
             </div>
 
-
             <div id="fixed-results-container">
-                <div id="results-list">         <!-- Scrolling area -->
-                    <FluentDesignSystemProvider FillColor="#fdfeff">
-                        <!--#ecedee -->
-                    @if (@PageSet is not null)
-                    {   
-                        <FluentAccordion>
-                            <PageContents Contents=@PageSet />
-                        </FluentAccordion>
-                    }
-                    else
-                    {
-                         <FluentAccordion />  
-                    }
-                    </FluentDesignSystemProvider>
-                </div>
+                <SpinLoader IsLoading="isLoading" IsFaulted="isEmpty">
+                    <LoadingTemplate>
+                        <div style="height:100px; margin-top:3rem;">
+                            <Circle Color="royalblue" Size="60px" Center="true" />
+                        </div>
+                    </LoadingTemplate>
+                    <ContentTemplate>
+                        <div id="results-list">         <!-- Scrolling area -->
+                            <FluentDesignSystemProvider FillColor="#fdfeff">     <!-- was #ecedee -->
+                            @if (@PageSet is not null)
+                            {   
+                                <FluentAccordion>
+                                    <PageContents Contents=@PageSet />
+                                </FluentAccordion>
+                            }
+                            </FluentDesignSystemProvider>
+                        </div>
+                    </ContentTemplate>
+                    <FaultedContentTemplate>
+                        <div style="height:100px; margin-top:3rem;">
+                            <p class="normal-blue-text" style="text-align: center; font-style: italic;">No records were found matching these search criteria</p>
+                        </div>
+                    </FaultedContentTemplate>
+                </SpinLoader>
             </div>
         </div>
 
         <div id="right-bar">
-             <SearchButton id="SearchButton" Caption="Search" onClicked="Search" />
+            <SearchButton id="SearchButton" Caption="Search" onClicked="Search" />
         </div>
-
-     </div>
+    </div>
 </div>
 
 @code {
@@ -198,9 +199,14 @@
         filtersBarShowing = visibility;
     }
 
+    bool isLoading = false;
+    bool isEmpty = false;
 
     private async Task Search()
     {
+        isLoading = true;
+        isEmpty = false;
+
         string search_url = "api/Study/";
         if (searchType == 1)
         {
@@ -251,6 +257,7 @@
             rec_num_indicator += rec_num == 1 ? "" : "s";
             rec_num_indicator += " found";
 
+
             // setting rec_num will trigger the page control
             // to set up the initial page contents call, 1 to n
             // After that the page control's buttons will get the
@@ -264,9 +271,13 @@
         }
         else
         {
+
             // post a 'none found message somewhere
             rec_num_indicator = "No records found";
+            isEmpty = true;
         }
+        isLoading = false;
+
     }
 
 

@@ -3,5 +3,7 @@ using MDR_FuiPortal.Shared;
 
 public interface ITreeRepo 
 {
-    public Task<List<SourceItem>?> FetchTreeItems(string TreeName);
+    public Task<IEnumerable<TreeLine>?> FetchTreeItems(string TreeName);
+
+    public Task<string?> GetPageContent(string tree_id);
 }

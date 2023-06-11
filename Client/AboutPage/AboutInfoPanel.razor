@@ -1,4 +1,14 @@
-﻿<h3>AboutInfoPanel</h3>
+﻿@using Microsoft.AspNetCore.Components.Rendering;
+@inject HttpClient Http
+
+<div>
+    @((MarkupString)content)
+</div>
+
+
+
+<!--
+<h3>AboutInfoPanel</h3>
 
 <h4>Selected id is @ItemIdToDisplay</h4>
 
@@ -9,9 +19,10 @@
 <button @onclick='() => SetSelectedId("2.1")'>id 2.1</button>
 
 <button @onclick='() => SetSelectedId("3.4.12")'>id 3.4.12</button>
+-->
+
 
 @code {
-
     [Parameter]
     public string? ItemIdToDisplay { get; set; }
 
@@ -25,5 +36,19 @@
     {
         RequestedId = reqId;
         ItemRequested.InvokeAsync(reqId);
+    }
+
+    public delegate void RenderFragment(RenderTreeBuilder mdr_builder);
+    string content = ""; 
+    protected async override Task OnParametersSetAsync()
+    {
+        if (ItemIdToDisplay is not null && ItemIdToDisplay != "0")
+        {
+            // use ItemIdToDisplay to retrieve Html from database
+
+            string page_url = "api/tree/page/" + ItemIdToDisplay;
+            PageContent? returned_html = await Http.GetFromJsonAsync<PageContent?>(page_url);
+            content = returned_html?.Content ?? "";
+        }
     }
 }

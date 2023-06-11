@@ -1,4 +1,7 @@
-﻿@page "/Study"
+﻿@page "/Study/{studyId:int?}"
+@inject HttpClient Http
+@using System.Text.Json;
+
 
 <PageTitle>MDR Study Details</PageTitle>
 
@@ -7,11 +10,176 @@
 
 <div id="body-outer">
     <div id="body-main">
-        <h3>Study Details</h3>
+       <div class="s-dets">
+           <h2>For now, just basic details as on card to illustrate principle...</h2>
+            <div class="card-line">
+                <span class="card-label">Full Title:&nbsp;</span><span class="card-text">@study_name</span>
+            </div>
+            <div class="card-line">
+                <span class="card-label">Description:&nbsp;&nbsp;</span>
+                <span class="card-text">@description</span>
+            </div>
+    
+            <div class="card-line">
+                <span class="card-label">Data Sharing:&nbsp;</span><span class="card-text">@dss</span>
+            </div>
+            <div class="card-line card-spaced">
+                <div class="fixed-label">
+                    <span class="card-label">Start Date:&nbsp;</span><span class="card-text">@start_date</span>
+                </div>
+                <div class="fixed-label">
+                    <span class="card-label">Type:&nbsp;</span><span class="card-text">@type_name</span>
+                </div>
+                <div class="card-text">
+                    <span class="card-label">Status:&nbsp;</span><span class="card-text">@status_name</span>
+                </div>
+            </div>
+            <div class="card-line card-spaced">
+                <div class="fixed-label">
+                    <span class="card-label">Gender Eligibility:&nbsp;</span><span class="card-text">@gender_elig</span>
+                </div>
+                <div class="fixed-label">
+                    <span class="card-label">Min Age:&nbsp;</span><span class="card-text">@min_age</span>
+                </div>
+                <div class="card-text">
+                    <span class="card-label">Max Age:&nbsp;</span><span class="card-text">@max_age</span>
+                </div>
+            </div>
+            <div class="card-line">
+                <span class="card-label">Target Conditions:&nbsp;</span><span class="card-text">@condition_list</span>
+            </div>
+            <div  class="card-line">
+                <span class="card-label">Design Features:&nbsp;</span><span class="card-text">@feature_list</span>
+            </div>
+
+            <div class="card-line">
+                <div id="countries" class="card-text">
+                    <span class="card-label">Country or Countries:&nbsp;</span><span class="card-text">@country_list</span>
+                </div>
+            </div>
+
+            <Tooltip Text="@provenance" Position="left" Size="large">
+                <div id="prov-icon" class="card-text">
+                    <img height="16" width="16" src="/icons/provenance.svg" alt="resource icon" />
+                </div>
+            </Tooltip>
+
+            @if (obs is not null)
+            {
+                @foreach (ObjectSummary @ob in obs)
+                {
+                    <p></p>
+                    <FluentDivider />
+                    <p></p>            
+                    //<ObjectDets ob=@ob />
+                }
+            }
+        </div>
     </div>
 </div>
 
 
 @code {
-    
+    [Parameter]
+    public int? studyId { get; set; }
+
+    string? JsonString { get; set; }
+
+    int study_id;
+    string study_name = default!;
+    string description = default!;
+    string dss = default!;
+    string start_date = default!;
+    string type_name = default!;
+    string status_name = default!;
+    string gender_elig = default!;
+    string min_age = default!;
+    string max_age = default!;
+    string feature_list = default!;
+    string country_list = default!;
+    string condition_list = default!;
+    string provenance = default!;
+    List<ObjectSummary>? obs;
+
+    private string get_month(int? start_month)
+    {
+        return start_month switch
+        {
+            1 => "January",
+            2 => "February",
+            3 => "March",
+            4 => "April",
+            5 => "May",
+            6 => "June",
+            7 => "July",
+            8 => "August",
+            9 => "September",
+            10 => "October",
+            11 => "November",
+            12 => "December",
+            _ => ""
+        };
+    }
+
+    protected async override  Task OnInitializedAsync()
+    {
+        if (studyId.HasValue)
+        {
+            string url = $"api/study/{studyId}";
+            var BaseSet = await Http.GetFromJsonAsync<List<string>?>(url);
+
+            if (BaseSet?.Any() == true)
+            {
+                StudySummary? s = JsonSerializer.Deserialize<StudySummary?>(BaseSet[0]);
+
+                if (s is not null)
+                {
+                    study_id = s.study_id;
+                    if (s.study_name is not null)
+                    {
+                        study_name = s.study_name;
+                    }
+                    else
+                    {
+                        study_name = "No study name provided - ????";
+                    }
+                    if (s.description is not null)
+                    {
+                        description = s.description;
+                    }
+                    else
+                    {
+                        description = "No study description provided";
+                    }
+                    dss = s.dss == null ? "No statement provided" : s.dss;
+                    if (s.start_year is not null)
+                    {
+                        if (s.start_month is not null)
+                        {
+                            start_date = get_month(s.start_month) + " " + s.start_year?.ToString();
+                        }
+                        else
+                        {
+                            start_date = s.start_year?.ToString() + "";
+                        }
+                    }
+                    else
+                    {
+                        start_date = "not given";
+                    }
+                    type_name = s.type_name == null ? "not given" : s.type_name;
+                    status_name = s.status_name == null ? "not given" : s.status_name;
+                    gender_elig = s.gender_elig == null ? "not given" : s.gender_elig;
+                    min_age = s.min_age == null ? "not given" : s.min_age;
+                    max_age = s.max_age == null ? "not given" : s.max_age;
+                    feature_list = s.feature_list == null ? "none given" : s.feature_list;
+                    country_list = s.country_list == null ? "none given" : s.country_list;
+                    condition_list = s.condition_list == null ? "none given" : s.condition_list;
+                    provenance = s.provenance!;
+                    obs = s.objects?.OrderBy(b => b.year_pub).ToList();
+                }
+            }
+        }
+     }
+
 }

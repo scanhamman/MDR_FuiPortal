@@ -40,5 +40,33 @@ public class StudyController :  BaseApiController
     }
 
 
+    /*
+    [HttpGet("{study_id:int}")]
+    public async Task<List<StudyDetails>?> GetStudyDetails(int study_id)
+    {
+        var res = await _studyRepo.FetchStudyDetails(study_id);
+        var listres = res is not null ? new List<StudyDetails>() { res } : null;
+        return listres;
+    }
+    */
+
+    // temp for early testing of the principle
+
+    [HttpGet("{study_id:int}")]
+    public async Task<List<string>?> GetStudyJsonById(int study_id)
+    {
+        var res = await _studyRepo.FetchStudyById(study_id);
+        return res is not null ? new List<string>() { res } : null;
+    }
+
+
+    [HttpGet("/iec/{study_id:int}")]
+    public async Task<List<IECLine>?> GetStudyIEC(int study_id)
+    {
+        var res = await _studyRepo.FetchStudyIEC(study_id);
+        var listres = res is not null ? res.ToList() : null;
+        return listres;
+    }
+
 }
 

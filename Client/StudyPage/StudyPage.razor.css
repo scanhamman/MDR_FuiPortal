@@ -13,3 +13,69 @@
     overflow-y: scroll;
     max-height: 100%;
 }
+
+
+.s-dets {
+    padding: 3rem;
+}
+
+
+.card-text, .card-label, .fixed-label {
+    font: var(--small-text);
+    color: var(--txt-colour);
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.card-text {
+    flex: 1 1;
+}
+
+.fixed-label {
+    flex: 0 0 22rem;
+    text-align: left;
+}
+
+.card-label {
+    font-weight: bold;
+    white-space: nowrap;
+    flex: 0 0;
+    color: darkslategrey;
+}
+
+
+.card-line {
+    width: 100%;
+    padding: 0.1rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.card-spaced {
+    justify-content: space-between;
+    margin: 0;
+}
+
+.inline {
+    display: inline-block;
+}
+
+
+#countries {
+    flex: 0 0 55rem;
+    text-align: left;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#prov-icon {
+    flex: 0 0;
+    padding-left: 1rem;
+}
+
+
+.card-spacer {
+    flex: 1 1;
+}
+

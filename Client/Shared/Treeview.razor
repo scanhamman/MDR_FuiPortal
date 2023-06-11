@@ -1,11 +1,20 @@
 ﻿@inject HttpClient Http
 
-@foreach (treeItem @t in @treeItems)
-{
-    <TreeItem Id=@t.Id Level=@t.Level Text=@t.Title Icon=@t.Icon
-         IsClosed=@t.IsClosed IsParent=@t.IsParent IsVisible=@t.IsVisible
-         IsSelected=@t.IsSelected OnTreeItemClick="ShowClick" OnIconClick="IconClick" />
-}
+ <SpinLoader IsLoading="isLoading">
+    <LoadingTemplate>
+        <div style="height:100px; margin-top:3rem;">
+            <Circle Color="royalblue" Size="60px" Center="true" />
+        </div>
+    </LoadingTemplate>
+    <ContentTemplate>
+        @foreach (treeItem @t in @treeItems)
+        {
+            <TreeItem Id=@t.Id Level=@t.Level Text=@t.Title Icon=@t.Icon
+                 IsClosed=@t.IsClosed IsParent=@t.IsParent IsVisible=@t.IsVisible
+                 IsSelected=@t.IsSelected OnTreeItemClick="ShowClick" OnIconClick="IconClick" />
+        }
+    </ContentTemplate>
+</SpinLoader>
 
 
 @code {
@@ -18,6 +27,8 @@
 
     [Parameter]
     public string? TreeType { get; set; }
+
+    bool isLoading;
 
     private async Task ShowClick(string ClickedId)
     {
@@ -125,10 +136,10 @@
             }
         }
 
-        if (RequestedId != "0")
-        {
-            // if id / level greater than 0 
-            // what id its level? 
+        if (!(RequestedId.Length == 2 && RequestedId[1] == '0'))
+    {
+            // if not the top most tree node 
+            // what is its level? 
 
             int numberOfDots = RequestedId.Count(c => (c == '.'));
 
@@ -235,9 +246,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         string items_url = "api/tree/items/" + TreeType;
-        var SourceItems = await Http.GetFromJsonAsync<List<SourceItem>?>(items_url);
-        if (SourceItems != null)
+        var TreeLines = await Http.GetFromJsonAsync<List<TreeLine>?>(items_url);
+        if (TreeLines != null)
         {
             List<LevelDets> LastLevels = new();
             LastLevels.Add(new LevelDets(0, "none", true));
@@ -246,7 +258,7 @@
             LastLevels.Add(new LevelDets(3));
             LastLevels.Add(new LevelDets(4));
             int n = 0;
-            foreach (SourceItem si in SourceItems)
+            foreach (TreeLine si in TreeLines)
             {
                 n++;
                 string icon = "L";      // default, use for leaf nodes
@@ -271,5 +283,6 @@
                 treeItems.Add(new treeItem(si.Id, si.Title, si.Level, si.IsParent, isClosed, isVisible, icon, parentId));
             }
         }
+        isLoading = false;
     }
 }

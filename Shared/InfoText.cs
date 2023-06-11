@@ -20,11 +20,25 @@ public class InfoDiv
 }
 
 
-public class SourceItem
+public class TreeLine
 {
     public string? Id { get; set; }
     public string? Title { get; set; }
     public int Level { get; set; }
     public bool IsParent { get; set; }
     public bool? IsClosed { get; set; }
+}
+
+
+public class PageContent
+{
+    public string? Content { get; set; }
+
+    public PageContent(string? _Content)
+    {
+        Content = _Content;
+    }
+
+    public PageContent()
+    { }
 }

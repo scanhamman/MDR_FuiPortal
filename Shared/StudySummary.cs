@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MDR_FuiPortal.Shared;
 
@@ -32,10 +33,9 @@ public class StudySummary
     public List<ObjectSummary>? objects { get; set; }
 }
 
-
+ 
 public class ObjectSummary
 {
-    public int sid { get; set; }
     public int oid { get; set; }
     public string? ob_name { get; set; }
     public int? typeid { get; set; }
@@ -45,7 +45,6 @@ public class ObjectSummary
     public string? res_icon { get; set; }
     public int? year_pub { get; set; }
     public string? acc_icon { get; set; }
-    public int? PublishedType { get; set; }
     public string? prov { get; set; }
 }
 

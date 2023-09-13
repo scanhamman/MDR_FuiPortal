@@ -135,23 +135,9 @@
                 if (s is not null)
                 {
                     study_id = s.study_id;
-                    if (s.study_name is not null)
-                    {
-                        study_name = s.study_name;
-                    }
-                    else
-                    {
-                        study_name = "No study name provided - ????";
-                    }
-                    if (s.description is not null)
-                    {
-                        description = s.description;
-                    }
-                    else
-                    {
-                        description = "No study description provided";
-                    }
-                    dss = s.dss == null ? "No statement provided" : s.dss;
+                    study_name = s.study_name ?? "No study name provided - ????";
+                    description = s.description ?? "No study description provided";
+                    dss = s.dss ?? "No statement provided";
                     if (s.start_year is not null)
                     {
                         if (s.start_month is not null)
@@ -160,21 +146,21 @@
                         }
                         else
                         {
-                            start_date = s.start_year?.ToString() + "";
+                            start_date = s.start_year + "";
                         }
                     }
                     else
                     {
                         start_date = "not given";
                     }
-                    type_name = s.type_name == null ? "not given" : s.type_name;
-                    status_name = s.status_name == null ? "not given" : s.status_name;
-                    gender_elig = s.gender_elig == null ? "not given" : s.gender_elig;
-                    min_age = s.min_age == null ? "not given" : s.min_age;
-                    max_age = s.max_age == null ? "not given" : s.max_age;
-                    feature_list = s.feature_list == null ? "none given" : s.feature_list;
-                    country_list = s.country_list == null ? "none given" : s.country_list;
-                    condition_list = s.condition_list == null ? "none given" : s.condition_list;
+                    type_name = s.type_name ?? "not given";
+                    status_name = s.status_name ?? "not given";
+                    gender_elig = s.gender_elig ?? "not given";
+                    min_age = s.min_age ?? "not given";
+                    max_age = s.max_age ?? "not given";
+                    feature_list = s.feature_list ?? "none given";
+                    country_list = s.country_list ?? "none given";
+                    condition_list = s.condition_list ?? "none given";
                     provenance = s.provenance!;
                     obs = s.objects?.OrderBy(b => b.year_pub).ToList();
                 }

@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager _navManager
+@inject NavigationManager NavManager
 
 <div class="page">
     <main>
@@ -11,7 +11,7 @@
                     </div> 
                     <div id="title-text">
                         <span id="ecrin-name">ecrin&nbsp;</span>
-                        @if (_navManager.Uri != _navManager.BaseUri)
+                        @if (NavManager.Uri != NavManager.BaseUri)
                         {
                             <span id="mdr-name">metadata repository</span>
                             <span id="mdr-abbrev">MDR</span>
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="top-right">
-                @if (_navManager.Uri != _navManager.BaseUri)
+                @if (NavManager.Uri != NavManager.BaseUri)
                 {
                     <div class="top-right-bar">
                         <div class="trb-inner">

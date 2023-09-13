@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject NavigationManager navigationManager
+@inject NavigationManager NavManager
 
 <PageTitle>MDR Home</PageTitle>
 
@@ -111,21 +111,33 @@
                 </div>
                 <div>
                     <p class="expl-text">
-                        Currently (as of May 2023) the MDR includes details on <span class="red-text">770,000 studies</span> and, including all types
+                        Currently (as of September 2023) the MDR includes details on <span class="red-text">800,000 studies</span> and, including all types
                         of digital object (all registry entries, papers, documents and data sets, etc.)
-                        on <span class="red-text">1.2 million digital objects</span>.
+                        on <span class="red-text">1.35 million digital objects</span>.
                     </p>
                 </div>
 
             </div>
             <div id="arrow-area">
                 <div class="rt-arrow-button">
-                    <a href="/Search" target="_blank" class="link-as-large-button">
-                        Search the MDR >>>
+                    <a href="/Search" target="_blank" class="link-as-large-button" >
+                       Search the MDR >>>
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+@code {
+    
+    void NavigateToSearch()
+    {
+        NavManager.NavigateTo("/Search");
+        
+        // onclick ="@(() => NavigateToSearch)
+    }  
+
+}
 

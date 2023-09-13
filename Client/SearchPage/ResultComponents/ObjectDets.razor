@@ -50,22 +50,15 @@
     {
         if (ob is not null)
         {
-            typename = ob.typename == null ? "not given" : ob.typename;
+            typename = ob.typename ?? "not given";
             typename = typename.Replace(" - unspecified", "");
 
-            object_title = ob.ob_name == null ? "not given" : ob.ob_name;
-            url = ob.url == null ? "not given" : ob.url;
+            object_title = ob.ob_name ?? "not given";
+            url = ob.url ?? "not given";
             year_pub = ob.year_pub == null ? "" : ob.year_pub.ToString()!;
             provenance = ob.prov!;
 
-            if (ob.acc_icon is "G" or "T")
-            {
-                access_icon = "/icons/circle-green.svg";
-            }
-            else
-            {
-                access_icon = "/icons/circle-orange.svg";
-            }
+            access_icon = ob.acc_icon is "G" or "T" ? "/icons/circle-green.svg" : "/icons/circle-orange.svg";
 
             res_icon = ob.res_icon! switch
             {
@@ -73,10 +66,11 @@
                 "WD" => "/icons/web-download.svg",
                 "WO" => "/icons/web-text.svg",
                 "P" => "/icons/pdf.svg",
-                "D" => "/icons/datasvg",
+                "D" => "/icons/data.svg",
                 "S" => "/icons/spreadsheet.svg",
                 "T" => "/icons/doc.svg",
                 "O" => "/icons/other-file.svg",
+                "M" => "/icons/other-file.svg",   // Need to be changed! Also 'virtual' icons
                 _ => "/icons/other-file.svg"
             };
 
@@ -90,8 +84,6 @@
             {
                 res_icon = "/icons/journal.svg";
             }
-
-
         }
     }
 }

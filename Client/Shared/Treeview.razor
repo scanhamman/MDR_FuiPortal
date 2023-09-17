@@ -33,37 +33,27 @@
     private async Task ShowClick(string ClickedId)
     {
         await OnTreeClick.InvokeAsync(ClickedId);
-        for (int i = 0; i < treeItems.Count; i++)
+        foreach (var t in treeItems.Where(t => t.IsSelected && t.Id != ClickedId))
         {
-            if (treeItems[i].IsSelected 
-                    && treeItems[i].Id != ClickedId)
-            {
-                treeItems[i].IsSelected = false;
-                break;
-            }
+            t.IsSelected = false;
+            break;
         }
-        for (int i = 0; i < treeItems.Count; i++)
+        foreach (var t in treeItems.Where(t => t.Id == ClickedId))
         {
-            if (treeItems[i].Id == ClickedId)
-            {
-                treeItems[i].IsSelected = true;
-                break;
-            }
+            t.IsSelected = true;
+            break;
         }
     }
 
     private void IconClick(string IconChangedId)
     {
-        // remove the selection of the current selection
+        // Remove the selection of the current selection
         // should check for a change first
 
-        for (int i = 0; i < treeItems.Count; i++)
+        foreach (var t in treeItems.Where(t => t.IsSelected))
         {
-            if (treeItems[i].IsSelected)
-            {
-                treeItems[i].IsSelected = false;
-                break;
-            }
+            t.IsSelected = false;
+            break;
         }
 
         for(int i = 0; i < treeItems.Count; i++) 
@@ -118,22 +108,16 @@
         // Tree must expand to show parents and 
         // then set selected id as selected.
 
-        for (int i = 0; i < treeItems.Count; i++)
+        foreach (var t in treeItems.Where(t => t.IsSelected))
         {
-            if (treeItems[i].IsSelected)
-            {
-                treeItems[i].IsSelected = false;
-                break;
-            }
+            t.IsSelected = false;
+            break;
         }
 
-        for (int i = 0; i < treeItems.Count; i++)
+        foreach (var t in treeItems.Where(t => t.Id == RequestedId))
         {
-            if (treeItems[i].Id == RequestedId)
-            {
-                treeItems[i].IsSelected = true;
-                break;
-            }
+            t.IsSelected = true;
+            break;
         }
 
         if (!(RequestedId.Length == 2 && RequestedId[1] == '0'))
@@ -224,7 +208,7 @@
         }
     }
 
-    List<treeItem> treeItems = new List<treeItem>();
+    List<treeItem> treeItems = new ();
 
     protected class LevelDets
     {

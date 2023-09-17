@@ -37,19 +37,19 @@
         }
     }
 
-    private async void CallRequestId(string requestedId)
+    private async void CallRequestId(string reqId)
     {
         if (GuideTree is not null)
         {
-            await GuideTree.RequestId(requestedId);
+            await GuideTree.RequestId(reqId);
         }
     }
         
 
     public void SetRequestedId(string reqId)
     {
-        requestedId = reqId;
-        CallRequestId(requestedId);
+        //requestedId = reqId;
+        CallRequestId(reqId);
     }
 
     public void ProcessItemClick(string Id)

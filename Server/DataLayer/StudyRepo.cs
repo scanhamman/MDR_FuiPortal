@@ -70,16 +70,16 @@ public class StudyRepo : IStudyRepo
         string sql_string = "select study_json from core.search_lexemes ";
         if (search_scope == 1)
         {
-            sql_string += $" where  tt_lex @@ to_tsquery('core.mdr_english_config', '{search_string}')";
+            sql_string += $" where  tt_lex @@ to_tsquery('core.mdr_english_config2', '{search_string}')";
         }
         else if (search_scope == 2)
         {
-            sql_string += $" where  conditions_lex @@ to_tsquery('core.mdr_english_config', '{search_string}')";
+            sql_string += $" where  conditions_lex @@ to_tsquery('core.mdr_english_config2', '{search_string}')";
         }
         else if (search_scope == 3)
         {
-            sql_string += $@" where  tt_lex @@ to_tsquery('core.mdr_english_config', '{search_string}') 
-                                 or conditions_lex @@ to_tsquery('core.mdr_english_config', '{search_string}')";
+            sql_string += $@" where  tt_lex @@ to_tsquery('core.mdr_english_config2', '{search_string}') 
+                                 or conditions_lex @@ to_tsquery('core.mdr_english_config2', '{search_string}')";
         }
         return await GetIEnumerable<string>(sql_string);
     }

@@ -25,8 +25,9 @@
     <ProjectReference Include="..\Shared\MDR_FuiPortal.Shared.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<None Update="AboutPage/AboutInfoPanel.razor.css" CssScope="b-aboutpanel" />
-	</ItemGroup>
+
+  <ItemGroup>
+     <None Update="AboutPage/AboutInfoPanel.razor.css" CssScope="b-aboutpanel" />
+  </ItemGroup>
 
 </Project>

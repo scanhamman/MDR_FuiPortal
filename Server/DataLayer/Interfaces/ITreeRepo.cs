@@ -5,5 +5,5 @@ public interface ITreeRepo
 {
     public Task<IEnumerable<TreeLine>?> FetchTreeItems(string TreeName);
 
-    public Task<string?> GetPageContent(string tree_id);
+    public Task<page_info?> GetPageContent(string tree_id);
 }

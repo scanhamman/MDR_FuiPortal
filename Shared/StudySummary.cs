@@ -43,7 +43,7 @@ public class ObjectSummary
     public string? url { get; set; }
     public int? res_type_id { get; set; }
     public string? res_icon { get; set; }
-    public int? year_pub { get; set; }
+    public string? year_pub { get; set; }
     public string? acc_icon { get; set; }
     public string? prov { get; set; }
 }

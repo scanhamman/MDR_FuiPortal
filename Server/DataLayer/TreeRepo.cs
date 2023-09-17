@@ -1,8 +1,6 @@
 ﻿using Dapper;
 using MDR_FuiPortal.Shared;
-using Microsoft.AspNetCore.Components;
 using Npgsql;
-using System.Text;
 
 namespace MDR_FuiPortal.Server;
 
@@ -37,49 +35,38 @@ public class TreeRepo : ITreeRepo
         }
     }
 
-
-    public async Task<string?> GetPageContent(string tree_id)
+    public async Task<page_info?> GetPageContent(string tree_id)
     {
-        var sql_string = $@"select content 
-                            from core.tree_text tt
-	                        where tree_page_id = '{tree_id}'
-	                        order by tt.sequence";
+        await using var conn = new NpgsqlConnection(_dbConnString);
+        string sql_string = $@"select title, last_edited
+                            from core.tree_text_headers 
+	                        where tree_page_id = '{tree_id}'";
+        page_info_header? header = await conn.QuerySingleOrDefaultAsync<page_info_header>(sql_string);
 
-        using var conn = new NpgsqlConnection(_dbConnString);
-        try
+        if (header is null)
         {
-            var res = await conn.QueryAsync<string>(sql_string);
-            if (res?.Any() == true)
-            {
-                List<string> res_list = res.ToList();
-                if (res_list.Count == 1)
-                {
-                    return res_list[0];
-                }
-                else
-                {
-                    StringBuilder sb = new();
-                    foreach(string s in res_list)
-                    {
-                        sb.Append(s);
-                    }
-                    return sb.ToString();
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-        catch (Exception e)
-        {
-            string s = e.Message;
             return null;
         }
-    }
+        page_info pi = new(header.title, header.last_edited);
 
-    private string? htmlencode(string v)
-    {
-        throw new NotImplementedException();
+        sql_string = $@"select type, seq_num, markup
+                        from core.tree_info tt
+	                    where tree_page_id = '{tree_id}'
+	                    order by tt.seq_num";
+
+        List<info_component>? res = (await conn.QueryAsync<info_component>(sql_string)).ToList();
+        if (res.Any())
+        {
+            pi.info_dyncs = res.ToList();
+            return pi;
+        }
+        return null; // as fallback
+        
+        //catch (Exception e)
+        //{
+        //    string s = e.Message;
+        //    return null;
+        // }
+        
     }
 }

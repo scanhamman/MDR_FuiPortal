@@ -23,10 +23,12 @@ public class TreeController : BaseApiController
 
 
     [HttpGet("page/{tree_id}")]
-    public async Task<PageContent?> GetPageContent(string tree_id)
+    public async Task<page_info?> GetPageContent(string tree_id)
     {
-        string? p_content = await _treeRepo.GetPageContent(tree_id);
-        return new PageContent(p_content);
+        //page_info? p_content = await _treeRepo.GetPageContent(tree_id);
+        //return new PageContent(p_content);
+        
+        return await _treeRepo.GetPageContent(tree_id);
     }
 }
 

@@ -55,7 +55,7 @@
 
             object_title = ob.ob_name ?? "not given";
             url = ob.url ?? "not given";
-            year_pub = ob.year_pub == null ? "" : ob.year_pub.ToString()!;
+            year_pub = ob.year_pub ?? "No public. date";
             provenance = ob.prov!;
 
             access_icon = ob.acc_icon is "G" or "T" ? "/icons/circle-green.svg" : "/icons/circle-orange.svg";

@@ -1,45 +1,53 @@
 ﻿@using Microsoft.AspNetCore.Components.Rendering;
+@using System.Text
+@using Microsoft.Extensions.Primitives
 @inject HttpClient Http
 
-<div>
-    @((MarkupString)content)
+<div class="content">
+    <div class="top">
+        <div class="title">
+            <h1>@title</h1>
+        </div>		
+        <div class="top-spacer"></div> 
+        <div class="last-edited">
+        <p class="rhs">Last edited: @last_edited</p>
+	    </div>	
+    </div>	
+    
+    @if (dyncs is not null)
+    {
+        @foreach (DynCompDef dc_def in dyncs)
+        {
+            <DynamicComponent Type=dc_def.type Parameters=dc_def.pars/>
+        }
+    }
 </div>
-
-
-
-<!--
-<h3>AboutInfoPanel</h3>
-
-<h4>Selected id is @ItemIdToDisplay</h4>
-
-<button @onclick='() => SetSelectedId("0")'>id 0</button>
-
-<button @onclick='() => SetSelectedId("2")'>id 2</button>
-
-<button @onclick='() => SetSelectedId("2.1")'>id 2.1</button>
-
-<button @onclick='() => SetSelectedId("3.4.12")'>id 3.4.12</button>
--->
 
 
 @code {
     [Parameter]
     public string? ItemIdToDisplay { get; set; }
 
-    [Parameter]
-    public string? RequestedId { get; set; }
-
-    [Parameter]
+    [Parameter]  
     public EventCallback<string> ItemRequested { get; set; }
 
     public void SetSelectedId(string reqId)
     {
-        RequestedId = reqId;
         ItemRequested.InvokeAsync(reqId);
     }
-
-    public delegate void RenderFragment(RenderTreeBuilder mdr_builder);
+    
     string content = ""; 
+    string title = ""; 
+    string last_edited = "";
+
+    protected class DynCompDef
+    {
+        public Type type { get; set; } = typeof(InfoMarkup);
+        public Dictionary<string, object> pars { get; set; } = new(){ {"content", ""} };
+    }
+
+    List<DynCompDef>? dyncs;
+    
     protected async override Task OnParametersSetAsync()
     {
         if (ItemIdToDisplay is not null && ItemIdToDisplay != "0")
@@ -47,8 +55,46 @@
             // use ItemIdToDisplay to retrieve Html from database
 
             string page_url = "api/tree/page/" + ItemIdToDisplay;
-            PageContent? returned_html = await Http.GetFromJsonAsync<PageContent?>(page_url);
-            content = returned_html?.Content ?? "";
+            page_info? returned_data = await Http.GetFromJsonAsync<page_info?>(page_url);
+            if (returned_data is not null)
+            {
+                title = returned_data.title ?? "no title ???";
+                last_edited = returned_data.last_edited ?? " no last edited ??? ";
+                dyncs = new List<DynCompDef>();                
+                if (returned_data.info_dyncs is not null)
+                {
+                    foreach (var info_dync in returned_data.info_dyncs)
+                    {
+                        DynCompDef dync = new();
+                        dync.type = info_dync.type switch
+                        {   "markup" => typeof(InfoMarkup),
+                            "para" => typeof(InfoPara),
+                            "h3" => typeof(InfoH3),
+                            "h4" => typeof(InfoH4),
+                            "table" => typeof(InfoTable),
+                            "graphic" => typeof(InfoGraphic),
+                            _ => typeof(InfoMarkup)
+                        };
+                        string first_par = info_dync.type switch
+                        {   
+                            "para" => "para_text",
+                            "h3" => "header_text",
+                            "h4" => "header_text",
+                            _ => "content"
+                            };
+                        dync.pars = new Dictionary<string, object>{ {first_par, info_dync.markup ?? ""} };
+                        dyncs.Add(dync);
+                    }
+                    /*
+                    StringBuilder sb = new(returned_data?.info_dyncs[0].markup ?? "");
+                    for (int i = 1; i < returned_data?.info_dyncs.Count; i++)
+                    {
+                        sb.Append(returned_data.info_dyncs[i].markup ?? "");
+                    }
+                    content = sb.ToString();
+                    */
+                }
+            }
         }
     }
 }

@@ -17,6 +17,7 @@
     </div>
 </div>
 
+
 @code{
     [Parameter]
     public string? clickedId { get; set; }
@@ -51,8 +52,9 @@
 
     public void ProcessItemClick(string Id)
     {
-        // for now just set prarameters in text. Normally would use
-        // the id to issue a call for the information.
+        // Changes the clickedId parameter.
+        // That transmits the request as the ItemIdToDisplay
+        // parameter of the info panel.
 
         clickedId = Id;
     }

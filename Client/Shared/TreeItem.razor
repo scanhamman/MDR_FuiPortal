@@ -1,9 +1,9 @@
 ﻿
-<div class="treeitem" hidden=@(!IsVisible) id=@Id IsSelected=@IsSelected
-                      OnItemClicked=@OnTreeItemClick 
-                      onIconClicked=@OnIconClick>
+<div class="treeitem" hidden="@(!IsVisible)" id="@Id" IsSelected="@IsSelected"
+                      OnItemClicked="@OnTreeItemClick" 
+                      OnIconClicked="@OnIconClick">
    
-    @for (int i = 0; i < @Level; i++)
+    @for (int i = 0; i < Level; i++)
     {
         <div class="spacer">
             &nbsp;
@@ -16,21 +16,21 @@
         }
         else
         {
-            @if (@Icon == "L")
+            @if (Icon == "L")
             {
                 <img height="8" width="8" src="/icons/square-icon.svg" alt="leaf icon" />
             }
-            @if (@Icon == "C")
+            @if (Icon == "C")
             {
                 <img height="12" width="12" src="/icons/caret-right-icon.svg" alt="closed icon" />
             }
-            @if (@Icon == "P")
+            @if (Icon == "P")
             {
                 <img height="12" width="12" src="/icons/caret-down-icon.svg" alt="open icon" />
             }
         }
     </div>
-    <div class="text @(@IsSelected == true ? "selected" : "") " @onclick=@(e => ProcessClick(e))>
+    <div class="text @(IsSelected == true ? "selected" : "") " @onclick=@(e => ProcessClick(e))>
         @Text
     </div>
 

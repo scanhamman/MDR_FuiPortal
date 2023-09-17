@@ -1,6 +1,6 @@
 ﻿
 .content {
-    padding: 2rem;
+    padding: 3rem;
 }
 
 
@@ -67,5 +67,22 @@ td, th {
 
 p, li {
     font: var(--normal-text);
+}
+
+.link {
+    font: var(--normal-text);
+    color: #1b6ec2;
+    text-decoration: underline;
+}
+
+.link:hover {
+    cursor:pointer;
+}
+
+.img_wide {
+    aspect-ratio: 5 / 1;
+    width: 100%;
+    object-fit: contain;
+    max-width: 1600px;
 }
 

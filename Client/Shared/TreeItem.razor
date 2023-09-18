@@ -10,7 +10,7 @@
         </div>
     }
     <div class="icon" @onclick=@(e => ProcessIconClick(e))>
-        @if (Id == "0")
+        @if (Id!.Length == 2 && Id.EndsWith("0"))
         {
             <img height="12" width="12" src="/icons/square-icon.svg" alt="leaf icon" />
         }
@@ -45,7 +45,7 @@
     [Parameter]
     public int? Level { get; set; }
     [Parameter]
-    public bool IsParent { get; set; }
+    public bool? IsParent { get; set; }
     [Parameter]
     public bool? IsClosed { get; set; }
     [Parameter]
@@ -70,7 +70,7 @@
         // and exclude the top of the tree from open / close.
 
         await OnTreeItemClick.InvokeAsync(Id);
-        if (Icon != "L" && Id != "0")
+        if (Icon != "L" && !(Id!.Length == 2 && Id.EndsWith("0")))
         {
             await OnIconClick.InvokeAsync(Id);
         }

@@ -21,7 +21,7 @@ public class TreeRepo : ITreeRepo
                               where tree = '{TreeName}'
                               order by tree_seq";
 
-        using var conn = new NpgsqlConnection(_dbConnString);
+        await using var conn = new NpgsqlConnection(_dbConnString);
         try
         {
             var res = await conn.QueryAsync<TreeLine>(sql_string);
@@ -54,7 +54,7 @@ public class TreeRepo : ITreeRepo
 	                    where tree_page_id = '{tree_id}'
 	                    order by tt.seq_num";
 
-        List<info_component>? res = (await conn.QueryAsync<info_component>(sql_string)).ToList();
+        List<info_component> res = (await conn.QueryAsync<info_component>(sql_string)).ToList();
         if (res.Any())
         {
             pi.info_dyncs = res.ToList();

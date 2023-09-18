@@ -25,32 +25,32 @@
     public string? requestedId { get; set; }
     
     Treeview? AboutTree;
-    private Action<string>? callRequestId;
+    //private Action<string>? callRequestId;
         
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            callRequestId = CallRequestId;
+            //callRequestId = CallRequestId;
             CallRequestId("a0");
         }
     }
 
-    private async void CallRequestId(string requestedId)
+    private async void CallRequestId(string reqId)
     {
         if (AboutTree is not null)
         {
-            await AboutTree.RequestId(requestedId);
+            await AboutTree.RequestId(reqId);
         }
     }
 
-    public void SetRequestedId(string reqId)
+    private void SetRequestedId(string reqId)
     {
         requestedId = reqId;
         CallRequestId(requestedId);
     }
 
-    public void ProcessItemClick(string Id)
+    private void ProcessItemClick(string Id)
     {
         // Changes the clickedId parameter.
         // That transmits the request as the ItemIdToDisplay
@@ -58,4 +58,5 @@
 
         clickedId = Id;
     }
+
 }

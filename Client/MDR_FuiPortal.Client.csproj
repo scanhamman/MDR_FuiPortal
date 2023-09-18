@@ -27,7 +27,7 @@
 
 
   <ItemGroup>
-     <None Update="AboutPage/AboutInfoPanel.razor.css" CssScope="b-aboutpanel" />
+     <None Update="AboutPage/AboutInfoPanel.razor.css; GuidePage/GuideInfoPanel.razor.css" CssScope="b-aboutpanel" />
   </ItemGroup>
 
 </Project>

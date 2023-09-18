@@ -26,18 +26,16 @@
    
 
     Treeview? GuideTree;
-    private Action<string>? callRequestId;
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            callRequestId = CallRequestId;
-            CallRequestId("0");
+            await SetRequestedId("g0");
         }
     }
 
-    private async void CallRequestId(string reqId)
+    private async Task CallRequestId(string reqId)
     {
         if (GuideTree is not null)
         {
@@ -46,15 +44,14 @@
     }
         
 
-    public void SetRequestedId(string reqId)
+    private async Task SetRequestedId(string reqId)
     {
-        //requestedId = reqId;
-        CallRequestId(reqId);
+        await CallRequestId(reqId);
     }
 
-    public void ProcessItemClick(string Id)
+    private void ProcessItemClick(string Id)
     {
-        // for now just set prarameters in text. Normally would use
+        // for now just set parameters in text. Normally would use
         // the id to issue a call for the information.
 
         clickedId = Id;

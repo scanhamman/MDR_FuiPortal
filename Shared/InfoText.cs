@@ -39,11 +39,6 @@ public class info_component
     {}
 }
 
-
-
-
-
-
 public class TreeLine
 {
     // Data representing individual tree-lines 
@@ -52,7 +47,7 @@ public class TreeLine
     public string? Id { get; set; }
     public string? Title { get; set; }
     public int Level { get; set; }
-    public bool IsParent { get; set; }
+    public bool? IsParent { get; set; }
     public bool? IsClosed { get; set; }
 }
 

@@ -66,7 +66,7 @@
                 treeItems[i].Icon = treeItems[i].Icon == "C" ? "P" : "C";
                 treeItems[i].IsSelected = true;
                 int ParentLevel = treeItems[i].Level;
-                bool ParentClosed = treeItems[i].IsClosed;
+                bool? ParentClosed = treeItems[i].IsClosed;
                 i++;
 
                 // for lower icons - if the parent is closed - make all
@@ -76,7 +76,7 @@
 
                 while (i < treeItems.Count && treeItems[i].Level > ParentLevel)
                 {
-                    if (ParentClosed)
+                    if (ParentClosed == true)
                     {
                         treeItems[i].IsVisible = false;
                         if (treeItems[i].Icon == "P")
@@ -103,7 +103,7 @@
         }
     }
 
-    public async Task RequestId(string RequestedId)
+    public async Task RequestId(string ReqId)
     {
         // Tree must expand to show parents and 
         // then set selected id as selected.
@@ -114,18 +114,17 @@
             break;
         }
 
-        foreach (var t in treeItems.Where(t => t.Id == RequestedId))
+        foreach (var t in treeItems.Where(t => t.Id == ReqId))
         {
             t.IsSelected = true;
             break;
         }
 
-        if (!(RequestedId.Length == 2 && RequestedId[1] == '0'))
-    {
-            // if not the top most tree node 
-            // what is its level? 
+        if (!(ReqId.Length == 2 && ReqId.EndsWith('0')))
+        {
+            // if not the top most tree node, what is its level? 
 
-            int numberOfDots = RequestedId.Count(c => (c == '.'));
+            int numberOfDots = ReqId.Count(c => (c == '.'));
 
             if (numberOfDots > 0)
             {
@@ -139,8 +138,8 @@
                 int start_pos = 0;
                 for (int n = 0; n < numberOfDots; n++)
                 {
-                    int period_pos = RequestedId.IndexOf('.', start_pos);
-                    parentIds.Add(RequestedId[..period_pos]);
+                    int period_pos = ReqId.IndexOf('.', start_pos);
+                    parentIds.Add(ReqId[..period_pos]);
                     start_pos = period_pos + 1;
                 }
 
@@ -155,11 +154,11 @@
                         {
                             treeItems[i].IsClosed = false;
                             treeItems[i].Icon = "P";
-                            int parentlevel = treeItems[i].Level;
+                            int parent_level = treeItems[i].Level;
                             int j = i+ 1;
-                            while (j < treeItems.Count && treeItems[j].Level > parentlevel)
+                            while (j < treeItems.Count && treeItems[j].Level > parent_level)
                             {
-                                if (treeItems[j].Level == parentlevel + 1)
+                                if (treeItems[j].Level == parent_level + 1)
                                 {
                                     treeItems[j].IsVisible = true;    
                                     if (treeItems[j].Icon == "P")
@@ -178,7 +177,7 @@
             }
         }
 
-        await OnTreeClick.InvokeAsync(RequestedId);
+        await OnTreeClick.InvokeAsync(ReqId);
     } 
 
     protected class treeItem
@@ -186,16 +185,16 @@
         public string? Id { get; set; }
         public string? Title { get; set; }
         public int Level { get; set; }
-        public bool IsParent { get; set; }
-        public bool IsClosed { get; set; }
+        public bool? IsParent { get; set; }
+        public bool? IsClosed { get; set; }
         public bool IsVisible { get; set; }
         public bool IsSelected { get; set; }
         public string? Icon { get; set; }
         public string? ParentId { get; set; }
 
         public treeItem(string? _Id, string? _Title, int _Level,
-                           bool _IsParent, bool _IsClosed, bool _IsVisible,
-                           string? _Icon, string? _ParentId)
+                           bool? _IsParent, bool? _IsClosed, bool _IsVisible,
+                           string? _Icon, string? _ParentId, bool _IsSelected)
         {
             Id = _Id;
             Title = _Title;
@@ -205,6 +204,7 @@
             IsVisible = _IsVisible;
             Icon = _Icon;
             ParentId = _ParentId;
+            IsSelected = _IsSelected;
         }
     }
 
@@ -249,6 +249,7 @@
                 bool isClosed = true;   // default, use for leaf nodes
                 bool isVisible = true;  // starting point, for top node
                 string? parentId = "";  // starting point, for top node
+                bool isSelected = true;  // starting point, for top node (only)
 
                 if (si.IsParent == true)   // parent nodes MUST have IsParent defined
                 {
@@ -261,10 +262,12 @@
                 if (si.Level > 0)
                 {
                     parentId = LastLevels[si.Level - 1].LastParentId;
-                    isVisible = LastLevels[si.Level - 1].IsClosed == true ? false : true;
+                    isVisible = LastLevels[si.Level - 1].IsClosed != true;
+                    isSelected = false;
                 }
 
-                treeItems.Add(new treeItem(si.Id, si.Title, si.Level, si.IsParent, isClosed, isVisible, icon, parentId));
+                treeItems.Add(new treeItem(si.Id, si.Title, si.Level, si.IsParent,
+                    isClosed, isVisible, icon, parentId, isSelected));
             }
         }
         isLoading = false;

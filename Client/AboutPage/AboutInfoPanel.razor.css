@@ -3,7 +3,6 @@
     padding: 3rem;
 }
 
-
 .top {
     display: flex;
 }
@@ -29,10 +28,6 @@
     white-space: nowrap;
 }
 
-lup-table {
-    overflow-x: auto;
-}
-
 table {
     width: 95%;
     margin-left: 1rem;
@@ -41,18 +36,18 @@ table {
 h1 {
     color: var(--h1-colour);
     padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     white-space:nowrap;
 }
 
 h2, h3 {
     color: var(--txt-emph-colour);
-    padding-bottom: 1rem;
+    padding-top: 0.5rem;
     white-space: nowrap;
 }
 
 
-thead {
+.tableHdr {
     background-color: slategrey;
     color: var(--link-colour);
 }
@@ -60,7 +55,7 @@ thead {
 
 td, th {
     vertical-align: top;
-    padding: 4px;
+    padding: 2px;
     font: var(--normal-text);
 }
 
@@ -86,3 +81,45 @@ p, li {
     max-width: 1600px;
 }
 
+.l3r {
+    width: 3rem;
+}
+
+.l4r {
+    width: 4rem;
+}
+
+.l6r {
+    width: 6rem;
+}
+
+.l7r {
+    width: 7rem;
+}
+
+.l9r {
+    width: 9rem;
+}
+
+.m4r {
+    width: 4rem;
+    text-align: center;
+}
+
+.m5r {
+    width: 5rem;
+    text-align: center;
+}
+
+.m7r {
+    width: 7rem;
+    text-align: center;
+}
+
+.l22p{
+    width: 22%;
+}
+
+.l30p{
+    width: 30%;
+}

@@ -46,6 +46,13 @@ h2, h3 {
     white-space: nowrap;
 }
 
+h4 {
+    padding-top: 0.3rem;
+    font: var(--normal-text);
+    font-weight: bold;
+    white-space: nowrap;
+}
+
 
 .tableHdr {
     background-color: slategrey;
@@ -59,9 +66,25 @@ td, th {
     font: var(--normal-text);
 }
 
+ul {
+    list-style: none;
+    margin-top: -1rem;
+}
 
-p, li {
+li::before {
+    font-size: 1.5rem;
+    content: "\2022"; color: var(--txt-emph-colour);
+    display: inline-block; width: 1rem;
+    margin-left: -1rem;
+}
+
+
+p, li{
     font: var(--normal-text);
+}
+
+li{
+    margin-bottom: 0.4rem;
 }
 
 .link {
@@ -79,6 +102,12 @@ p, li {
     width: 100%;
     object-fit: contain;
     max-width: 1600px;
+}
+
+.codeBlock {
+    font-family: monospace;
+    color: midnightblue;
+    background-color: #f8f8f8;
 }
 
 .l3r {

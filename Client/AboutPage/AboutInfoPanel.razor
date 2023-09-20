@@ -73,6 +73,7 @@
                             "h4" => typeof(InfoH4),
                             "tablehdr" => typeof(InfoTableHdr),
                             "table" => typeof(InfoTable),
+                            "code" => typeof(InfoCode),
                             "ul" => typeof(InfoUL),
                             "graphic" => typeof(InfoGraphic),
                             _ => typeof(InfoMarkup)
@@ -82,10 +83,24 @@
                             "para" => "para_text",
                             "h3" => "header_text",
                             "h4" => "header_text",
+                            "code" => "code_block",
                             _ => "content"
-                            };
-                        dync.pars = new Dictionary<string, object>{ {first_par, info_dync.markup ?? ""} };
-                        dyncs.Add(dync);
+                        };
+                        if (info_dync.markup is not null)
+                        {
+                            if(info_dync.type == "code")
+                            {
+                                info_dync.markup = info_dync.markup.Replace("|", "\n");  // re-insert CRs
+                            }
+                            if (info_dync.type == "ul")
+                            {
+                                info_dync.markup = info_dync.markup.Replace("<li>", "<li b-aboutpanel>");  
+                                info_dync.markup = info_dync.markup.Replace("<p>", "<p b-aboutpanel>"); 
+                            }
+                            dync.pars = new Dictionary<string, object>{ {first_par, info_dync.markup ?? ""} };
+                            dyncs.Add(dync);
+                        }
+                        
                     }
                     /*
                     StringBuilder sb = new(returned_data?.info_dyncs[0].markup ?? "");

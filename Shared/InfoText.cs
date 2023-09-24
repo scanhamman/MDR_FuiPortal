@@ -2,19 +2,19 @@
 
 public class page_info_header
 {
-    public string? title { get; set; }
+    public string? page_header { get; set; }
     public string? last_edited { get; set; }
 }
 
 public class page_info
 {
-    public string? title { get; set; }
+    public string? page_header { get; set; }
     public string? last_edited { get; set; }
     public List<info_component>? info_dyncs { get; set; }
 
-    public page_info(string? _title, string? _last_edited)
+    public page_info(string? _page_header, string? _last_edited)
     {
-        title = _title;
+        page_header = _page_header;
         last_edited = _last_edited;
     }
     
@@ -24,15 +24,17 @@ public class page_info
 
 public class info_component
 {
+    public int seq_num { get; set; }    
     public string? type { get; set; }
-    public int seq_num { get; set; }
-    public string? markup { get; set; }
+    public string? parameters { get; set; }
+    public string? content { get; set; }
 
-    public info_component(string _type, int _seq_num, string? _markup)
+    public info_component(int _seq_num, string _type, string? _parameters, string? _content)
     {
+        seq_num = _seq_num;        
         type = _type;
-        seq_num = _seq_num;
-        markup = _markup;
+        parameters = _parameters;
+        content = _content;
     }
     
     public info_component()

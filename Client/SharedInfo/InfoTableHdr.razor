@@ -1,10 +1,13 @@
-﻿<table b-aboutpanel class="tableHdr">
+﻿<table b-aboutpanel class=@header_class>
    <tr>
-      @((MarkupString)content) 
+      @((MarkupString)header_row) 
    </tr>
 </table>
 
 @code {
    [Parameter]
-   public string content { get; set; } = "";
+   public string header_class { get; set; } = "";
+   
+   [Parameter]
+   public string header_row { get; set; } = "";
 }

@@ -10,7 +10,7 @@ public interface IStudyRepo
 
     public Task<IEnumerable<string>?> FetchStudiesBySearch(int search_scope, string search_string);
 
-     public Task<string?> FetchStudyById(int study_id);
+    public Task<string?> FetchStudyById(int study_id);
 
     public Task<IEnumerable<IECLine>?> FetchStudyIEC(int study_id);
 }

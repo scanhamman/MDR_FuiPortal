@@ -62,10 +62,11 @@
 
 #middle-bar {
     flex: 4 4 66%;
-    display: flex;
-    flex-direction: column;
     text-align: center;
     overflow-y: hidden;
+    
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -230,9 +231,32 @@ input[type=text] {
     flex: 0 0;
 }
 
+/* feedback area */ 
+/* generally shown during development - ?? not clear if to optionally make visible */
+
+#feedback {
+    flex: 1 1;
+    padding: 0 1rem;
+
+    display: flex;
+}
+
+#fb-container {
+    flex: 1 1;
+    background-color: honeydew;
+    margin-right: 2rem;
+}
+
+#sql-container {
+    flex: 1 1;
+    background-color: lavender;
+    margin-right: 2rem;
+}
+
+
+
 
 /* Results Summary and buttons at the top */
-
 #results-heading {
     flex: 0 0 auto;
     padding-top: 0.6rem;
@@ -256,8 +280,6 @@ input[type=text] {
     flex: 0 0;
     justify-self: right;
 }
-
-
 
 
 /* For the listed results themselves*/
